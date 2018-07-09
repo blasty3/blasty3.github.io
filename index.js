@@ -17,8 +17,8 @@
 /**
  * Illustrates how to build a basic WorldWind globe.
  */
-requirejs(['./lib/WorldWind',
-        './lib/LayerManager'],
+requirejs(['/lib/WorldWind',
+        '/lib/LayerManager'],
     function (WorldWind,
               LayerManager) {
         "use strict";
