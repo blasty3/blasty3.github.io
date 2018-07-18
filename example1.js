@@ -19,7 +19,7 @@
  */
 //requirejs(['./worldwind.min',
  //       './LayerManager'],
-    function (WorldWind,
+    function loadWWD(WorldWind,
               LayerManager) {
         "use strict";
 
