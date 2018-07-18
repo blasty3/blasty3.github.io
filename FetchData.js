@@ -21,7 +21,7 @@
 				    "sensorsActive2" : 10080
 				  };
 			 
-				  window.alert("checkBoxPA executed");
+				  
 				  
 				  var encParams = toHtmlQuery_(apiParams);
 				  
@@ -43,7 +43,7 @@
 	    req.send();
 	    req.addEventListener("readystatechange", processReq, false);
 	    
-	    
+	    window.alert("httpreq executed");
 	    
 	    req.onreadystatechange = processRequest;
 	    
