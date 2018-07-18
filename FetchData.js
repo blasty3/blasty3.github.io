@@ -21,8 +21,6 @@
 				    "sensorsActive2" : 10080
 				  };
 			 
-				  
-				  
 				  var encParams = toHtmlQuery_(apiParams);
 				  
 				  makeHttpRequest(url+encParams);
@@ -37,13 +35,13 @@
     }
 
 	function makeHttpRequest(urlToUse) {
+		
+		window.alert("httpreq executed");
 	    
 	    var req = new XMLHttpRequest();
 	    req.open("GET", urlToUse, true);
 	    req.send();
 	    req.addEventListener("readystatechange", processReq, false);
-	    
-	    window.alert("httpreq executed");
 	    
 	    req.onreadystatechange = processRequest;
 	    
