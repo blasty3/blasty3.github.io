@@ -62,7 +62,7 @@ requirejs([],
 	    
 	    function processRequest(e) {
 	     
-	    	if (xhr.readyState == 4 && xhr.status == 200) {
+	    	if (req.readyState == 4 && req.status == 200) {
 	            var resp = JSON.parse(req.responseText);
 	            alert(resp.mapVersion);
 	        }
