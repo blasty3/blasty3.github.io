@@ -36,20 +36,20 @@
 
 	function makeHttpRequest(urlToUse) {
 		
-		window.alert("httpreq executed");
+		//window.alert("httpreq executed");
 	    
 	    var req = new XMLHttpRequest();
 	    req.open("GET", urlToUse, true);
 	    req.send();
 	    req.addEventListener("readystatechange", processReq, false);
 	    
-	    req.onreadystatechange = processRequest;
+	    //req.onreadystatechange = processReq;
 	    
-	    function processRequest(e) {
+	    function processReq(e) {
 	     
 	    	if (req.readyState == 4 && req.status == 200) {
 	            var resp = JSON.parse(req.responseText);
-	            window.alert(resp.mapVersion);
+	            window.alert("resp received "+resp.mapVersion);
 	        }
 	    	
 	    }
