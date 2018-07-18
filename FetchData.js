@@ -2,7 +2,7 @@
 //requirejs([],
     function fetchData() {
     	
-    	window.alert("fetchData executed");
+    	
         
 		var checkBoxPA = document.getElementById("purpleaircheckbox");
 		var checkBoxSC = document.getElementById("smartcitizencheckbox");
@@ -21,7 +21,7 @@
 				    "sensorsActive2" : 10080
 				  };
 			 
-				  
+				  window.alert("checkBoxPA executed");
 				  
 				  var encParams = toHtmlQuery_(apiParams);
 				  
