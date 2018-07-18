@@ -2,8 +2,6 @@
 //requirejs([],
     function fetchData() {
     	
-    	
-        
 		var checkBoxPA = document.getElementById("purpleaircheckbox");
 		var checkBoxSC = document.getElementById("smartcitizencheckbox");
 		//var checkBoxTS = document.getElementById("thingspeakcheckbox");
@@ -41,14 +39,14 @@
 	    var req = new XMLHttpRequest();
 	    req.open("GET", urlToUse, true);
 	    req.send();
-	    req.addEventListener("readystatechange", processReq, false);
+	    //req.addEventListener("readystatechange", processReq, false);
 	    
-	    //req.onreadystatechange = processReq;
+	    req.onreadystatechange = processReq(req);
 	    
-	    function processReq(e) {
+	    function processReq(reqToPass) {
 	     
-	    	if (req.readyState == 4 && req.status == 200) {
-	            var resp = JSON.parse(req.responseText);
+	    	if (reqToPass.readyState == 4 && reqToPass.status == 200) {
+	            var resp = JSON.parse(reqToPass.responseText);
 	            window.alert("resp received "+resp.mapVersion);
 	        }
 	    	
