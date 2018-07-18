@@ -1,5 +1,8 @@
 
 //requirejs([],
+
+var tempJS=[];
+
     function fetchData() {
     	
 		var checkBoxPA = document.getElementById("purpleaircheckbox");
@@ -51,7 +54,13 @@
 	     
 	    	if (this.readyState == 4 && this.status == 200) {
 	            var resp = JSON.parse(this.responseText);
+	            //window.alert("resp received "+resp.mapVersion);
+	            tempJS.concat(resp.results);
 	            window.alert("resp received "+resp.mapVersion);
+	            //for (var i = 0; i < tempJS.length; i++) {
+	                
+	            //}
+	            
 	        }
 	    	
 	 }
