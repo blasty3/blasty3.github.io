@@ -17,11 +17,11 @@
 /**
  * Illustrates how to build a basic WorldWind globe.
  */
-//requirejs(['./worldwind.min',
- //       './LayerManager'],
-    function loadWWD(WorldWind,
+requirejs(['./worldwind.min',
+        './LayerManager'],
+    function (WorldWind,
               LayerManager) {
-        "use strict";
+        //"use strict";
 
         // Tell WorldWind to log only warnings and errors.
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
@@ -79,4 +79,4 @@
         // Create a layer manager for controlling layer visibility.
         var layerManager = new LayerManager(wwd);
     }
-    //);
+   );
