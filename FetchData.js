@@ -39,7 +39,7 @@
 	    var req = new XMLHttpRequest();
 	    req.open("GET", urlToUse, true);
 	    req.send();
-	    req.addEventListener("readystatechange",processReq(req), false);
+	    req.addEventListener("readystatechange",processReq, false);
 	    
 	    //req.onreadystatechange = processReq(req);
 	    
@@ -47,10 +47,10 @@
 	
 	}
 	
-	 function processReq(reqToPass) {
+	 function processReq(e) {
 	     
-	    	if (reqToPass.readyState == 4 && reqToPass.status == 200) {
-	            var resp = JSON.parse(reqToPass.responseText);
+	    	if (this.readyState == 4 && this.status == 200) {
+	            var resp = JSON.parse(this.responseText);
 	            window.alert("resp received "+resp.mapVersion);
 	        }
 	    	
