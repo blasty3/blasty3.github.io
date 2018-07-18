@@ -39,20 +39,22 @@
 	    var req = new XMLHttpRequest();
 	    req.open("GET", urlToUse, true);
 	    req.send();
-	    //req.addEventListener("readystatechange", processReq, false);
+	    req.addEventListener("readystatechange",processReq(req), false);
 	    
-	    req.onreadystatechange = processReq(req);
+	    //req.onreadystatechange = processReq(req);
 	    
-	    function processReq(reqToPass) {
+	   
+	
+	}
+	
+	 function processReq(reqToPass) {
 	     
 	    	if (reqToPass.readyState == 4 && reqToPass.status == 200) {
 	            var resp = JSON.parse(reqToPass.responseText);
 	            window.alert("resp received "+resp.mapVersion);
 	        }
 	    	
-	    }
-	
-	}
+	 }
 	
 	function toHtmlQuery_(obj) {return "?"+Object.keys(obj).reduce(function(a,k){a.push(k+"="+encodeURIComponent(obj[k]));return a},[]).join("&")};
 
