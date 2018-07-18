@@ -2,6 +2,8 @@
 //requirejs([],
 
 var tempJS=[];
+var PAProcStat = false;
+var SCProcStat = false;
 
     function fetchData() {
     	
@@ -29,10 +31,11 @@ var tempJS=[];
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
-			    
-			  } 
-		
-
+			 var url = "https://api.smartcitizen.me/v0/devices";
+			 makeHttpRequest(url);
+			 
+		 } 
+		 
     }
 
 	function makeHttpRequest(urlToUse) {
@@ -46,8 +49,6 @@ var tempJS=[];
 	    
 	    //req.onreadystatechange = processReq(req);
 	    
-	   
-	
 	}
 	
 	 function processReq(e) {
@@ -56,7 +57,7 @@ var tempJS=[];
 	            var resp = JSON.parse(this.responseText);
 	            //window.alert("resp received "+resp.mapVersion);
 	            tempJS.concat(resp.results);
-	            window.alert("resp received "+resp.mapVersion);
+	            //window.alert("resp received "+resp.mapVersion);
 	            //for (var i = 0; i < tempJS.length; i++) {
 	                
 	            //}
