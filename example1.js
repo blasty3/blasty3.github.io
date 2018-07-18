@@ -17,8 +17,8 @@
 /**
  * Illustrates how to build a basic WorldWind globe.
  */
-requirejs(['./worldwind.min',
-        './LayerManager'],
+//requirejs(['./worldwind.min',
+ //       './LayerManager'],
     function (WorldWind,
               LayerManager) {
         "use strict";
@@ -78,4 +78,5 @@ requirejs(['./worldwind.min',
 
         // Create a layer manager for controlling layer visibility.
         var layerManager = new LayerManager(wwd);
-    });
+    }
+    //);
