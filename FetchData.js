@@ -33,7 +33,7 @@ var SCProcStat = false;
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					 console.log("data: " +data);
+					 console.log(data);
 					 return data;
 				 })
 				 
