@@ -35,7 +35,7 @@ var SCProcStat = false;
 					.then((response) => response.json())
 				 .then(function(data){
 					//console.log("data:" +JSON.stringify(data));
-					tempJSString = JSON.stringify(data)
+					Object.assign(tempJSString,JSON.stringify(data));
 				 })
 				 
 				 console.log("dataString:" +tempJSString);		 
