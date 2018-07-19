@@ -26,45 +26,37 @@ var SCProcStat = false;
 			 
 				  var encParams = toHtmlQuery_(apiParams);
 				  
-				  makeHttpRequest(url+encParams);
+				 fetch(url+encParams).then(function(response) {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+				 .then(function(data){
+					 return tempJS.concat(data);
+				 }) 
 			 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
 			 var url = "https://api.smartcitizen.me/v0/devices";
-			 makeHttpRequest(url);
-			 
+			
+			 fetch(url).then(function(response) {
+				if (!response.ok) {
+					throw Error(response.statusText);
+				}
+				return response;})
+				.then((response) => response.json())
+			 .then(function(data){
+				 return tempJS.concat(data);
+			 })  
 		 } 
 		 
     }
 
-	function makeHttpRequest(urlToUse) {
-		
-		//window.alert("httpreq executed");
-	    
-	    var req = new XMLHttpRequest();
-	    req.open("GET", urlToUse, true);
-	    req.send();
-	    req.addEventListener("readystatechange",processReq, false);
-	    
-	    //req.onreadystatechange = processReq(req);
-	    
-	}
 	
-	 function processReq(e) {
-	     
-	    	if (this.readyState == 4 && this.status == 200) {
-	            var resp = JSON.parse(this.responseText);
-	            //window.alert("resp received "+resp.mapVersion);
-	            tempJS.concat(resp.results);
-	            //window.alert("resp received "+resp.mapVersion);
-	            //for (var i = 0; i < tempJS.length; i++) {
-	                
-	            //}
-	            
-	        }
-	    	
-	 }
+	
+	 
 	
 	function toHtmlQuery_(obj) {return "?"+Object.keys(obj).reduce(function(a,k){a.push(k+"="+encodeURIComponent(obj[k]));return a},[]).join("&")};
 
