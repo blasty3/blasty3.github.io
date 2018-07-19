@@ -33,7 +33,7 @@ var SCProcStat = false;
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					 TempJS=JSON.parse(JSON.stringify(oldObject));
+					 TempJS=JSON.parse(JSON.stringify(data));
 					 return data;
 				 })
 				 
