@@ -33,8 +33,8 @@ var SCProcStat = false;
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					 console.log("data: " +data.results);
-					 tempJS = new JSON(data);
+					 console.log("data: " +data);
+					 return data;
 				 })
 				 
 				 console.log("TempJS: " +tempJS);		 
