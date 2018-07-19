@@ -33,11 +33,11 @@ var SCProcStat = false;
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					 console.log(data.results);
-					 return tempJS.concat(data.results);
+					 console.log("data" +data.results);
+					 tempJS = tempJS.concat(data.results);
 				 })
 				 
-				 console.log(tempJS);		 
+				 console.log("TempJS" +tempJS);		 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
