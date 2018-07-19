@@ -36,9 +36,10 @@ var SCProcStat = false;
 				 .then(function(data){
 					//console.log("data:" +JSON.stringify(data));
 					tempJSString = clone(JSON.stringify(data));
+					console.log("dataString:" +tempJSString);	
 				 })
 				 
-				 console.log("dataString:" +tempJSString);		 
+				 	 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
