@@ -34,8 +34,8 @@ var SCProcStat = false;
 					.then((response) => response.json())
 				 .then(function(data){
 					 return tempJS.concat(data);
-				 }) 
-			 
+				 })
+				 window.alert(tempJS.mapVersion);			 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
