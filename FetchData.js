@@ -1,7 +1,7 @@
 
 //requirejs([],
 
-var tempJS={};
+var tempJSString=null;
 var PAProcStat = false;
 var SCProcStat = false;
 
@@ -34,10 +34,11 @@ var SCProcStat = false;
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					console.log("data:" +JSON.stringify(data));
+					//console.log("data:" +JSON.stringify(data));
+					tempJSString = JSON.stringify(data)
 				 })
 				 
-				 console.log(tempJS);		 
+				 console.log("dataString:" +tempJSString);		 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
