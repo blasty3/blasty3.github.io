@@ -1,7 +1,7 @@
 
 //requirejs([],
 
-var tempJSString=null;
+var tempJSString="";
 var PAProcStat = false;
 var SCProcStat = false;
 
