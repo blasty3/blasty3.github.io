@@ -30,11 +30,11 @@ var SCProcStat = false;
 					if (!response.ok) {
 						throw Error(response.statusText);
 					}
+					
 					return response;})
 					.then((response) => response.json())
 				 .then(function(data){
-					 TempJS=JSON.parse(JSON.stringify(data));
-					 return data;
+					console.log("data:" +JSON.stringify(data));
 				 })
 				 
 				 console.log(tempJS);		 
