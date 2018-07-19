@@ -36,7 +36,8 @@ var SCProcStat = false;
 					 
 					 return tempJS.concat(data.results);
 				 })
-				 window.alert(tempJS);			 
+				 window.alert(tempJS);
+				 console.log(tempJS);			 
 			  } 
 		 
 		 if (checkBoxSC.checked == true){
