@@ -233,7 +233,7 @@ var cors_purl = "https://cors.io/?";
 			 
 			 var url = cors_purl+"http://maps.smartsantander.eu/php/getdata.php";
 			
-			 fetch(url).then(function(response) {
+			 var SmSantProm = fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error("error"+response.statusText);
 				}
@@ -246,23 +246,74 @@ var cors_purl = "https://cors.io/?";
 
 			 
 			 
-			 // Some Thingspeak public channels
+			 // List of all Thingspeak public channels, there are 15 pages total, add "?page=2" etc.
+			 // loop
+			 // will disregard the ones with latitude & longitude data of 0.0 exactly (can't be geolocated on the map)
 
-			 // List are here :  https://api.thingspeak.com/channels/public.json
-			
-			
+			 
 			 var url = "https://api.thingspeak.com/channels/public.json";
 			
-			 fetch(url).then(function(response) {
+			 var ThSpProm_pg1 = fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error("error"+response.statusText);
 				}
 				return response;})
 				.then((response) => response.json())
 			 .then(function(data){
-				tempThingSpeak = clone(data);
+				tempThingSpeak = clone(data.channels);
 				console.log(tempThingSpeak);
+				return data;
 			 })
+
+			 var ThSpProm_Arr = [];
+
+			 Promise.all([ThSpProm_pg1]).then(function(values){
+					var total_pages = Math.floor(parseInt(values[0].pagination.total_entries)/parseInt(values[0].pagination.per_page));
+					var remainder = parseInt(values[0].pagination.total_entries)%parseInt(values[0].pagination.per_page);
+					if(remainder>0){
+						total_pages++;
+					}
+
+					if(total_pages>1){
+
+						for(i=2;i<=total_pages;i++){
+
+							ThSpProm_Arr.push(fetch(url+"?page="+i).then(function(response) {
+								if (!response.ok) {
+									throw Error("error"+response.statusText);
+								}
+								return response;})
+								.then((response) => response.json())
+							 .then(function(data){
+								//tempThingSpeak = clone(data);
+								//console.log(tempThingSpeak);
+								return data.channels;
+							 }))
+
+						}
+
+						Promise.all(ThSpProm_Arr).then(function(values){
+										
+							for(j=0;j<values.length;j++){
+								var lat = values[j].latitude;
+								var lon = values[j].longitude;
+
+								if(lat === "0.0" && lon === "0.0"){
+
+								} else {
+									tempThingSpeak = tempThingSpeak.concat(values[j]);
+								}
+
+							}
+
+						});
+
+					}
+			 });
+
+			 // next is loop to the whole pages of ThingSpeak
+
+
 
 
 			 //  Smart Emission Nijmegen Project
@@ -305,10 +356,21 @@ var cors_purl = "https://cors.io/?";
 									
 
 									// ok, now get the locations and datastreams!!!
+										for(i=0;i<SENijmTh.length;i++){
+												var device_id = SENijmTh[i]["description"];
+												var Prom_NijmTh_Loc = FetchLocationsNijmegen(device_id,SENijmTh[i]);
+												var Prom_NijmTh_DtStreams_Obsv = FetchDatastreamsNijmegen(SENijmTh[i],device_id);
+
+												Promise.all([Prom_NijmTh_Loc,Prom_NijmTh_DtStreams_Obsv]).then(function(values){
+										
 
 
+												});
 
-								});
+										}
+
+
+								    });
 
 				 
 			 
@@ -359,8 +421,6 @@ var cors_purl = "https://cors.io/?";
 
 
 	function FetchDatastreamsCanada(Things_Data, Device_ID, cityName){
-
-		
 
 		var PromArr = [];
 
@@ -498,6 +558,157 @@ var cors_purl = "https://cors.io/?";
 						//console.log(values);
 						
 						console.log(cndThLoc);
+	
+					});
+
+				    return prom_loc;
+
+	}
+
+
+
+
+	/// Below for Nijmegen Smart Emission
+
+
+	function FetchDatastreamsNijmegen(Things_Data, Device_ID){
+
+		var PromArr = [];
+
+		//for(i = 0; i < Things_Data_Arr.value.length; i++){
+
+								var datastreams_url = cors_purl+(Things_Data["Datastreams@iot.navigationLink"]);
+								//var Device_ID = Things_Data_Arr.value[i]["@iot.id"];
+								SENijmThDtStreams[Device_ID] = {};
+
+								PromArr.push(fetch(datastreams_url).then(function(response) {
+									if (!response.ok) {
+										throw Error(response.statusText);
+									}
+									return response;})
+									.then((response) => response.json())
+										.then(function(data){
+
+												//var sensor_datastreams_arr = clone(data.value);
+												return data.value;
+												
+										}))
+
+										
+
+		//}
+
+
+		        var Prom_Obsvs = [];
+
+				var Prom_DtStreams = Promise.all(PromArr).then(function(values){
+					
+					//console.log("values array size a " +values.length);
+
+					for(j = 0 ; j < values.length ; j++){
+
+						//console.log("value array size b " +values[j].length);
+
+						for(l = 0 ; l < values[j].length ; l++){
+
+							var sensor_id = values[j][l]["@iot.id"];
+							var sensor_name = values[j][l].name;
+							var sensor_description = values[j][l].description;
+							var sensor_unit_measurement = values[j][l].unitOfMeasurement;
+							var sensor_obsv_url = cors_purl(values[j][l]["Observations@iot.navigationLink"]);
+
+							SENijmThDtStreams[Device_ID][sensor_id] = {};
+
+							SENijmThDtStreams[Device_ID][sensor_id].name=sensor_name;
+							SENijmThDtStreams[Device_ID][sensor_id].description=sensor_description;
+							SENijmThDtStreams[Device_ID][sensor_id].unitOfMeasurement=sensor_unit_measurement;
+
+							Prom_Obsvs.push(FetchObservationsNijmegen(Device_ID,sensor_id,sensor_obsv_url));
+
+						}
+						//var Device_ID = Things_Data_Arr.value[j]["@iot.id"];
+						
+
+
+					}
+
+				});
+
+				var prom_obsv = Promise.all(Prom_Obsvs).then(function(values){
+
+
+				});
+
+		
+				return prom_obsv;
+						
+	}
+
+
+	function FetchObservationsNijmegen(device_id, sensor_id, obsv_url){
+
+		
+
+		var PromArr = [];
+		
+				// get "observations" (sensor measurements) of individual sensors of each things in each city
+		
+				PromArr.push(fetch(cors_purl+obsv_url+"?$top=2000").then(function(response) {  // get historical data
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+						.then(function(data){
+						
+							return data.value;
+						}))
+
+
+				var prom_obsv = Promise.all(PromArr).then(function(values){
+
+					SENijmThDtStreams[device_id][sensor_id].sensor_measurements = values[0].value;
+
+				});
+
+				return prom_obsv;
+
+	}
+
+
+	function FetchLocationsNijmegen(device_id, Things_Data){
+
+		var PromArr = [];
+
+		
+			var loc_url = cors_purl+(Things_Data["Locations@iot.navigationLink"]);
+		
+
+			// Template
+			//var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
+			//	if (!response.ok) {
+			//		throw Error(response.statusText);
+			//	}
+			//	return response.json()
+			//   });
+
+			var prom_loc_el = fetch(loc_url).then(function(response) {
+				if (!response.ok) {
+					throw Error(response.statusText);
+				}
+				return response.json()});
+
+				PromArr.push(prom_loc_el);
+
+		
+					var prom_loc = Promise.all(PromArr).then(function(values){
+
+						for(i=0;i<values.length;i++){
+							SENijmThLoc[device_id] = clone(values[i].value[0].location.coordinates);
+						}
+						//console.log(values);
+						
+						console.log(SENijmThLoc);
 	
 					});
 
