@@ -615,7 +615,7 @@ var cors_purl = "https://cors.io/?";
 							var sensor_name = values[j][l].name;
 							var sensor_description = values[j][l].description;
 							var sensor_unit_measurement = values[j][l].unitOfMeasurement;
-							var sensor_obsv_url = cors_purl(values[j][l]["Observations@iot.navigationLink"]);
+							var sensor_obsv_url = cors_purl+(values[j][l]["Observations@iot.navigationLink"]);
 
 							SENijmThDtStreams[Device_ID][sensor_id] = {};
 
