@@ -1,21 +1,34 @@
 
 //requirejs([],
 
+var tempAllIoTDataArrProm = []; 
+
 var tempPA={};
 var tempSC={};
 var tempOSM={};
 var tempSSant={};
+var tempThingSpeak={};
 var tempDweet={};
+
+var cndProms = [];
 
 
 var cndTh = {};
 var cndThLoc = {};
 var cndThDtStreams = {};
+
+var SENijmTh = [];   //this one is ARRAY!
+
+var SENijmThLoc = {};
+var SENijmThDtStreams = {};
+var cors_purl = "https://cors.io/?";
 //var cndTh = new Map();
 //var cndThLoc = new Map();
 
     function fetchData() {
-    	
+		
+		
+
 		//var checkBoxPA = document.getElementById("purpleaircheckbox");
 		//var checkBoxSC = document.getElementById("smartcitizencheckbox");
 		//var checkBoxTS = document.getElementById("thingspeakcheckbox");
@@ -54,22 +67,23 @@ var cndThDtStreams = {};
 
 			 var url = "https://api.smartcitizen.me/v0/devices/world_map";
 			
-			 fetch(url).then(function(response) {
+			 var SCProm = fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
 				return response;})
 				.then((response) => response.json())
 			 .then(function(data){
-				tempSC = clone(data);
-				console.log(tempSC);
+				//tempSC = clone(data);
+				console.log(data);
+				return data;
 			 }) 
 			 
 			 // OpenSenseMap
 
 			 var url = "https://api.opensensemap.org/boxes";
 			
-			 fetch(url).then(function(response) {
+			 var OSMProm =  fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
@@ -89,73 +103,120 @@ var cndThDtStreams = {};
 
 			 var urlhttp = "https://";
 			 var nexturl = "-aq-sta.sensorup.com/v1.0/Things";
-			
+			 
+			 var Prom_cty_cnd_th = [];
+			 
+
+			 //FIXME DeviceID in location not the same with the one in THINGS!!
+
 			 for(i = 0; i < cndCityParams.length; i++){
 
-				fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
+
+				// example
+					//var apiRequest1 = fetch('api.example1.com/search').then(function(response){ 
+					//	return response.json()
+			   //});
+
+			   var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
+				if (!response.ok) {
+					throw Error(response.statusText);
+				}
+				return response.json()
+			   });
+
+					/*		
+				var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
 					if (!response.ok) {
 						throw Error(response.statusText);
 					}
 					return response;})
 					.then((response) => response.json())
 				 		.then(function(data){
-
-						var cityname = data.value[0].properties.city;
-						//cndTh.set(data.value[0].properties.city,data);
-						cndTh[cityname] = clone(data);
-						console.log(cndTh);
-
-					    //prepare for datastreams
-						cndThDtStreams[cityname] = {};
-
-						// get locations of the things in each city
-
-						cndThLoc[cityname] = {};
-						var datCpy = clone(data);
-						
-
-						for(i = 0; i < datCpy.value.length; i++){
-
-							var url = datCpy.value[i]["Locations@iot.navigationLink"];
-
-								fetch(url).then(function(response) {
-									if (!response.ok) {
-										throw Error(response.statusText);
-									}
-									return response;})
-									.then((response) => response.json())
-										.then(function(data){
-											var iot_id = data.value[0]["@iot.id"];
-
-											cndThLoc[cityname][iot_id] = clone(data.value[0].location.coordinates);
-											console.log(cndThLoc);
-	
-										})
-								}
-
-						// get datastreams of individual sensors of each things in each city
-
-						for(i = 0; i < datCpy.value.length; i++){
-
-							FetchDatastreamsCanada(datCpy.value[i],cityname);
-
-							
-							
-						}
-
-
-						
-
+							 return data.value;
 				 })
+				 */
+
+				 Prom_cty_cnd_th.push(Prom_cty_cnd_th_el);
+
 			 }
 
+			   Promise.all(Prom_cty_cnd_th).then(function(values){
+				
+				
 			
+
+				for(k=0;k<values.length;k++){
+
+					
+					var cityname = values[k].value[0].properties.city;
+						
+					cndTh[cityname] = clone(values[k]);
+					console.log(cndTh);
+	   
+					//prepare for datastreams
+					cndThDtStreams[cityname] = {};
+	   
+					// get locations of the things in each city
+	   
+					cndThLoc[cityname] = {};
+					var datCpy = clone(values[k]);
+					
+	   
+					for(i = 0; i < datCpy.value.length; i++){
+	   
+
+						
+						//var url = datCpy.value[i]["Locations@iot.navigationLink"];
+						
+						/*
+						fetch(url).then(function(response) {
+								if (!response.ok) {
+									throw Error(response.statusText);
+								}
+								return response;})
+								.then((response) => response.json())
+									.then(function(data){
+										var Device_ID = data.value[0]["@iot.id"];
+	   
+										cndThLoc[cityname][Device_ID] = clone(data.value[0].location.coordinates);
+										console.log(cndThLoc);
+	   
+									})
+									*/
+									var device_id = datCpy.value[i]["@iot.id"];
+									var Prom_Th_Loc = FetchLocationsCanada(cityname,device_id, datCpy.value[i]);
+									var Prom_Dt_Obsv = FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
+
+									Promise.all([Prom_Th_Loc,Prom_Dt_Obsv]).then(function(values){
+										
+
+
+									});
+
+
+				     }
+							
+	   
+					// get datastreams of individual sensors of each things in each city
+	   
+					
+
+				}
+
+					
+
+
+
+
+			});
+
+			 
 
 			 //Dweet (public ones), simply get the ones with GPS locations for pinpointing, the rest will be ignored
 
 			 var url = "https://dweet.io/get/stats"; //get the most recent tweets from devices
 			
-			 fetch(url).then(function(response) {
+			 var DweetProm = fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
@@ -168,7 +229,9 @@ var cndThDtStreams = {};
 
 			  //Smart Santander
 			 
-			 var url = "https://cors.io/?http://maps.smartsantander.eu/php/getdata.php";
+
+			 
+			 var url = cors_purl+"http://maps.smartsantander.eu/php/getdata.php";
 			
 			 fetch(url).then(function(response) {
 				if (!response.ok) {
@@ -180,16 +243,75 @@ var cndThDtStreams = {};
 				tempSSant = clone(data);
 				console.log(tempSSant);
 			 })
+
+			 
 			 
 			 // Some Thingspeak public channels
 
 			 // List are here :  https://api.thingspeak.com/channels/public.json
 			
 			
+			 var url = "https://api.thingspeak.com/channels/public.json";
+			
+			 fetch(url).then(function(response) {
+				if (!response.ok) {
+					throw Error("error"+response.statusText);
+				}
+				return response;})
+				.then((response) => response.json())
+			 .then(function(data){
+				tempThingSpeak = clone(data);
+				console.log(tempThingSpeak);
+			 })
+
+
 			 //  Smart Emission Nijmegen Project
 
+			 // need two queries of the Things.
 
-		  
+
+			 var urlhttp1 = "http://data.smartemission.nl/gost/v1.0/Things";
+
+			 var urlhttp2 = "http://data.smartemission.nl/gost/v1.0/Things?$top=100&$skip=100";
+
+			
+		    var NijmTh1 = fetch(cors_purl+urlhttp1).then(function(response) {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+				 		.then(function(data){
+
+							return data.value;
+						
+
+				 })
+
+				 var NijmTh2 = fetch(cors_purl+urlhttp2).then(function(response) {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+				 		.then(function(data){
+
+							return data.value;
+						
+				 })
+
+				 					var NijmThProm = Promise.all([NijmTh1,NijmTh2]).then(function(values){
+									SENijmTh = values[0].concat(values[1]);
+									
+
+									// ok, now get the locations and datastreams!!!
+
+
+
+								});
+
+				 
+			 
 		 
     }
 
@@ -234,13 +356,21 @@ var cndThDtStreams = {};
 		throw new Error("Unable to copy obj! Its type isn't supported.");
 	}
 
-	function FetchDatastreamsCanada(datCpy_val_i, cityName){
 
-		var datastreams_url = datCpy_val_i["Datastreams@iot.navigationLink"];
-		var iot_id = datCpy_val_i["@iot.id"];
-		cndThDtStreams[cityName][iot_id] = {};
 
-								fetch(datastreams_url).then(function(response) {
+	function FetchDatastreamsCanada(Things_Data, Device_ID, cityName){
+
+		
+
+		var PromArr = [];
+
+		//for(i = 0; i < Things_Data_Arr.value.length; i++){
+
+								var datastreams_url = Things_Data["Datastreams@iot.navigationLink"];
+								//var Device_ID = Things_Data_Arr.value[i]["@iot.id"];
+								cndThDtStreams[cityName][Device_ID] = {};
+
+								PromArr.push(fetch(datastreams_url).then(function(response) {
 									if (!response.ok) {
 										throw Error(response.statusText);
 									}
@@ -248,47 +378,182 @@ var cndThDtStreams = {};
 									.then((response) => response.json())
 										.then(function(data){
 
-												var sensor_datastreams_arr = clone(data.value);
+												//var sensor_datastreams_arr = clone(data.value);
+												return data.value;
 												
-												for(j = 0 ; j < sensor_datastreams_arr.length ; j++){
+										}))
 
-													FetchObservationsCanada(cityName,iot_id, sensor_datastreams_arr[j]);
-													
-												}
+										
 
-										})
+		//}
 
 
-	}
+		        var Prom_Obsvs = [];
 
-	function FetchObservationsCanada(cityName, iot_ID, sensor_datastreams){
-
-		var sensor_id = sensor_datastreams["@iot.id"];
-		var sensor_type = sensor_datastreams.description;
-		var sensor_unitMeasurement = clone(sensor_datastreams.unitOfMeasurement);
-
-		cndThDtStreams[cityName][iot_ID][sensor_id] = {};
-
-		// get "observations" (sensor measurements) of individual sensors of each things in each city
-
-		var obs_url = (sensor_datastreams["Observations@iot.navigationLink"]); // get historical data
-
-		fetch(obs_url+"?$top=2000").then(function(response) {
-			if (!response.ok) {
-				throw Error(response.statusText);
-			}
-			return response;})
-			.then((response) => response.json())
-				.then(function(data){
+				var Prom_DtStreams = Promise.all(PromArr).then(function(values){
 					
-					cndThDtStreams[cityName][iot_ID][sensor_id].measurements = data.value; // the latest measurement will be on the the first element of the array
-					cndThDtStreams[cityName][iot_ID][sensor_id].sensortype = sensor_type;
-					cndThDtStreams[cityName][iot_ID][sensor_id].sensor_unitMeasurement = sensor_unitMeasurement;
-					console.log(cndThDtStreams);
-				})
+					//console.log("values array size a " +values.length);
+
+					for(j = 0 ; j < values.length ; j++){
+
+						//console.log("value array size b " +values[j].length);
+
+						for(l = 0 ; l < values[j].length ; l++){
+
+							var sensor_id = values[j][l]["@iot.id"];
+							var sensor_name = values[j][l].name;
+							var sensor_description = values[j][l].description;
+							var sensor_unit_measurement = values[j][l].unitOfMeasurement;
+							var sensor_obsv_url = values[j][l]["Observations@iot.navigationLink"];
+
+							cndThDtStreams[cityName][Device_ID][sensor_id] = {};
+
+							cndThDtStreams[cityName][Device_ID][sensor_id].name=sensor_name;
+							cndThDtStreams[cityName][Device_ID][sensor_id].description=sensor_description;
+							cndThDtStreams[cityName][Device_ID][sensor_id].unitOfMeasurement=sensor_unit_measurement;
+
+							Prom_Obsvs.push(FetchObservationsCanada(cityName,Device_ID,sensor_id,sensor_obsv_url));
+
+						}
+						//var Device_ID = Things_Data_Arr.value[j]["@iot.id"];
+						
+
+
+					}
+
+				});
+
+				var prom_obsv = Promise.all(Prom_Obsvs).then(function(values){
+
+
+				});
+
+		
+				return prom_obsv;
+						
+	}
+
+
+	function FetchObservationsCanada(cityName, device_id, sensor_id, obsv_url){
+
+		
+
+		var PromArr = [];
+		
+				// get "observations" (sensor measurements) of individual sensors of each things in each city
+		
+				PromArr.push(fetch(obsv_url+"?$top=2000").then(function(response) {  // get historical data
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+						.then(function(data){
+						
+							return data.value;
+						}))
+
+
+				var prom_obsv = Promise.all(PromArr).then(function(values){
+
+					cndThDtStreams[cityName][device_id][sensor_id].sensor_measurements = values[0].value;
+
+				});
+
+				return prom_obsv;
 
 	}
 
+
+	function FetchLocationsCanada(cityName, device_id, Things_Data){
+
+		var PromArr = [];
+
+		
+			var loc_url = Things_Data["Locations@iot.navigationLink"];
+		
+
+			// Template
+			//var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
+			//	if (!response.ok) {
+			//		throw Error(response.statusText);
+			//	}
+			//	return response.json()
+			//   });
+
+			var prom_loc_el = fetch(loc_url).then(function(response) {
+				if (!response.ok) {
+					throw Error(response.statusText);
+				}
+				return response.json()});
+
+				PromArr.push(prom_loc_el);
+
+		
+					var prom_loc = Promise.all(PromArr).then(function(values){
+
+						for(i=0;i<values.length;i++){
+							cndThLoc[cityName][device_id] = clone(values[i].value[0].location.coordinates);
+						}
+						//console.log(values);
+						
+						console.log(cndThLoc);
+	
+					});
+
+				    return prom_loc;
+
+	}
+
+	/*
+	function FetchObservationsCanada(cityName, Device_ID, sensor_datastreams_arr){
+
+		var PromArr = [];
+		
+
+		  for(j = 0 ; j < sensor_datastreams_arr.length ; j++){
+
+				// get "observations" (sensor measurements) of individual sensors of each things in each city
+		
+				var obs_url = sensor_datastreams_arr[j]["Observations@iot.navigationLink"]; // get historical data
+		
+				PromArr.push(fetch(obs_url+"?$top=2000").then(function(response) {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response;})
+					.then((response) => response.json())
+						.then(function(data){
+						
+							return data.value;
+						}))
+						
+
+		  }
+
+					var Prom_Obsvs = Promise.all(PromArr).then(function(values){
+						
+						for(j = 0 ; j < values.length ; j++){
+
+							var sensor_id = sensor_datastreams["@iot.id"];
+							var sensor_type = sensor_datastreams.description;
+							var sensor_unitMeasurement = clone(sensor_datastreams.unitOfMeasurement);
+
+							cndThDtStreams[cityName][Device_ID][sensor_id] = {};
+
+							cndThDtStreams[cityName][Device_ID][sensor_id].measurements = values[j]; // the latest measurement will be on the the first element of the array
+							cndThDtStreams[cityName][Device_ID][sensor_id].sensortype = sensor_type;
+							cndThDtStreams[cityName][Device_ID][sensor_id].sensor_unitMeasurement = sensor_unitMeasurement;
+							console.log(cndThDtStreams);
+
+						}
+
+					});
+
+				return Prom_Obsvs;
+
+	}
+	*/
 	
 
 	//);
