@@ -186,7 +186,7 @@ var cors_purl = "https://cors.io/?";
 									var device_id = datCpy.value[i]["@iot.id"];
 									var Prom_Th_Loc = FetchLocationsCanada(cityname,device_id, datCpy.value[i]);
 
-									
+
 									// Canada Datastreams disabled. When user click certain thing, then that query is made for that particular thing only.
 									//var Prom_Dt_Obsv = FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
 
@@ -362,9 +362,12 @@ var cors_purl = "https://cors.io/?";
 										for(i=0;i<SENijmTh.length;i++){
 												var device_id = SENijmTh[i]["description"];
 												var Prom_NijmTh_Loc = FetchLocationsNijmegen(device_id,SENijmTh[i]);
-												var Prom_NijmTh_DtStreams_Obsv = FetchDatastreamsNijmegen(SENijmTh[i],device_id);
 
-												Promise.all([Prom_NijmTh_Loc,Prom_NijmTh_DtStreams_Obsv]).then(function(values){
+												//Disable data streams for now
+												//var Prom_NijmTh_DtStreams_Obsv = FetchDatastreamsNijmegen(SENijmTh[i],device_id);
+
+												//Promise.all([Prom_NijmTh_Loc,Prom_NijmTh_DtStreams_Obsv]).then(function(values){
+												Promise.all([Prom_NijmTh_Loc]).then(function(values){
 										
 
 
