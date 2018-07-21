@@ -385,6 +385,7 @@ var all_Query_Proms = [];
 									Promise.all(all_Query_Proms).then(function(values){
 										
 										window.alert("Search is complete!");
+										all_Query_Proms = [];
 
 									});
 				 
