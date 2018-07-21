@@ -185,10 +185,13 @@ var cors_purl = "https://cors.io/?";
 									*/
 									var device_id = datCpy.value[i]["@iot.id"];
 									var Prom_Th_Loc = FetchLocationsCanada(cityname,device_id, datCpy.value[i]);
-									var Prom_Dt_Obsv = FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
 
-									Promise.all([Prom_Th_Loc,Prom_Dt_Obsv]).then(function(values){
-										
+									
+									// Canada Datastreams disabled. When user click certain thing, then that query is made for that particular thing only.
+									//var Prom_Dt_Obsv = FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
+
+									//Promise.all([Prom_Th_Loc,Prom_Dt_Obsv]).then(function(values){
+									Promise.all([Prom_Th_Loc]).then(function(values){	
 
 
 									});
@@ -472,6 +475,7 @@ var cors_purl = "https://cors.io/?";
 							cndThDtStreams[cityName][Device_ID][sensor_id].description=sensor_description;
 							cndThDtStreams[cityName][Device_ID][sensor_id].unitOfMeasurement=sensor_unit_measurement;
 
+							
 							Prom_Obsvs.push(FetchObservationsCanada(cityName,Device_ID,sensor_id,sensor_obsv_url));
 
 						}
@@ -653,7 +657,7 @@ var cors_purl = "https://cors.io/?";
 		
 				// get "observations" (sensor measurements) of individual sensors of each things in each city
 		
-				PromArr.push(fetch(cors_purl+obsv_url+"?$top=2000").then(function(response) {  // get historical data
+				PromArr.push(fetch(obsv_url+"?$top=2000").then(function(response) {  // get historical data
 					if (!response.ok) {
 						throw Error(response.statusText);
 					}
