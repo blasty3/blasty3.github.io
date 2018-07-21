@@ -280,7 +280,7 @@ var cors_purl = "https://cors.io/?";
 					if(total_pages>1){
 
 						// maximum should be total_pages, but need to limit for now
-						for(i=2;i<=20;i++){
+						for(i=2;i<=total_pages;i++){
 
 							ThSpProm_Arr.push(fetch(url+"?page="+i).then(function(response) {
 								if (!response.ok) {
