@@ -22,8 +22,9 @@ var SENijmTh = [];   //this one is ARRAY!
 var SENijmThLoc = {};
 var SENijmThDtStreams = {};
 var cors_purl = "https://cors.io/?";
-//var cndTh = new Map();
-//var cndThLoc = new Map();
+
+
+var all_Query_Proms = [];
 
     function fetchData() {
 		
@@ -67,7 +68,7 @@ var cors_purl = "https://cors.io/?";
 
 			 var url = "https://api.smartcitizen.me/v0/devices/world_map";
 			
-			 var SCProm = fetch(url).then(function(response) {
+			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
@@ -77,13 +78,13 @@ var cors_purl = "https://cors.io/?";
 				//tempSC = clone(data);
 				console.log(data);
 				return data;
-			 }) 
+			 })) 
 			 
 			 // OpenSenseMap
 
 			 var url = "https://api.opensensemap.org/boxes";
 			
-			 var OSMProm =  fetch(url).then(function(response) {
+			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
@@ -92,7 +93,7 @@ var cors_purl = "https://cors.io/?";
 			 .then(function(data){
 				tempOSM = clone(data);
 				console.log(tempOSM);
-			 })
+			 }))
 
 			 //Canada smart cities
 			 //canadian cities to query
@@ -140,7 +141,7 @@ var cors_purl = "https://cors.io/?";
 
 			 }
 
-			   Promise.all(Prom_cty_cnd_th).then(function(values){
+			   all_Query_Proms.push(Promise.all(Prom_cty_cnd_th).then(function(values){
 				
 				
 			
@@ -211,7 +212,7 @@ var cors_purl = "https://cors.io/?";
 
 
 
-			});
+			}))
 
 			 
 
@@ -219,7 +220,7 @@ var cors_purl = "https://cors.io/?";
 
 			 var url = "https://dweet.io/get/stats"; //get the most recent tweets from devices
 			
-			 var DweetProm = fetch(url).then(function(response) {
+			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error(response.statusText);
 				}
@@ -228,7 +229,7 @@ var cors_purl = "https://cors.io/?";
 			 .then(function(data){
 				tempDweet = clone(data);
 				console.log(tempDweet);
-			 })
+			 }))
 
 			  //Smart Santander
 			 
@@ -236,7 +237,7 @@ var cors_purl = "https://cors.io/?";
 			 
 			 var url = cors_purl+"http://maps.smartsantander.eu/php/getdata.php";
 			
-			 var SmSantProm = fetch(url).then(function(response) {
+			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
 					throw Error("error"+response.statusText);
 				}
@@ -245,7 +246,7 @@ var cors_purl = "https://cors.io/?";
 			 .then(function(data){
 				tempSSant = clone(data);
 				console.log(tempSSant);
-			 })
+			 }))
 
 			 
 			 
@@ -267,6 +268,7 @@ var cors_purl = "https://cors.io/?";
 				console.log(tempThingSpeak);
 				return data;
 			 })
+			 all_Query_Proms.push(ThSpProm_pg1);
 
 			 var ThSpProm_Arr = [];
 
@@ -296,7 +298,7 @@ var cors_purl = "https://cors.io/?";
 
 						}
 
-						Promise.all(ThSpProm_Arr).then(function(values){
+						all_Query_Proms.push(Promise.all(ThSpProm_Arr).then(function(values){
 										
 							for(j=0;j<values.length;j++){
 								var lat = values[j].latitude;
@@ -310,7 +312,7 @@ var cors_purl = "https://cors.io/?";
 
 							}
 
-						});
+						}));
 
 					}
 			 });
@@ -355,7 +357,7 @@ var cors_purl = "https://cors.io/?";
 						
 				 })
 
-				 					var NijmThProm = Promise.all([NijmTh1,NijmTh2]).then(function(values){
+								 all_Query_Proms.push(Promise.all([NijmTh1,NijmTh2]).then(function(values){
 									SENijmTh = values[0].concat(values[1]);
 									
 
@@ -363,7 +365,7 @@ var cors_purl = "https://cors.io/?";
 										for(i=0;i<SENijmTh.length;i++){
 												var device_id = SENijmTh[i]["description"];
 												var Prom_NijmTh_Loc = FetchLocationsNijmegen(device_id,SENijmTh[i]);
-
+												all_Query_Proms.push(Prom_NijmTh_Loc);
 												//Disable data streams for now
 												//var Prom_NijmTh_DtStreams_Obsv = FetchDatastreamsNijmegen(SENijmTh[i],device_id);
 
@@ -377,8 +379,14 @@ var cors_purl = "https://cors.io/?";
 										}
 
 
-								    });
+								    }));
 
+
+									Promise.all(all_Query_Proms).then(function(values){
+										
+										window.alert("Search is complete!");
+
+									});
 				 
 			 
 		 
