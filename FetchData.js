@@ -1,8 +1,6 @@
 
 //requirejs([],
 
-var tempAllIoTDataArrProm = []; 
-
 var tempPA={};
 var tempSC={};
 var tempOSM={};
@@ -10,17 +8,17 @@ var tempSSant={};
 var tempThingSpeak={};
 var tempDweet={};
 
-var cndProms = [];
-
 
 var cndTh = {};
 var cndThLoc = {};
 var cndThDtStreams = {};
 
-var SENijmTh = [];   //this one is ARRAY!
+var SENeth = {};
 
+var SENijmTh = [];   
 var SENijmThLoc = {};
 var SENijmThDtStreams = {};
+
 var cors_purl = "https://cors.io/?";
 
 
@@ -28,11 +26,8 @@ var all_Query_Proms = [];
 
     function fetchData() {
 		
+		//need to re clear all global variables for the new search!
 		
-
-		//var checkBoxPA = document.getElementById("purpleaircheckbox");
-		//var checkBoxSC = document.getElementById("smartcitizencheckbox");
-		//var checkBoxTS = document.getElementById("thingspeakcheckbox");
 		
 				// Purple Air . SHould be careful with this since the data is owned by them, there should be a clear license for user
 			 /*
@@ -51,6 +46,7 @@ var all_Query_Proms = [];
 				  
 				 fetch(url+encParams).then(function(response) {
 					if (!response.ok) {
+						EnableSearchButton();
 						throw Error(response.statusText);
 					}
 					
@@ -63,6 +59,9 @@ var all_Query_Proms = [];
 				 })
 				
 				 */
+			
+		    //DisableSearchButton();
+		    clearRegistry();
 
 				 // smartcitizen
 
@@ -70,12 +69,13 @@ var all_Query_Proms = [];
 			
 			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error(response.statusText);
 				}
 				return response;})
 				.then((response) => response.json())
 			 .then(function(data){
-				//tempSC = clone(data);
+				tempSC = clone(data);
 				console.log(data);
 				return data;
 			 })) 
@@ -86,6 +86,7 @@ var all_Query_Proms = [];
 			
 			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error(response.statusText);
 				}
 				return response;})
@@ -120,6 +121,7 @@ var all_Query_Proms = [];
 
 			   var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error(response.statusText);
 				}
 				return response.json()
@@ -128,6 +130,7 @@ var all_Query_Proms = [];
 					/*		
 				var Prom_cty_cnd_th_el = fetch(urlhttp+cndCityParams[i]+nexturl).then(function(response) {
 					if (!response.ok) {
+						EnableSearchButton();
 						throw Error(response.statusText);
 					}
 					return response;})
@@ -172,6 +175,7 @@ var all_Query_Proms = [];
 						/*
 						fetch(url).then(function(response) {
 								if (!response.ok) {
+									EnableSearchButton();
 									throw Error(response.statusText);
 								}
 								return response;})
@@ -222,6 +226,7 @@ var all_Query_Proms = [];
 			
 			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error(response.statusText);
 				}
 				return response;})
@@ -239,6 +244,7 @@ var all_Query_Proms = [];
 			
 			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error("error"+response.statusText);
 				}
 				return response;})
@@ -259,6 +265,7 @@ var all_Query_Proms = [];
 			
 			 var ThSpProm_pg1 = fetch(url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error("error"+response.statusText);
 				}
 				return response;})
@@ -282,10 +289,11 @@ var all_Query_Proms = [];
 					if(total_pages>1){
 
 						// maximum should be total_pages, but need to limit for now
-						for(i=2;i<=total_pages;i++){
+						for(i=2;i<=20;i++){
 
 							ThSpProm_Arr.push(fetch(url+"?page="+i).then(function(response) {
 								if (!response.ok) {
+									EnableSearchButton();
 									throw Error("error"+response.statusText);
 								}
 								return response;})
@@ -317,14 +325,44 @@ var all_Query_Proms = [];
 					}
 			 });
 
-			 // next is loop to the whole pages of ThingSpeak
+			 
+
+			 // Netherlands Smart Emission Project. 
+			 // URL of all stations : http://data.smartemission.nl/sosemu/api/v1/stations
+			 // Timeseries example : http://data.smartemission.nl/sosemu/api/v1/timeseries?format=json&station=stationlabel
 
 
+			 var urlhttp = "http://data.smartemission.nl/sosemu/api/v1/stations";
+
+			 var NijmTh1_Prom = fetch(cors_purl+urlhttp).then(function(response) {
+				if (!response.ok) {
+					EnableSearchButton();
+					throw Error(response.statusText);
+				}
+				return response;})
+				.then((response) => response.json())
+					 .then(function(data){
+
+						return data;
+					
+
+			 })
+
+			 all_Query_Proms.push(NijmTh1_Prom);
+
+			 Promise.all([NijmTh1_Prom]).then(function(values){
+										
+				SENeth = clone(values[0]);
+
+			});
+
+			 
+			 /*
 
 
 			 //  Smart Emission Nijmegen Project
 
-			 // need two queries of the Things.
+			 // need two queries of the Things. Heavier and only shows Nijmegen, will use Netherlands one with SOS EMU instead!
 
 
 			 var urlhttp1 = "http://data.smartemission.nl/gost/v1.0/Things";
@@ -334,6 +372,7 @@ var all_Query_Proms = [];
 			
 		    var NijmTh1 = fetch(cors_purl+urlhttp1).then(function(response) {
 					if (!response.ok) {
+						EnableSearchButton();
 						throw Error(response.statusText);
 					}
 					return response;})
@@ -347,6 +386,7 @@ var all_Query_Proms = [];
 
 				 var NijmTh2 = fetch(cors_purl+urlhttp2).then(function(response) {
 					if (!response.ok) {
+						EnableSearchButton();
 						throw Error(response.statusText);
 					}
 					return response;})
@@ -379,13 +419,16 @@ var all_Query_Proms = [];
 										}
 
 
-								    }));
+									}));
+									
+									*/
 
 
 									Promise.all(all_Query_Proms).then(function(values){
 										
 										window.alert("Search is complete!");
-										all_Query_Proms = [];
+										EnableSearchButton();
+										
 
 									});
 				 
@@ -448,6 +491,7 @@ var all_Query_Proms = [];
 
 								PromArr.push(fetch(datastreams_url).then(function(response) {
 									if (!response.ok) {
+										EnableSearchButton();
 										throw Error(response.statusText);
 									}
 									return response;})
@@ -672,6 +716,7 @@ var all_Query_Proms = [];
 		
 				PromArr.push(fetch(obsv_url+"?$top=2000").then(function(response) {  // get historical data
 					if (!response.ok) {
+						EnableSearchButton();
 						throw Error(response.statusText);
 					}
 					return response;})
@@ -711,6 +756,7 @@ var all_Query_Proms = [];
 
 			var prom_loc_el = fetch(loc_url).then(function(response) {
 				if (!response.ok) {
+					EnableSearchButton();
 					throw Error(response.statusText);
 				}
 				return response.json()});
@@ -733,55 +779,43 @@ var all_Query_Proms = [];
 
 	}
 
-	/*
-	function FetchObservationsCanada(cityName, Device_ID, sensor_datastreams_arr){
+ function clearRegistry() {
 
-		var PromArr = [];
-		
+	all_Query_Proms = [];
 
-		  for(j = 0 ; j < sensor_datastreams_arr.length ; j++){
+	tempPA={};
+	tempSC={};
+	tempOSM={};
+	tempSSant={};
+	tempThingSpeak={};
+	tempDweet={};
 
-				// get "observations" (sensor measurements) of individual sensors of each things in each city
-		
-				var obs_url = sensor_datastreams_arr[j]["Observations@iot.navigationLink"]; // get historical data
-		
-				PromArr.push(fetch(obs_url+"?$top=2000").then(function(response) {
-					if (!response.ok) {
-						throw Error(response.statusText);
-					}
-					return response;})
-					.then((response) => response.json())
-						.then(function(data){
-						
-							return data.value;
-						}))
-						
 
-		  }
+	cndTh = {};
+	cndThLoc = {};
+	cndThDtStreams = {};
 
-					var Prom_Obsvs = Promise.all(PromArr).then(function(values){
-						
-						for(j = 0 ; j < values.length ; j++){
+	SENeth = {};
 
-							var sensor_id = sensor_datastreams["@iot.id"];
-							var sensor_type = sensor_datastreams.description;
-							var sensor_unitMeasurement = clone(sensor_datastreams.unitOfMeasurement);
+	SENijmTh = [];   
+	SENijmThLoc = {};
+	SENijmThDtStreams = {};
 
-							cndThDtStreams[cityName][Device_ID][sensor_id] = {};
+ }
 
-							cndThDtStreams[cityName][Device_ID][sensor_id].measurements = values[j]; // the latest measurement will be on the the first element of the array
-							cndThDtStreams[cityName][Device_ID][sensor_id].sensortype = sensor_type;
-							cndThDtStreams[cityName][Device_ID][sensor_id].sensor_unitMeasurement = sensor_unitMeasurement;
-							console.log(cndThDtStreams);
+ function DisableSearchButton(){
+	document.getElementById("SearchButton").style.color = "gray";
+	document.getElementById("SearchButton").disabled = true;
+ }
 
-						}
+ function EnableSearchButton(){
+	document.getElementById("SearchButton").disabled = false;
+	document.getElementById("SearchButton").style.color = "black";
+	document.getElementById("SearchButton").value= "Search!";
+ }
 
-					});
-
-				return Prom_Obsvs;
-
-	}
-	*/
-	
-
-	//);
+ function StartSearch(){
+	document.getElementById("SearchButton").value= "Searching";
+	DisableSearchButton();
+	fetchData();
+ }
