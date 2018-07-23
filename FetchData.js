@@ -555,7 +555,13 @@ var all_Query_Proms = [];
 										
 										window.alert("Search is complete!");
 										EnableSearchButton();
-										ExtractAllThingsLocation();
+										var extraction_prom = ExtractAllThingsLocation();
+
+										Promise.all(extraction_prom).then(function(values){
+
+											CreateWWDIoTRadialMark(allThingsPreviewDB);
+
+										});
 										
 
 									});
@@ -953,7 +959,7 @@ function TriggerSearch() {
 	fetchData();
 }
 
-function ExtractAllThingsLocation(){
+async function ExtractAllThingsLocation(){
 
 	// Extract from SmartCitizen
 
@@ -1051,6 +1057,6 @@ function ExtractAllThingsLocation(){
 
 	  console.log(allThingsPreviewDB);
 
-	  CreateWWDIoTRadialMark(allThingsPreviewDB);
+	  
 
 }
