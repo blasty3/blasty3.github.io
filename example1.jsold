@@ -18,9 +18,8 @@
  * Illustrates how to build a basic WorldWind globe.
  */
 
-requirejs(['./worldwind.min', './LayerManager','./FetchData.js'],
-    function (WorldWind,
-              LayerManager) {
+//requirejs(['./worldwind.min', './LayerManager','./FetchData.js'],
+    function LoadWWD() {
         //"use strict";
 
         // Tell WorldWind to log only warnings and errors.
@@ -69,7 +68,7 @@ requirejs(['./worldwind.min', './LayerManager','./FetchData.js'],
                 
             }
         };
-        
+
         // Listen for mouse clicks.
         var clickRecognizer = new WorldWind.ClickRecognizer(wwd, handleClick);
 
@@ -77,8 +76,8 @@ requirejs(['./worldwind.min', './LayerManager','./FetchData.js'],
         var tapRecognizer = new WorldWind.TapRecognizer(wwd, handleClick);
 
         // Create a layer manager for controlling layer visibility.
-        var layerManager = new LayerManager(wwd);
+        var layerManager = layerMngr(wwd);
 
-        
+        //TriggerSearch();
     }
-   );
+   //);

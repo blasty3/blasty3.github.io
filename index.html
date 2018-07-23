@@ -10,9 +10,11 @@
     <!--   <script src="/example1.js" type="text/javascript"></script> -->
    
     <script src="/worldwind.min.js" type="text/javascript" ></script>
-    <script src="/LayerManager.js" type="text/javascript" ></script> 
-     <script data-main="example1" src="/require.min.js"></script>
+    <!--<script src="/LayerManager.js" type="text/javascript" ></script> 
+    <script data-main="example1" src="/require.min.js"></script> 
+           <script src="/example1.js" type="text/javascript" ></script>-->
      <script src="/FetchData.js" type="text/javascript" ></script>
+     <script src="/WorldWindManager.js" type="text/javascript" ></script>
 </head>
 <body>
 <!--  <div style="position: absolute; top: 50px; left: 50px;">
@@ -88,12 +90,17 @@
 			
 			</fieldset> 
 			<br>
-			<button type="button" id="SearchButton" onclick="StartSearch()" >Search!</button>
+            <!-- <button type="button" id="SearchButton" onclick="StartSearch()" >Search!</button> -->
+            <button type="button" id="SearchButton">Search!</button>
 			<br>
         </div>
     </div>
 </div>
 
+<script>
+    window.addEventListener("load", TriggerSearch(), false);
+    window.addEventListener("load", StartWorldWind(), false);
+</script>
 
 <!--  
 <script>

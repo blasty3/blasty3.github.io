@@ -6,18 +6,23 @@ var tempSC={};
 var tempOSM={};
 var tempSSant={};
 var tempThingSpeak={};
-var tempDweet={};
+
+var tempDweet=[];
 
 
 var cndTh = {};
 var cndThLoc = {};
 var cndThDtStreams = {};
 
+var cndCityParams = ['calgary','edmonton','kamloops','kluanelake','montreal','ottawa','stalbert','victoria','winnipeg','yellowknife'];
+
 var SENeth = {};
 
 var SENijmTh = [];   
 var SENijmThLoc = {};
 var SENijmThDtStreams = {};
+
+var allThingsPreviewDB=[];
 
 var cors_purl = "https://cors.io/?";
 
@@ -60,10 +65,13 @@ var all_Query_Proms = [];
 				
 				 */
 			
-		    //DisableSearchButton();
+			//DisableSearchButton();
+			
+			console.log("start searching....");
 		    clearRegistry();
 
 				 // smartcitizen
+				 //data in format of array of JSON
 
 			 var url = "https://api.smartcitizen.me/v0/devices/world_map";
 			
@@ -76,7 +84,7 @@ var all_Query_Proms = [];
 				.then((response) => response.json())
 			 .then(function(data){
 				tempSC = clone(data);
-				console.log(data);
+				//console.log(data);
 				return data;
 			 })) 
 			 
@@ -93,13 +101,13 @@ var all_Query_Proms = [];
 				.then((response) => response.json())
 			 .then(function(data){
 				tempOSM = clone(data);
-				console.log(tempOSM);
+				//console.log(tempOSM);
 			 }))
 
 			 //Canada smart cities
 			 //canadian cities to query
 
-			 var cndCityParams = ['calgary','edmonton','kamloops','kluanelake','montreal','ottawa','stalbert','victoria','winnipeg','yellowknife'];
+			 
 				
 			 // get all things
 
@@ -109,7 +117,7 @@ var all_Query_Proms = [];
 			 var Prom_cty_cnd_th = [];
 			 
 
-			 //FIXME DeviceID in location not the same with the one in THINGS!!
+			 
 
 			 for(i = 0; i < cndCityParams.length; i++){
 
@@ -146,16 +154,13 @@ var all_Query_Proms = [];
 
 			   all_Query_Proms.push(Promise.all(Prom_cty_cnd_th).then(function(values){
 				
-				
-			
-
 				for(k=0;k<values.length;k++){
 
 					
 					var cityname = values[k].value[0].properties.city;
 						
 					cndTh[cityname] = clone(values[k]);
-					console.log(cndTh);
+					//console.log(cndTh);
 	   
 					//prepare for datastreams
 					cndThDtStreams[cityname] = {};
@@ -168,8 +173,6 @@ var all_Query_Proms = [];
 	   
 					for(i = 0; i < datCpy.value.length; i++){
 	   
-
-						
 						//var url = datCpy.value[i]["Locations@iot.navigationLink"];
 						
 						/*
@@ -188,7 +191,7 @@ var all_Query_Proms = [];
 	   
 									})
 									*/
-									var device_id = datCpy.value[i]["@iot.id"];
+									var device_id = datCpy.value[i].properties.displayName;
 									var Prom_Th_Loc = FetchLocationsCanada(cityname,device_id, datCpy.value[i]);
 
 
@@ -211,11 +214,6 @@ var all_Query_Proms = [];
 
 				}
 
-					
-
-
-
-
 			}))
 
 			 
@@ -224,6 +222,11 @@ var all_Query_Proms = [];
 
 			 var url = "https://dweet.io/get/stats"; //get the most recent tweets from devices
 			
+			 var dweetdataclone=[];
+			 var dweetQueryProms=[];
+
+			 var dweetQueriedThings={};
+
 			 all_Query_Proms.push(fetch(url).then(function(response) {
 				if (!response.ok) {
 					EnableSearchButton();
@@ -231,14 +234,138 @@ var all_Query_Proms = [];
 				}
 				return response;})
 				.then((response) => response.json())
-			 .then(function(data){
-				tempDweet = clone(data);
-				console.log(tempDweet);
+					.then(function(data){
+
+						dweetdataclone = clone(data.with["active_things"]);
+
+						var dweetThingObj = {};
+
+						for(i=0;i<dweetdataclone.length;i++){
+							if(!dweetThingObj[dweetdataclone[i].thing]){
+
+								dweetThingObj[dweetdataclone[i].thing] = dweetdataclone[i];
+
+							} 
+						}
+
+						console.log(dweetThingObj);
+						/*
+							for (var property1 in object1) {
+								string1 = string1 + object1[property1];
+							}
+						*/
+
+						for(var prop in dweetThingObj){
+							
+							for(j=0;j<dweetThingObj[prop].keywords.length;j++){
+
+								if (((dweetThingObj[prop].keywords[j]).toLowerCase().indexOf("gps")>=0) || ((dweetThingObj[prop].keywords[j]).toLowerCase().indexOf("latitude")>=0) || ((dweetThingObj[prop].keywords[j]).toLowerCase().indexOf("longitude")>=0)) {
+									
+									if(!dweetQueriedThings[prop]){
+
+										dweetQueriedThings[prop] = "https://dweet.io/get/dweets/for/"+prop;
+		
+									} 
+
+								}
+							}
+
+						}
+
+						for(var prop in dweetQueriedThings){
+
+							dweetQueryProms.push(fetch(dweetQueriedThings[prop]).then(function(response) {
+								if (!response.ok) {
+									EnableSearchButton();
+									throw Error("error"+response.statusText);
+								}
+								return response;})
+								.then((response) => response.json())
+							 .then(function(data){
+								return data.with;
+							 }))
+						}
+
+						//console.log(dweetQueriedThings);
+
+						all_Query_Proms.push(Promise.all(dweetQueryProms).then(function(values){
+							
+							
+							for(i=0;i<values.length;i++){
+
+								console.log("size " +values.length);
+
+								var entryThDw = {};
+
+								entryThDw.name = values[i][0].thing;
+
+								var latitudegot = false;
+								var longitudegot = false;
+
+								if(values[i][0].content["latitude"] && !latitudegot){
+									latitudegot = true;
+									entryThDw.latitude= values[i][0].content.latitude;
+								}
+
+								if(values[i][0].content["Latitude"] && !latitudegot){
+									latitudegot = true;
+									entryThDw.latitude= values[i][0].content.Latitude;
+								}
+
+								if(values[i][0].content["gps lat"] && !latitudegot){
+									latitudegot = true;
+									entryThDw.latitude= values[i][0].content["gps lat"];
+								}
+
+								if(values[i][0].content["GPS_LAT"] && !latitudegot){
+									latitudegot = true;
+									entryThDw.latitude= values[i][0].content["GPS_LAT"];
+								}
+
+								if(values[i][0].content["longitude"] && !longitudegot ){
+									longitudegot = true;
+									entryThDw.longitude= values[i][0].content.longitude;
+								}
+
+								if(values[i][0].content["Longitude"] && !longitudegot){
+									longitudegot = true;
+									entryThDw.longitude= values[i][0].content.Longitude;
+								}
+
+								if(values[i][0].content["gps long"] && !longitudegot){
+									longitudegot = true;
+									entryThDw.longitude= values[i][0].content["gps long"]
+								}
+
+								if(values[i][0].content["GPS_LNG"] && !longitudegot){
+									longitudegot = true;
+									entryThDw.longitude= values[i][0].content["GPS_LNG"];
+								}
+
+								var measurementsArr = [];
+
+								for(j=0;j<values[i].length;j++){
+									values[i][j].content.created = values[i][j].created;
+									measurementsArr.push(values[i][j]);
+								}
+
+								entryThDw.measurements = measurementsArr;
+
+								tempDweet.push(entryThDw);
+
+							}
+
+							console.log(tempDweet);
+						//tempDweet.push(data.with["active_things"][i]);
+		
+					}));
+
+
+				    
+
 			 }))
 
 			  //Smart Santander
-			 
-
 			 
 			 var url = cors_purl+"http://maps.smartsantander.eu/php/getdata.php";
 			
@@ -250,8 +377,8 @@ var all_Query_Proms = [];
 				return response;})
 				.then((response) => response.json())
 			 .then(function(data){
-				tempSSant = clone(data);
-				console.log(tempSSant);
+				tempSSant = clone(data.markers);
+				//console.log(tempSSant);
 			 }))
 
 			 
@@ -263,7 +390,7 @@ var all_Query_Proms = [];
 			 
 			 var url = "https://api.thingspeak.com/channels/public.json";
 			
-			 var ThSpProm_pg1 = fetch(url).then(function(response) {
+			 var ThSpProm_pg1 = fetch(cors_purl+url).then(function(response) {
 				if (!response.ok) {
 					EnableSearchButton();
 					throw Error("error"+response.statusText);
@@ -272,7 +399,7 @@ var all_Query_Proms = [];
 				.then((response) => response.json())
 			 .then(function(data){
 				tempThingSpeak = clone(data.channels);
-				console.log(tempThingSpeak);
+				//console.log(tempThingSpeak);
 				return data;
 			 })
 			 all_Query_Proms.push(ThSpProm_pg1);
@@ -288,10 +415,10 @@ var all_Query_Proms = [];
 
 					if(total_pages>1){
 
-						// maximum should be total_pages, but need to limit for now
+						// maximum should be total_pages, but need to limit since ThingSpeak server can't handle many queries
 						for(i=2;i<=20;i++){
 
-							ThSpProm_Arr.push(fetch(url+"?page="+i).then(function(response) {
+							ThSpProm_Arr.push(fetch(cors_purl+url+"?page="+i).then(function(response) {
 								if (!response.ok) {
 									EnableSearchButton();
 									throw Error("error"+response.statusText);
@@ -315,7 +442,7 @@ var all_Query_Proms = [];
 								if(lat === "0.0" && lon === "0.0"){
 
 								} else {
-									tempThingSpeak = tempThingSpeak.concat(values[j]);
+									tempThingSpeak = clone(tempThingSpeak.concat(values[j]));
 								}
 
 							}
@@ -350,11 +477,11 @@ var all_Query_Proms = [];
 
 			 all_Query_Proms.push(NijmTh1_Prom);
 
-			 Promise.all([NijmTh1_Prom]).then(function(values){
+			 all_Query_Proms.push(Promise.all([NijmTh1_Prom]).then(function(values){
 										
 				SENeth = clone(values[0]);
 
-			});
+			}));
 
 			 
 			 /*
@@ -428,6 +555,7 @@ var all_Query_Proms = [];
 										
 										window.alert("Search is complete!");
 										EnableSearchButton();
+										ExtractAllThingsLocation();
 										
 
 									});
@@ -618,7 +746,7 @@ var all_Query_Proms = [];
 						}
 						//console.log(values);
 						
-						console.log(cndThLoc);
+						//console.log(cndThLoc);
 	
 					});
 
@@ -788,7 +916,7 @@ var all_Query_Proms = [];
 	tempOSM={};
 	tempSSant={};
 	tempThingSpeak={};
-	tempDweet={};
+	tempDweet=[];
 
 
 	cndTh = {};
@@ -819,3 +947,110 @@ var all_Query_Proms = [];
 	DisableSearchButton();
 	fetchData();
  }
+
+function TriggerSearch() {
+	console.log("Triggering search....");
+	fetchData();
+}
+
+function ExtractAllThingsLocation(){
+
+	// Extract from SmartCitizen
+
+	for(i=0;i<tempSC.length;i++){
+		allThingsPreviewDB.push({
+			// Relevant parameters would go here
+			"name" : tempSC[i].name,
+			"latitude" : tempSC[i].latitude,
+			"longitude" : tempSC[i].longitude
+		});
+		/*
+		allThingsPreviewDB[tempSC[i].name] = {
+			// Relevant parameters would go here
+			"latitude" : tempSC[i].latitude,
+			"longitude" : tempSC[i].longitude
+		};
+		*/
+	}
+
+	// Extract from OpenSenseMap
+	// longitude = value[0];
+	//latitude = value [1];
+
+	for(i=0;i<tempOSM.length;i++){
+		allThingsPreviewDB.push({
+			// Relevant parameters would go here
+			"name" : tempOSM[i].name,
+			"latitude" : tempOSM[i].currentLocation.coordinates[1],
+			"longitude" : tempOSM[i].currentLocation.coordinates[0]
+		});
+		/*
+		allThingsPreviewDB[tempOSM[i].name] = {
+			// Relevant parameters would go here
+			"latitude" : tempOSM[i].currentLocation.coordinates[1],
+			"longitude" : tempOSM[i].currentLocation.coordinates[0]
+		};
+		*/
+	}
+
+	// Extract from Canada Smart City
+	// longitude = value[0];
+	//latitude = value [1];
+
+	   for(i=0;i<cndCityParams.length;i++){
+
+		console.log(cndThLoc);
+
+		  for (var keys in cndThLoc[cndCityParams[i]]) {
+			  allThingsPreviewDB.push({
+				// Relevant parameters would go here
+				"name" : cndThLoc[cndCityParams[i]][keys],
+				"latitude" : cndThLoc[cndCityParams[i]][keys][1],
+				"longitude" : cndThLoc[cndCityParams[i]][keys][0]
+			  });
+		  }
+			/*
+			for (var keys in cndThLoc.cndCityParams[i]) {
+			allThingsLocDB[keys] = {
+				// Relevant parameters would go here
+				"latitude" : cndThLoc.cndCityParams[i][keys][1],
+				"longitude" : cndThLoc.cndCityParams[i][keys][0]
+			};
+			*/
+	
+	  }
+
+	  // Extract from Dweet (only latest 500 devices who tweeted), only search those which has gps data
+	  // this task has been done during queries
+
+	  // Extract from SmartSantander
+
+
+	  for(i=0;i<tempSSant.length;i++){
+	
+			  // Relevant parameters would go here
+			   tempSSant[i].name = tempSSant[i].id;
+			   delete tempSSant[i].id;
+	  }
+	  allThingsPreviewDB = clone(allThingsPreviewDB.concat(tempSSant));
+
+
+	  // Extract from Smart Emission Netherlands
+	  
+	  for(i=0;i<SENeth.length;i++){
+		var SENethArr = {};
+		SENethArr.name = SENeth[i].properties.label;
+		SENethArr.latitude = SENeth[i].geometry.coordinates[1];
+		SENethArr.longitude = SENeth[i].geometry.coordinates[0];
+		SENethArr["last_update"] = SENeth[i].properties["last_update"];
+		allThingsPreviewDB.push(SENethArr);
+	  }
+
+	  // From ThingSpeak
+	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempThingSpeak));
+
+	  console.log(allThingsPreviewDB);
+
+	  CreateWWDIoTRadialMark(allThingsPreviewDB);
+
+}
