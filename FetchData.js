@@ -557,7 +557,7 @@ var all_Query_Proms = [];
 										EnableSearchButton();
 										var extraction_prom = ExtractAllThingsLocation();
 
-										Promise.all(extraction_prom).then(function(values){
+										Promise.all([extraction_prom]).then(function(values){
 
 											CreateWWDIoTRadialMark(allThingsPreviewDB);
 
