@@ -75,10 +75,10 @@ function CreateWWDIoTSurfaceImage(){
    surfaceImageLayer.addRenderable(surfaceImage1);
    surfaceImageLayer.addRenderable(surfaceImage2);
    surfaceImageLayer.addRenderable(surfaceImage3);
-    wwd.addLayer(surfaceImageLayer);
+   wwd.addLayer(surfaceImageLayer);
 }
 
-function CreateWWDIoTRadialMark(ThingsLocationArr){
+async function CreateWWDIoTRadialMark(ThingsLocationArr){
     // Create the custom image for the placemark with a 2D canvas.
     var canvas = document.createElement("canvas"),
     ctx2d = canvas.getContext("2d"),
@@ -117,8 +117,6 @@ function CreateWWDIoTRadialMark(ThingsLocationArr){
     highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
     highlightAttributes.applyLighting = false;
 
-
-
     var placemarkLayer = new WorldWind.RenderableLayer("Custom Placemark");
 
     for(i=0;i<ThingsLocationArr.length;i++){
@@ -136,19 +134,15 @@ function CreateWWDIoTRadialMark(ThingsLocationArr){
 
         // Create the renderable layer for placemarks.
         
-
         // Add the placemark to the layer.
         placemarkLayer.addRenderable(placemark);
 
     }
 
-    
-
     // Add the placemarks layer to the WorldWindow's layer list.
     wwd.addLayer(placemarkLayer);
-
     // Now set up to handle highlighting.
     var highlightController = new WorldWind.HighlightController(wwd);
 
-    wwd.redraw();
 }
+
