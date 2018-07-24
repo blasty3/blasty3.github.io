@@ -5,7 +5,7 @@ var tempPA={};
 var tempSC={};
 var tempOSM={};
 var tempSSant={};
-var tempThingSpeak={};
+var tempThingSpeak=[];
 
 var tempDweet=[];
 
@@ -15,6 +15,7 @@ var cndThLoc = {};
 var cndThDtStreams = {};
 
 var cndCityParams = ['calgary','edmonton','kamloops','kluanelake','montreal','ottawa','stalbert','victoria','winnipeg','yellowknife'];
+var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montreal','Ottawa','St. Albert','Victoria','Winnipeg','Yellowknife'];
 
 var SENeth = {};
 
@@ -192,17 +193,17 @@ var all_Query_Proms = [];
 									})
 									*/
 									var device_id = datCpy.value[i].properties.displayName;
-									var Prom_Th_Loc = FetchLocationsCanada(cityname,device_id, datCpy.value[i]);
+									all_Query_Proms.push(FetchLocationsCanada(cityname,device_id, datCpy.value[i]));
 
 
 									// Canada Datastreams disabled. When user click certain thing, then that query is made for that particular thing only.
-									//var Prom_Dt_Obsv = FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
+									//all_Query_Proms.push(FetchDatastreamsCanada(datCpy.value[i],device_id,cityname);
 
 									//Promise.all([Prom_Th_Loc,Prom_Dt_Obsv]).then(function(values){
-									Promise.all([Prom_Th_Loc]).then(function(values){	
+									//all_Query_Proms.push(Promise.all([Prom_Th_Loc]).then(function(values){	
 
 
-									});
+									//}));
 
 
 				     }
@@ -248,7 +249,7 @@ var all_Query_Proms = [];
 							} 
 						}
 
-						console.log(dweetThingObj);
+						//console.log(dweetThingObj);
 						/*
 							for (var property1 in object1) {
 								string1 = string1 + object1[property1];
@@ -355,7 +356,7 @@ var all_Query_Proms = [];
 
 							}
 
-							console.log(tempDweet);
+							//console.log(tempDweet);
 						//tempDweet.push(data.with["active_things"][i]);
 		
 					}));
@@ -398,15 +399,29 @@ var all_Query_Proms = [];
 				return response;})
 				.then((response) => response.json())
 			 .then(function(data){
-				tempThingSpeak = clone(data.channels);
+				//tempThingSpeak = clone(data.channels);
 				//console.log(tempThingSpeak);
-				return data;
+				return data.channels;
 			 })
 			 all_Query_Proms.push(ThSpProm_pg1);
 
 			 var ThSpProm_Arr = [];
 
 			 Promise.all([ThSpProm_pg1]).then(function(values){
+
+				for(j=0;j<values[0].length;j++){
+					var lat = values[0][j].latitude;
+					var lon = values[0][j].longitude;
+
+					if(lat === "0.0" && lon === "0.0"){
+
+					} else {
+						values[0][j].provider == "thingspeak";
+						tempThingSpeak.push(values[0][j]);
+					}
+
+				}
+
 					var total_pages = Math.floor(parseInt(values[0].pagination.total_entries)/parseInt(values[0].pagination.per_page));
 					var remainder = parseInt(values[0].pagination.total_entries)%parseInt(values[0].pagination.per_page);
 					if(remainder>0){
@@ -435,17 +450,22 @@ var all_Query_Proms = [];
 
 						all_Query_Proms.push(Promise.all(ThSpProm_Arr).then(function(values){
 										
-							for(j=0;j<values.length;j++){
-								var lat = values[j].latitude;
-								var lon = values[j].longitude;
-
-								if(lat === "0.0" && lon === "0.0"){
-
-								} else {
-									tempThingSpeak = clone(tempThingSpeak.concat(values[j]));
+							for(i=0;i<values.length;i++){
+								for(j=0;j<values[i].length;j++){
+									var lat = values[i][j].latitude;
+									var lon = values[i][j].longitude;
+	
+									if(lat == "0.0" && lon == "0.0"){
+	
+									} else {
+										values[i][j].provider = "thingspeak";
+										tempThingSpeak.push(values[i][j]);
+										//tempThingSpeak = clone(tempThingSpeak.concat(values[j]));
+									}
+	
 								}
-
 							}
+							
 
 						}));
 
@@ -722,7 +742,8 @@ var all_Query_Proms = [];
 
 	function FetchLocationsCanada(cityName, device_id, Things_Data){
 
-		var PromArr = [];
+		//var PromArr = [];
+		
 
 		
 			var loc_url = Things_Data["Locations@iot.navigationLink"];
@@ -742,10 +763,10 @@ var all_Query_Proms = [];
 				}
 				return response.json()});
 
-				PromArr.push(prom_loc_el);
+				//PromArr.push(prom_loc_el);
 
 		
-					var prom_loc = Promise.all(PromArr).then(function(values){
+					var prom_loc = Promise.all([prom_loc_el]).then(function(values){
 
 						for(i=0;i<values.length;i++){
 							cndThLoc[cityName][device_id] = clone(values[i].value[0].location.coordinates);
@@ -968,7 +989,10 @@ async function ExtractAllThingsLocation(){
 			// Relevant parameters would go here
 			"name" : tempSC[i].name,
 			"latitude" : tempSC[i].latitude,
-			"longitude" : tempSC[i].longitude
+			"longitude" : tempSC[i].longitude,
+			"cityName" : tempSC[i].city,
+			"lastSeen" : tempSC[i]["last_reading_at"],
+			"providerID": "smartcitizen"
 		});
 		/*
 		allThingsPreviewDB[tempSC[i].name] = {
@@ -984,11 +1008,18 @@ async function ExtractAllThingsLocation(){
 	//latitude = value [1];
 
 	for(i=0;i<tempOSM.length;i++){
+		
+		for(j=0;j<temptempOSM[i].sensors.length;j++){
+			temptempOSM[i].sensors[j].lastMeasurement;
+		}
 		allThingsPreviewDB.push({
 			// Relevant parameters would go here
 			"name" : tempOSM[i].name,
 			"latitude" : tempOSM[i].currentLocation.coordinates[1],
-			"longitude" : tempOSM[i].currentLocation.coordinates[0]
+			"longitude" : tempOSM[i].currentLocation.coordinates[0],
+			"providerID" : "opensensemap",
+			"lastSeen" : tempOSM[i].updatedAt
+			
 		});
 		/*
 		allThingsPreviewDB[tempOSM[i].name] = {
@@ -1002,17 +1033,22 @@ async function ExtractAllThingsLocation(){
 	// Extract from Canada Smart City
 	// longitude = value[0];
 	//latitude = value [1];
+	//console.log(cndThLoc);
 
-	   for(i=0;i<cndCityParams.length;i++){
+	   for(i=0;i<cndCityParamsActual.length;i++){
 
-		console.log(cndThLoc);
+		//console.log(cndCityParams[i]);
+		//console.log(cndThLoc[cndCityParams[i]]);
 
-		  for (var keys in cndThLoc[cndCityParams[i]]) {
+		  for (var keys in cndThLoc[cndCityParamsActual[i]]) {
 			  allThingsPreviewDB.push({
 				// Relevant parameters would go here
-				"name" : cndThLoc[cndCityParams[i]][keys],
-				"latitude" : cndThLoc[cndCityParams[i]][keys][1],
-				"longitude" : cndThLoc[cndCityParams[i]][keys][0]
+				"name" : keys,
+				"latitude" : cndThLoc[cndCityParamsActual[i]][keys][1],
+				"longitude" : cndThLoc[cndCityParamsActual[i]][keys][0],
+				"cityname_link" : cndCityParams[i],
+				"cityname_actual" : cndCityParamsActual[i],
+				"providerID" : "smartcanada"
 			  });
 		  }
 			/*
@@ -1030,12 +1066,20 @@ async function ExtractAllThingsLocation(){
 	  // this task has been done during queries
 
 	  // Extract from SmartSantander
+	  
+	  //extract info template
+	  /*
+	  var el = document.createElement( 'html' );
+		el.innerHTML = "<html><head><title>titleTest</title></head><body><a href='test0'>test01</a><a href='test1'>test02</a><a href='test2'>test03</a></body></html>";
 
+		el.getElementsByTagName( 'a' ); 
+	  */
 
 	  for(i=0;i<tempSSant.length;i++){
 	
 			  // Relevant parameters would go here
 			   tempSSant[i].name = tempSSant[i].id;
+			   tempSSant[i].providerID = "smartsantander";
 			   delete tempSSant[i].id;
 	  }
 	  allThingsPreviewDB = clone(allThingsPreviewDB.concat(tempSSant));
@@ -1048,7 +1092,8 @@ async function ExtractAllThingsLocation(){
 		SENethArr.name = SENeth[i].properties.label;
 		SENethArr.latitude = SENeth[i].geometry.coordinates[1];
 		SENethArr.longitude = SENeth[i].geometry.coordinates[0];
-		SENethArr["last_update"] = SENeth[i].properties["last_update"];
+		SENethArr.lastSeen = SENeth[i].properties["last_update"];
+		SENethArr.providerID = "netherlandssmartemission";
 		allThingsPreviewDB.push(SENethArr);
 	  }
 
