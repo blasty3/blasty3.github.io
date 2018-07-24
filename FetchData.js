@@ -9,6 +9,8 @@ var tempThingSpeak=[];
 
 var tempDweet=[];
 
+var tempOAQ=[];
+
 
 var cndTh = {};
 var cndThLoc = {};
@@ -36,35 +38,7 @@ var all_Query_Proms = [];
 		
 		
 				// Purple Air . SHould be careful with this since the data is owned by them, there should be a clear license for user
-			 /*
-				  var url = "https://www.purpleair.com/json";
-				 
-				  // For GET method, API parameters will be sent in the URL. 
-				  // Start with an object containing name / value tuples.
-				  var apiParams = {
-				    // Relevant parameters would go here
-				    "fetchData" : "true",
-				    "minimize" : "true",
-				    "sensorsActive2" : 10080
-				  };
 			 
-				  var encParams = toHtmlQuery_(apiParams);
-				  
-				 fetch(url+encParams).then(function(response) {
-					if (!response.ok) {
-						EnableSearchButton();
-						throw Error(response.statusText);
-					}
-					
-					return response;})
-					.then((response) => response.json())
-				 .then(function(data){
-					//console.log("data:" +JSON.stringify(data));
-					tempPA = clone(data);
-					console.log(tempPA);
-				 })
-				
-				 */
 			
 			//DisableSearchButton();
 			
@@ -102,7 +76,7 @@ var all_Query_Proms = [];
 				.then((response) => response.json())
 			 .then(function(data){
 				tempOSM = clone(data);
-				//console.log(tempOSM);
+				console.log(tempOSM);
 			 }))
 
 			 //Canada smart cities
@@ -116,8 +90,6 @@ var all_Query_Proms = [];
 			 var nexturl = "-aq-sta.sensorup.com/v1.0/Things";
 			 
 			 var Prom_cty_cnd_th = [];
-			 
-
 			 
 
 			 for(i = 0; i < cndCityParams.length; i++){
@@ -217,7 +189,64 @@ var all_Query_Proms = [];
 
 			}))
 
+			// Open AQ, query for locations only, get maximum observation points
+			// url : https://api.openaq.org/v1/locations?limit=10000
+
 			 
+			var url = "https://api.openaq.org/v1/locations?limit=10000";
+			
+			 var openaq_prom = fetch(url).then(function(response) {
+				if (!response.ok) {
+					EnableSearchButton();
+					throw Error(response.statusText);
+				}
+				return response;})
+				.then((response) => response.json())
+			 .then(function(data){
+				//tempOAQ = clone(data.results);
+				return data.results;
+				//console.log(tempOSM);
+			 })
+
+			var getCoord_prom = Promise.all([openaq_prom]).then(function(values){
+					
+				var latlonJSPromArr = [];
+
+				for(i=0;i<values[0].length;i++){
+
+					values[0][i].name = values[0][i].location;
+					values[0][i].providerID = "openaq";
+					values[0][i].lastSeen = values[0][i].lastUpdated;
+					delete values[0][i].lastUpdated;
+
+					if(!(values[0][i].coordinates)){
+
+					  latlonJSPromArr.push(SearchLocationWithArrEl(values[0][i].city,values[0][i]));
+		  
+					} else {
+					  values[0][i].latitude = values[0][i].coordinates.latitude;
+					  values[0][i].longitude = values[0][i].coordinates.longitude;
+					  delete values[0][i].coordinates;
+					  tempOAQ.push(values[0][i]);
+					}
+				}
+
+				all_Query_Proms.push(Promise.all(latlonJSPromArr).then(function(values){
+						     for(j=0;j<values.length;j++){
+								
+								tempOAQ.push(values[j]);
+
+							 }
+							 console.log(tempOAQ);
+				}));
+				
+
+			});
+
+			all_Query_Proms.push(getCoord_prom);
+
+			
+
 
 			 //Dweet (public ones), simply get the ones with GPS locations for pinpointing, the rest will be ignored
 
@@ -249,12 +278,6 @@ var all_Query_Proms = [];
 							} 
 						}
 
-						//console.log(dweetThingObj);
-						/*
-							for (var property1 in object1) {
-								string1 = string1 + object1[property1];
-							}
-						*/
 
 						for(var prop in dweetThingObj){
 							
@@ -1008,19 +1031,38 @@ async function ExtractAllThingsLocation(){
 	//latitude = value [1];
 
 	for(i=0;i<tempOSM.length;i++){
-		
-		for(j=0;j<tempOSM[i].sensors.length;j++){
-			tempOSM[i].sensors[j].lastMeasurement;
-		}
-		allThingsPreviewDB.push({
+		var sensorList = [];
+		var OSMTh = {
 			// Relevant parameters would go here
 			"name" : tempOSM[i].name,
 			"latitude" : tempOSM[i].currentLocation.coordinates[1],
 			"longitude" : tempOSM[i].currentLocation.coordinates[0],
 			"providerID" : "opensensemap",
-			"lastSeen" : tempOSM[i].updatedAt
+			//"sensorList" : sensorList
+
+			//FIXME!
+			//"lastSeen" : tempOSM[i].updatedAt
 			
-		});
+		};
+		for(j=0;j<tempOSM[i].sensors.length;j++){
+			var sensorListDet = {
+				"Type" : tempOSM[i].sensors[j].title,
+				"Unit" : tempOSM[i].sensors[j].unit,
+				"Sensor" : tempOSM[i].sensors[j].sensorType,
+			}
+			if((tempOSM[i].sensors[j].lastMeasurement)){
+				sensorListDet["Last Value"] =  tempOSM[i].sensors[j].lastMeasurement.value;
+				sensorListDet["Last Seen"] = tempOSM[i].sensors[j].lastMeasurement.createdAt;
+			} else {
+				sensorListDet["Last Value"] =  "Data Not Available";
+				sensorListDet["Last Seen"] = "Data Not Available";
+			}
+			
+			sensorList.push(sensorListDet);
+		}
+		OSMTh["sensorList"] = sensorList;
+
+		allThingsPreviewDB.push(OSMTh);
 		/*
 		allThingsPreviewDB[tempOSM[i].name] = {
 			// Relevant parameters would go here
@@ -1100,8 +1142,14 @@ async function ExtractAllThingsLocation(){
 	  // From ThingSpeak
 	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempThingSpeak));
 
+	  // from Open AQ
+
+	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempOAQ));
+	  
+
 	  console.log(allThingsPreviewDB);
 
 	  
 
 }
+

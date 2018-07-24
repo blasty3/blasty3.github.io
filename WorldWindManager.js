@@ -28,6 +28,7 @@ function StartWorldWind() {
     }
 
     // Create a placemark to select.
+    /*
     var breckenridgePosition = new WorldWind.Position(39.481019, -106.045398, 0);
     var breckenridge = new WorldWind.Placemark(breckenridgePosition);
     breckenridge.displayName = "Breckenridge Placemark";
@@ -40,7 +41,7 @@ function StartWorldWind() {
     resortLocations.addRenderable(breckenridge);
     wwd.addLayer(resortLocations);
 
-
+    */
 
     // The common pick-handling function.
     var handlePick = function(o) {
@@ -67,19 +68,68 @@ function StartWorldWind() {
         
         if(topPickedObject.userObject.providerID === "smartcanada"){
 
-        }  else if (topPickedObject.userObject.providerID === "thingspeak"){
+        } else if (topPickedObject.userObject.providerID === "opensensemap"){
+            
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+           
+            var sensorListArr = topPickedObject.userObject.sensorList;
+            var StrToForm = "Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+            var StrToAdd = "";
+            for(i=0;i<sensorListArr.length;i++){
+                for(var keys in sensorListArr[i]){
+                    StrToAdd = clone(StrToAdd+""+keys+": " +sensorListArr[i][keys]+ "<br>");
+                }
+                StrToAdd = clone(StrToAdd+"<br><br>");
+            }
+
+            StrToForm = clone(StrToForm+StrToAdd);
+            var newContent = document.createElement("div");
+                newContent.id = "existingThingsSummary";
+                newContent.innerHTML = StrToForm;
+                document.getElementById('thingsSummaryID').appendChild(newContent);
+
+         }  else if (topPickedObject.userObject.providerID === "openaq"){
+            
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+
+            var thSumNameEl = document.getElementById("existingThingsSummary");
+            thSumNameEl.innerHTML = "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
+           
+           
+        } else if (topPickedObject.userObject.providerID === "thingspeak"){
             // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
            
          } else if (topPickedObject.userObject.providerID === "smartsantander"){
            // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
-            var newContent = document.createElement("div");
-            newContent.innerHTML = topPickedObject.userObject.content;
-            document.getElementById('thingsSummarySmartSantander').appendChild(newContent);
+
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+          
+
+                var newContent = document.createElement("div");
+                newContent.id = "existingThingsSummary";
+                newContent.innerHTML = topPickedObject.userObject.content;
+                document.getElementById('thingsSummaryID').appendChild(newContent);
+            
+
         } else {
-            var thSumNameEl = document.getElementById("thingsSummaryName");
-            thSumNameEl.innerHTML = "Name: " +topPickedObject.userObject.displayName;
-            var thSumLastUpdEl = document.getElementById("thingsSummaryLastUpdate");
-            thSumLastUpdEl.innerHTML = "Last Seen: " +topPickedObject.userObject.lastSeen;
+
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+
+            var thSumNameEl = document.getElementById("existingThingsSummary");
+            thSumNameEl.innerHTML = "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
+          
         }
         //pickResult.style.cursor = "pointer";
         //pickResult.style.left = o.pageX;
@@ -188,6 +238,8 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
 
         if(ThingsLocationArr[i].providerID === "smartsantander"){
             placemark.content = ThingsLocationArr[i].content;
+        } else if(ThingsLocationArr[i].providerID === "opensensemap"){
+            placemark.sensorList = ThingsLocationArr[i].sensorList;
         } else {
             placemark.lastSeen = ThingsLocationArr[i].lastSeen;
         }
@@ -222,6 +274,98 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     var highlightController = new WorldWind.HighlightController(wwd);
 
 }
+
+  async function SearchLocationWithArrEl(query,arrayEl) {    
+    
+    var self = this;
+    self.geocoder = new WorldWind.NominatimGeocoder();
+   // self.goToAnimator = new WorldWind.GoToAnimator(wwd);
+
+      var queryString = query;
+      if (queryString) {
+        var latitude, longitude;
+        if (queryString.match(WorldWind.WWUtil.latLonRegex)) {
+          var tokens = queryString.split(",");
+          latitude = parseFloat(tokens[0]);
+          longitude = parseFloat(tokens[1]);
+          arrayEl.latitude = latitude;
+          arrayEl.longitude = longitude;
+          
+          //self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+        } else {
+          self.geocoder.lookup(queryString, function(geocoder, result) {
+            if (result.length > 0) {
+              latitude = parseFloat(result[0].lat);
+              longitude = parseFloat(result[0].lon);
+              arrayEl.latitude = latitude;
+              arrayEl.longitude = longitude;
+              //self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+            }
+          });
+        }
+      }
+
+      return arrayEl;
+  }
+
+  async function SearchLocation(query) {    
+    
+    var latlonJS={};
+    var self = this;
+    self.geocoder = new WorldWind.NominatimGeocoder();
+   // self.goToAnimator = new WorldWind.GoToAnimator(wwd);
+
+      var queryString = query;
+      if (queryString) {
+        var latitude, longitude;
+        if (queryString.match(WorldWind.WWUtil.latLonRegex)) {
+          var tokens = queryString.split(",");
+          latitude = parseFloat(tokens[0]);
+          longitude = parseFloat(tokens[1]);
+          latlonJS.latitude = latitude;
+          latlonJS.longitude = longitude;
+          
+          //self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+        } else {
+          self.geocoder.lookup(queryString, function(geocoder, result) {
+            if (result.length > 0) {
+              latitude = parseFloat(result[0].lat);
+              longitude = parseFloat(result[0].lon);
+              latlonJS.latitude = latitude;
+              latlonJS.longitude = longitude;
+              //self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+            }
+          });
+        }
+      }
+
+      return latlonJS;
+  }
+
+  function GlobeMoveToLocation(wwd,query) {
+    var self = this;
+    self.geocoder = new WorldWind.NominatimGeocoder();
+    self.goToAnimator = new WorldWind.GoToAnimator(wwd);
+
+      var queryString = query;
+      if (queryString) {
+        var latitude, longitude;
+        if (queryString.match(WorldWind.WWUtil.latLonRegex)) {
+          var tokens = queryString.split(",");
+          latitude = parseFloat(tokens[0]);
+          longitude = parseFloat(tokens[1]);
+          self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+        } else {
+          self.geocoder.lookup(queryString, function(geocoder, result) {
+            if (result.length > 0) {
+              latitude = parseFloat(result[0].lat);
+              longitude = parseFloat(result[1].lon);
+              self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+            }
+          });
+        }
+      }
+  }
 
 function offset(el) {
     var rect = el.getBoundingClientRect(),
