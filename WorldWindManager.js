@@ -74,7 +74,7 @@ function StartWorldWind() {
            // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
             var newContent = document.createElement("div");
             newContent.innerHTML = topPickedObject.userObject.content;
-            document.getElementById('thingsSummarySmartSantander').appendChild(div);
+            document.getElementById('thingsSummarySmartSantander').appendChild(newContent);
         } else {
             var thSumNameEl = document.getElementById("thingsSummaryName");
             thSumNameEl.innerHTML = "Name: " +topPickedObject.userObject.displayName;
@@ -185,7 +185,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
         placemark.highlightAttributes = highlightAttributes;
         placemark.displayName = ThingsLocationArr[i].name;
         placemark.providerID = ThingsLocationArr[i].providerID;
-        
+
         if(ThingsLocationArr[i].providerID === "smartsantander"){
             placemark.content = ThingsLocationArr[i].content;
         } else {
