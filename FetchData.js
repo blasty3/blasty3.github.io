@@ -942,7 +942,7 @@ var all_Query_Proms = [];
 	tempSC={};
 	tempOSM={};
 	tempSSant={};
-	tempThingSpeak={};
+	tempThingSpeak=[];
 	tempDweet=[];
 
 
