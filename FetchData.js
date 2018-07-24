@@ -401,7 +401,7 @@ var all_Query_Proms = [];
 			 .then(function(data){
 				//tempThingSpeak = clone(data.channels);
 				//console.log(tempThingSpeak);
-				return data.channels;
+				return data;
 			 })
 			 all_Query_Proms.push(ThSpProm_pg1);
 
@@ -409,15 +409,15 @@ var all_Query_Proms = [];
 
 			 Promise.all([ThSpProm_pg1]).then(function(values){
 
-				for(j=0;j<values[0].length;j++){
-					var lat = values[0][j].latitude;
-					var lon = values[0][j].longitude;
+				for(j=0;j<values[0].channels.length;j++){
+					var lat = values[0].channels[j].latitude;
+					var lon = values[0].channels[j].longitude;
 
 					if(lat === "0.0" && lon === "0.0"){
 
 					} else {
-						values[0][j].provider == "thingspeak";
-						tempThingSpeak.push(values[0][j]);
+						values[0].channels[j].provider == "thingspeak";
+						tempThingSpeak.push(values[0].channels[j]);
 					}
 
 				}
@@ -1009,8 +1009,8 @@ async function ExtractAllThingsLocation(){
 
 	for(i=0;i<tempOSM.length;i++){
 		
-		for(j=0;j<temptempOSM[i].sensors.length;j++){
-			temptempOSM[i].sensors[j].lastMeasurement;
+		for(j=0;j<tempOSM[i].sensors.length;j++){
+			tempOSM[i].sensors[j].lastMeasurement;
 		}
 		allThingsPreviewDB.push({
 			// Relevant parameters would go here
