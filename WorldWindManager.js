@@ -315,7 +315,8 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
     // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
     //placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
-    placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
+    //placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
+    placemarkAttributes.imageSource = "images/thing_node.png";
     // Define the pivot point for the placemark at the center of its image source.
     placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
     placemarkAttributes.imageScale = 0.22;
@@ -330,7 +331,8 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     // to control the highlight representation.
     var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
     highlightAttributes.imageScale = 0.29;
-    highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
+    //highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
+    highlightAttributes.imageSource = "images/thing_node_highlight.png";
     
     highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
     highlightAttributes.applyLighting = false;
