@@ -2,6 +2,8 @@
 var wwd;
 var layers; // array of layers
 
+var allThingsDB=[];
+
 function StartWorldWind() {
     // Create a WorldWindow for the canvas.
     wwd = new WorldWind.WorldWindow("canvasOne");
@@ -69,6 +71,8 @@ function StartWorldWind() {
         //console.log("element obj id: " +document.getElementById(topPickedObject.userObject.displayName));
         
         if(topPickedObject.userObject.providerID === "smartcanada"){
+
+
 
         } else if (topPickedObject.userObject.providerID === "opensensemap"){
             
@@ -171,7 +175,7 @@ function StartWorldWind() {
                 +topPickedObject.userObject.measurements[i].value+" "+topPickedObject.userObject.measurements[i].unit+"<br>Last Update: "
                 +topPickedObject.userObject.measurements[i].lastUpdated+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
                 " "+topPickedObject.userObject.measurements[i].averagingPeriod.unit+
-                "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName);
+                "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName+"<br><br>");
                
             }
 
@@ -527,6 +531,10 @@ function getPosition(el) {
       x: xPos,
       y: yPos
     };
+  }
+
+  function copyThDB(allThings){
+    allThingsDB = clone(allThings);
   }
 
  

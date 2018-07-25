@@ -11,13 +11,9 @@ var tempDweet=[];
 
 var tempOAQ=[];
 
-
 var cndTh = {};
 var cndThLoc = {};
 var cndThDtStreams = {};
-
-var cndCityParams = ['calgary','edmonton','kamloops','kluanelake','montreal','ottawa','stalbert','victoria','winnipeg','yellowknife'];
-var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montreal','Ottawa','St. Albert','Victoria','Winnipeg','Yellowknife'];
 
 var SENeth = {};
 
@@ -27,20 +23,23 @@ var SENijmThDtStreams = {};
 
 var allThingsPreviewDB=[];
 
+var all_Query_Proms = [];
+
+
+
+
 var cors_purl = "https://cors.io/?";
 
+var cndCityParams = ['calgary','edmonton','kamloops','kluanelake','montreal','ottawa','stalbert','victoria','winnipeg','yellowknife'];
+var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montreal','Ottawa','St. Albert','Victoria','Winnipeg','Yellowknife'];
 
-var all_Query_Proms = [];
+
 
     function fetchData() {
 		
 		//need to re clear all global variables for the new search!
 		
 		
-				// Purple Air . SHould be careful with this since the data is owned by them, there should be a clear license for user
-			 
-			
-			//DisableSearchButton();
 			
 			console.log("start searching....");
 		    clearRegistry();
@@ -375,11 +374,14 @@ var all_Query_Proms = [];
 
 								entryThDw.measurements = measurementsArr;
 
-								tempDweet.push(entryThDw);
+								if(latitudegot && longitudegot){
+									tempDweet.push(entryThDw);
+								}
+								
 
 							}
 
-							//console.log(tempDweet);
+							console.log(tempDweet);
 						//tempDweet.push(data.with["active_things"][i]);
 		
 					}));
@@ -959,26 +961,31 @@ var all_Query_Proms = [];
 
  function clearRegistry() {
 
-	all_Query_Proms = [];
-
-	tempPA={};
-	tempSC={};
+tempPA={};
+tempSC={};
 	tempOSM={};
-	tempSSant={};
-	tempThingSpeak=[];
-	tempDweet=[];
+tempSSant={};
+tempThingSpeak=[];
+	
+tempDweet=[];
+	
+	tempOAQ=[];
+	
+ cndTh = {};
+	 cndThLoc = {};
+	 cndThDtStreams = {};
+	
+	 SENeth = {};
+	
+	 SENijmTh = [];   
+	 SENijmThLoc = {};
+	 SENijmThDtStreams = {};
+	
+	 allThingsPreviewDB=[];
+	
+	 all_Query_Proms = [];
 
-
-	cndTh = {};
-	cndThLoc = {};
-	cndThDtStreams = {};
-
-	SENeth = {};
-
-	SENijmTh = [];   
-	SENijmThLoc = {};
-	SENijmThDtStreams = {};
-
+	
  }
 
  function DisableSearchButton(){
@@ -1107,6 +1114,10 @@ async function ExtractAllThingsLocation(){
 	  // Extract from Dweet (only latest 500 devices who tweeted), only search those which has gps data
 	  // this task has been done during queries
 
+
+	  allThingsPreviewDB = clone(allThingsPreviewDB.concat(tempDweet));
+
+
 	  // Extract from SmartSantander
 	  
 	  //extract info template
@@ -1147,6 +1158,8 @@ async function ExtractAllThingsLocation(){
 
 	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempOAQ));
 	  
+	  //copy to WorldWindManager for visualization purposes
+	  copyThDB(allThingsPreviewDB);
 
 	  console.log(allThingsPreviewDB);
 
