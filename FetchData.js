@@ -1136,6 +1136,7 @@ async function ExtractAllThingsLocation(){
 		SENethArr.longitude = SENeth[i].geometry.coordinates[0];
 		SENethArr.lastSeen = SENeth[i].properties["last_update"];
 		SENethArr.providerID = "netherlandssmartemission";
+		SENethArr.stationID = SENeth[i].properties.id;
 		allThingsPreviewDB.push(SENethArr);
 	  }
 
@@ -1170,7 +1171,23 @@ async function QueryTSFeed(channel_id){
 
 async function QuerySCFeed(channel_id){
 
-	var url = "https://api.smartcitizen.me/v0/devices"+channel_id+"/feed.json";
+	var url = "https://api.smartcitizen.me/v0/devices/"+channel_id;
+
+	var prom = fetch(url).then(function(response) {
+		if (!response.ok) {
+			EnableSearchButton();
+			throw Error(response.statusText);
+		}
+		return response.json()});
+
+		Promise.all([prom]).then(function(values){
+			return values[0];
+		});
+}
+
+async function QueryNethSEFeed(station_id){
+
+	var url = "http://data.smartemission.nl/sosemu/api/v1/timeseries?station="+station_id+"&expanded=true";
 
 	var prom = fetch(url).then(function(response) {
 		if (!response.ok) {

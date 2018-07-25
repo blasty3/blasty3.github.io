@@ -125,6 +125,37 @@ function StartWorldWind() {
                
             });
 
+         } else if (topPickedObject.userObject.providerID === "netherlandssmartemission"){
+
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+
+            var prom = QueryNethSEFeed(topPickedObject.userObject.stationID);
+
+            Promise.all([prom]).then(function(values){
+  
+                var str_to_form = "Station Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>";
+                //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
+
+                for(i=0;i<values[0].length;i++){
+
+                    str_to_form = clone(str_to_form+"Sensor: " +values[0][i].id+"<br>Description: "+values[0][i].label+"<br> Last Value: "+values[0][i].lastValue.value+" "+values[0][i].uom+"<br><br>");
+                   
+                }
+
+                
+
+                var newContent = document.createElement("div");
+                newContent.id = "existingThingsSummary";
+    
+                newContent.innerHTML = str_to_form;
+                
+                document.getElementById('thingsSummaryID').appendChild(newContent);
+               
+            });
+
          } else if (topPickedObject.userObject.providerID === "openaq"){
             
             if(!!(document.getElementById("existingThingsSummary"))){
@@ -328,6 +359,9 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
             placemark.sensorList = ThingsLocationArr[i].sensorList;
         } else if(ThingsLocationArr[i].providerID === "openaq"){
             placemark.measurements = ThingsLocationArr[i].measurements;
+        } else if(ThingsLocationArr[i].providerID === "netherlandssmartemission"){
+            placemark.stationID = ThingsLocationArr[i].stationID;
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
         } else if(ThingsLocationArr[i].providerID === "thingspeak"){
             placemark.channelID = ThingsLocationArr[i].id;
             placemark.description = ThingsLocationArr[i].description;
