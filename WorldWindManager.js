@@ -78,7 +78,7 @@ function StartWorldWind() {
             }
            
             var sensorListArr = topPickedObject.userObject.sensorList;
-            var StrToForm = "Name: " +topPickedObject.userObject.displayName+ "<br>";
+            var StrToForm = "Device Name: " +topPickedObject.userObject.displayName+ "<br>";
             var StrToAdd = "";
             for(i=0;i<sensorListArr.length;i++){
                 for(var keys in sensorListArr[i]){
@@ -93,16 +93,60 @@ function StartWorldWind() {
                 newContent.innerHTML = StrToForm;
                 document.getElementById('thingsSummaryID').appendChild(newContent);
 
-         }  else if (topPickedObject.userObject.providerID === "openaq"){
+         }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
+
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+
+            var prom = QuerySCFeed(topPickedObject.userObject.channelID);
+
+            Promise.all([prom]).then(function(values){
+
+                
+                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>";
+                //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
+
+                for(i=0;i<values[0].data.sensors.length;i++){
+
+                    str_to_form = clone(str_to_form+"Sensor: " +values[0].data.sensors.name+"<br> Description: "+values[0].data.sensors.description+"<br> Last Value: "+values[0].data.sensors.value+" "+values[0].data.sensors.unit+"<br><br>");
+                   
+                }
+
+                
+
+                var newContent = document.createElement("div");
+                newContent.id = "existingThingsSummary";
+    
+                newContent.innerHTML = str_to_form;
+                
+                document.getElementById('thingsSummaryID').appendChild(newContent);
+               
+            });
+
+         } else if (topPickedObject.userObject.providerID === "openaq"){
             
             if(!!(document.getElementById("existingThingsSummary"))){
                 var existingEl = document.getElementById("existingThingsSummary");
                 existingEl.parentNode.removeChild(existingEl);
             }
 
+            var str_to_form = "Observer Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+
+            for(i=0;i<topPickedObject.userObject.measurements.length;i++){
+
+                str_to_form = clone(str_to_form+"Sensor: " +topPickedObject.userObject.measurements[i].parameter+"<br>Value: "
+                +topPickedObject.userObject.measurements[i].value+" "+topPickedObject.userObject.measurements[i].unit+"<br>Last Update: "
+                +topPickedObject.userObject.measurements[i].lastUpdated+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
+                " "+topPickedObject.userObject.measurements[i].averagingPeriod.unit+
+                "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName);
+               
+            }
+
             var newContent = document.createElement("div");
             newContent.id = "existingThingsSummary";
-            newContent.innerHTML = "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
+            newContent.innerHTML = str_to_form;
             document.getElementById('thingsSummaryID').appendChild(newContent);
            
            
@@ -118,7 +162,7 @@ function StartWorldWind() {
             Promise.all([prom]).then(function(values){
 
                 var filt_res={};
-                var str_to_form = "Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br><br>";
 
                 for(var keys in values[0].channel){
 
@@ -137,9 +181,6 @@ function StartWorldWind() {
                 document.getElementById('thingsSummaryID').appendChild(newContent);
                
             });
-
-           
-            
 
 
          } else if (topPickedObject.userObject.providerID === "smartsantander"){
@@ -165,7 +206,7 @@ function StartWorldWind() {
 
             var newContent = document.createElement("div");
             newContent.id = "existingThingsSummary";
-            newContent.innerHTML= "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
+            newContent.innerHTML= "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
             document.getElementById('thingsSummaryID').appendChild(newContent);
         }
         //pickResult.style.cursor = "pointer";
@@ -214,7 +255,8 @@ function StartWorldWind() {
 
     // Listen for mouse moves and touch taps.
     wwd.addEventListener("click", handlePick);
-   // wwd.addEventListener("mousemove", handleMove);
+    //wwd.addEventListener("mousemove", handleMove);
+
     var tapRecognizer = new WorldWind.TapRecognizer(wwd, handlePick);
     //window.addEventListener("scroll", updatePosition, false);
     //window.addEventListener("resize", updatePosition, false);
@@ -257,6 +299,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     // to control the highlight representation.
     var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
     highlightAttributes.imageScale = 0.29;
+    highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
     
     highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
     highlightAttributes.applyLighting = false;
@@ -277,17 +320,22 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
         placemark.highlightAttributes = highlightAttributes;
         placemark.displayName = ThingsLocationArr[i].name;
         placemark.providerID = ThingsLocationArr[i].providerID;
+        
 
         if(ThingsLocationArr[i].providerID === "smartsantander"){
             placemark.content = ThingsLocationArr[i].content;
         } else if(ThingsLocationArr[i].providerID === "opensensemap"){
             placemark.sensorList = ThingsLocationArr[i].sensorList;
+        } else if(ThingsLocationArr[i].providerID === "openaq"){
+            placemark.measurements = ThingsLocationArr[i].measurements;
         } else if(ThingsLocationArr[i].providerID === "thingspeak"){
             placemark.channelID = ThingsLocationArr[i].id;
             placemark.description = ThingsLocationArr[i].description;
         } else {
             placemark.lastSeen = ThingsLocationArr[i].lastSeen;
         }
+
+       
 
         /*
         var el = document.createElement("a");

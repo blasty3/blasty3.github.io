@@ -193,7 +193,7 @@ var all_Query_Proms = [];
 			// url : https://api.openaq.org/v1/locations?limit=10000
 
 			 
-			var url = "https://api.openaq.org/v1/locations?limit=10000";
+			var url = "https://api.openaq.org/v1/latest?limit=10000";
 			
 			 var openaq_prom = fetch(url).then(function(response) {
 				if (!response.ok) {
@@ -216,8 +216,8 @@ var all_Query_Proms = [];
 
 					values[0][i].name = values[0][i].location;
 					values[0][i].providerID = "openaq";
-					values[0][i].lastSeen = values[0][i].lastUpdated;
-					delete values[0][i].lastUpdated;
+					//values[0][i].lastSeen = values[0][i].lastUpdated;
+					//delete values[0][i].lastUpdated;
 
 					if(!(values[0][i].coordinates)){
 
@@ -1015,7 +1015,8 @@ async function ExtractAllThingsLocation(){
 			"longitude" : tempSC[i].longitude,
 			"cityName" : tempSC[i].city,
 			"lastSeen" : tempSC[i]["last_reading_at"],
-			"providerID": "smartcitizen"
+			"providerID": "smartcitizen",
+			"deviceID": tempSC[i].id
 		});
 		/*
 		allThingsPreviewDB[tempSC[i].name] = {
@@ -1040,8 +1041,7 @@ async function ExtractAllThingsLocation(){
 			"providerID" : "opensensemap",
 			//"sensorList" : sensorList
 
-			//FIXME!
-			//"lastSeen" : tempOSM[i].updatedAt
+			
 			
 		};
 		for(j=0;j<tempOSM[i].sensors.length;j++){
@@ -1154,7 +1154,7 @@ async function ExtractAllThingsLocation(){
 
 async function QueryTSFeed(channel_id){
 
-	var url = "http://api.thingspeak.com/channels/"+channel_id+"/feed.json";
+	var url = "https://api.thingspeak.com/channels/"+channel_id+"/feed.json";
 
 	var prom = fetch(url).then(function(response) {
 		if (!response.ok) {
@@ -1167,4 +1167,21 @@ async function QueryTSFeed(channel_id){
 			return values[0];
 		});
 }
+
+async function QuerySCFeed(channel_id){
+
+	var url = "https://api.smartcitizen.me/v0/devices"+channel_id+"/feed.json";
+
+	var prom = fetch(url).then(function(response) {
+		if (!response.ok) {
+			EnableSearchButton();
+			throw Error(response.statusText);
+		}
+		return response.json()});
+
+		Promise.all([prom]).then(function(values){
+			return values[0];
+		});
+}
+
 
