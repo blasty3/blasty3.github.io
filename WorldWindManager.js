@@ -475,7 +475,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
       return latlonJS;
   }
 
-  function GlobeMoveToLocation(wwd,query) {
+  function GlobeMoveToLocation(query) {
     var self = this;
     self.geocoder = new WorldWind.NominatimGeocoder();
     self.goToAnimator = new WorldWind.GoToAnimator(wwd);
@@ -537,4 +537,7 @@ function getPosition(el) {
     allThingsDB = clone(allThings);
   }
 
- 
+ function SearchButtonTrig(){
+     var queryIn = document.getElementById("searchText").value;
+     GlobeMoveToLocation(queryIn);
+ }
