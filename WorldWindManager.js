@@ -8,11 +8,13 @@ function StartWorldWind() {
     // Add some image layers to the WorldWindow's globe.
     layers = [
         // Imagery layers.
-        {layer: new WorldWind.BMNGLayer(), enabled: true},
-        {layer: new WorldWind.BMNGLandsatLayer(), enabled: false},
-        {layer: new WorldWind.BingAerialLayer(null), enabled: false},
+        
+        {layer: new WorldWind.StarFieldLayer(),enabled: true},
+        //{layer: new WorldWind.BMNGLayer(), enabled: true},
+        //{layer: new WorldWind.BMNGLandsatLayer(), enabled: false},
+        //{layer: new WorldWind.BingAerialLayer(null), enabled: false},
         {layer: new WorldWind.BingAerialWithLabelsLayer(null), enabled: true},
-        {layer: new WorldWind.BingRoadsLayer(null), enabled: false},
+        //{layer: new WorldWind.BingRoadsLayer(null), enabled: false},
         {layer: new WorldWind.OpenStreetMapImageLayer(null), enabled: false},
         // Add atmosphere layer on top of all base layers.
         {layer: new WorldWind.AtmosphereLayer(), enabled: true},
@@ -61,7 +63,7 @@ function StartWorldWind() {
         var pickResult = document.getElementById("pick-result");
         
         pickResult.textContent = topPickedObject.position;
-        pickResult.style.cursor = "pointer";
+        
         
     } else if (topPickedObject) {
         //console.log("element obj id: " +document.getElementById(topPickedObject.userObject.displayName));
@@ -76,13 +78,13 @@ function StartWorldWind() {
             }
            
             var sensorListArr = topPickedObject.userObject.sensorList;
-            var StrToForm = "Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+            var StrToForm = "Name: " +topPickedObject.userObject.displayName+ "<br>";
             var StrToAdd = "";
             for(i=0;i<sensorListArr.length;i++){
                 for(var keys in sensorListArr[i]){
                     StrToAdd = clone(StrToAdd+""+keys+": " +sensorListArr[i][keys]+ "<br>");
                 }
-                StrToAdd = clone(StrToAdd+"<br><br>");
+                StrToAdd = clone(StrToAdd+"<br>");
             }
 
             StrToForm = clone(StrToForm+StrToAdd);
@@ -105,8 +107,41 @@ function StartWorldWind() {
            
            
         } else if (topPickedObject.userObject.providerID === "thingspeak"){
-            // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
+
+            if(!!(document.getElementById("existingThingsSummary"))){
+                var existingEl = document.getElementById("existingThingsSummary");
+                existingEl.parentNode.removeChild(existingEl);
+            }
+
+            var prom = QueryTSFeed(topPickedObject.userObject.channelID);
+
+            Promise.all([prom]).then(function(values){
+
+                var filt_res={};
+                var str_to_form = "Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+
+                for(var keys in values[0].channel){
+
+                    if(keys.toLowerCase().indexOf("field")>=0){
+                        str_to_form = clone(str_to_form+"Sensor: "+values[0].channel.keys+"<br> Last Value: "+values[0].feeds.keys+"<br><br>");
+                    }
+                }
+
+                str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"])
+
+                var newContent = document.createElement("div");
+                newContent.id = "existingThingsSummary";
+    
+                newContent.innerHTML = str_to_form;
+                
+                document.getElementById('thingsSummaryID').appendChild(newContent);
+               
+            });
+
            
+            
+
+
          } else if (topPickedObject.userObject.providerID === "smartsantander"){
            // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
 
@@ -114,7 +149,6 @@ function StartWorldWind() {
                 var existingEl = document.getElementById("existingThingsSummary");
                 existingEl.parentNode.removeChild(existingEl);
             }
-          
 
                 var newContent = document.createElement("div");
                 newContent.id = "existingThingsSummary";
@@ -178,7 +212,7 @@ function StartWorldWind() {
 */
 
     // Listen for mouse moves and touch taps.
-    wwd.addEventListener("mousemove", handlePick);
+    wwd.addEventListener("click", handlePick);
    // wwd.addEventListener("mousemove", handleMove);
     var tapRecognizer = new WorldWind.TapRecognizer(wwd, handlePick);
     //window.addEventListener("scroll", updatePosition, false);
@@ -192,6 +226,11 @@ function AddWWDIoTLayer(LayerToAdd){
 
 function RemoveWWDIoTLayer(LayerToRemove){
     wwd.removeLayer(LayerToRemove); 
+}
+
+//get eye view distance from the globe, output in meters.
+function getViewingRange(){
+    return wwd.navigator.range;
 }
 
 
@@ -242,6 +281,9 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
             placemark.content = ThingsLocationArr[i].content;
         } else if(ThingsLocationArr[i].providerID === "opensensemap"){
             placemark.sensorList = ThingsLocationArr[i].sensorList;
+        } else if(ThingsLocationArr[i].providerID === "thingspeak"){
+            placemark.channelID = ThingsLocationArr[i].id;
+            placemark.description = ThingsLocationArr[i].description;
         } else {
             placemark.lastSeen = ThingsLocationArr[i].lastSeen;
         }
@@ -401,3 +443,5 @@ function getPosition(el) {
       y: yPos
     };
   }
+
+ 

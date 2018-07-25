@@ -1149,7 +1149,22 @@ async function ExtractAllThingsLocation(){
 
 	  console.log(allThingsPreviewDB);
 
-	  
 
+}
+
+async function QueryTSFeed(channel_id){
+
+	var url = "http://api.thingspeak.com/channels/"+channel_id+"/feed.json";
+
+	var prom = fetch(url).then(function(response) {
+		if (!response.ok) {
+			EnableSearchButton();
+			throw Error(response.statusText);
+		}
+		return response.json()});
+
+		Promise.all([prom]).then(function(values){
+			return values[0];
+		});
 }
 
