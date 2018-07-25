@@ -163,9 +163,10 @@ function StartWorldWind() {
                 existingEl.parentNode.removeChild(existingEl);
             }
 
-            var thSumNameEl = document.getElementById("existingThingsSummary");
-            thSumNameEl.innerHTML = "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
-          
+            var newContent = document.createElement("div");
+            newContent.id = "existingThingsSummary";
+            newContent.innerHTML= "Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
+            document.getElementById('thingsSummaryID').appendChild(newContent);
         }
         //pickResult.style.cursor = "pointer";
         //pickResult.style.left = o.pageX;
