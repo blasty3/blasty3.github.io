@@ -434,7 +434,8 @@ function getViewingRange(){
 
 
 async function CreateWWDIoTRadialMark(ThingsLocationArr){
-   
+    
+    allThingsDB = clone(ThingsLocationArr);
     // Set placemark attributes.
     var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
     // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.

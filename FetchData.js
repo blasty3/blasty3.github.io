@@ -586,7 +586,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 										Promise.all([extraction_prom]).then(function(values){
 
-											copyThDB(allThingsPreviewDB);
+											
 											CreateWWDIoTRadialMark(allThingsPreviewDB);
 											EnableSearchButton();
 										});
