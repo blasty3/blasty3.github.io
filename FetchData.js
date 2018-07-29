@@ -1,3 +1,5 @@
+//Written by Udayanto Dwi Atmojo
+
 
 //requirejs([],
 
@@ -39,7 +41,8 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 		
 		//need to re clear all global variables for the new search!
 		
-		
+			DisableSearchButton();
+			DisableReturnAllDevices();
 			
 			console.log("start searching....");
 		    clearRegistry();
@@ -145,24 +148,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 	   
 					for(i = 0; i < datCpy.value.length; i++){
 	   
-						//var url = datCpy.value[i]["Locations@iot.navigationLink"];
 						
-						/*
-						fetch(url).then(function(response) {
-								if (!response.ok) {
-									EnableSearchButton();
-									throw Error(response.statusText);
-								}
-								return response;})
-								.then((response) => response.json())
-									.then(function(data){
-										var Device_ID = data.value[0]["@iot.id"];
-	   
-										cndThLoc[cityname][Device_ID] = clone(data.value[0].location.coordinates);
-										console.log(cndThLoc);
-	   
-									})
-									*/
 									var device_id = datCpy.value[i].properties.displayName;
 									all_Query_Proms.push(FetchLocationsCanada(cityname,device_id, datCpy.value[i]));
 
@@ -182,8 +168,6 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 	   
 					// get datastreams of individual sensors of each things in each city
 	   
-					
-
 				}
 
 			}))
@@ -192,7 +176,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 			// url : https://api.openaq.org/v1/locations?limit=10000
 
 			 
-			var url = "https://api.openaq.org/v1/latest?limit=10000";
+			var url = "https://api.openaq.org/v1/latest?has_geo=true&limit=10000";
 			
 			 var openaq_prom = fetch(url).then(function(response) {
 				if (!response.ok) {
@@ -387,8 +371,6 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 					}));
 
 
-				    
-
 			 }))
 
 			  //Smart Santander
@@ -441,7 +423,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 					if(lat === "0.0" && lon === "0.0"){
 
 					} else {
-						values[0].channels[j].provider == "thingspeak";
+						values[0].channels[j].providerID = "thingspeak";
 						tempThingSpeak.push(values[0].channels[j]);
 					}
 
@@ -483,7 +465,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 									if(lat == "0.0" && lon == "0.0"){
 	
 									} else {
-										values[i][j].provider = "thingspeak";
+										values[i][j].providerID = "thingspeak";
 										tempThingSpeak.push(values[i][j]);
 										//tempThingSpeak = clone(tempThingSpeak.concat(values[j]));
 									}
@@ -599,13 +581,14 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 									Promise.all(all_Query_Proms).then(function(values){
 										
 										window.alert("Search is complete!");
-										EnableSearchButton();
+										
 										var extraction_prom = ExtractAllThingsLocation();
 
 										Promise.all([extraction_prom]).then(function(values){
 
+											copyThDB(allThingsPreviewDB);
 											CreateWWDIoTRadialMark(allThingsPreviewDB);
-
+											EnableSearchButton();
 										});
 										
 
@@ -991,6 +974,7 @@ tempDweet=[];
  function DisableSearchButton(){
 	document.getElementById("SearchButton").style.color = "gray";
 	document.getElementById("SearchButton").disabled = true;
+	document.getElementById("SearchButton").value= "Searching";
  }
 
  function EnableSearchButton(){
@@ -1000,8 +984,7 @@ tempDweet=[];
  }
 
  function StartSearch(){
-	document.getElementById("SearchButton").value= "Searching";
-	DisableSearchButton();
+
 	fetchData();
  }
 
@@ -1046,13 +1029,12 @@ async function ExtractAllThingsLocation(){
 			"latitude" : tempOSM[i].currentLocation.coordinates[1],
 			"longitude" : tempOSM[i].currentLocation.coordinates[0],
 			"providerID" : "opensensemap",
-			//"sensorList" : sensorList
-
-			
+			"channelID":tempOSM[i]["_id"],
 			
 		};
 		for(j=0;j<tempOSM[i].sensors.length;j++){
 			var sensorListDet = {
+				"sensorID":tempOSM[i].sensors[j]["_id"],
 				"Type" : tempOSM[i].sensors[j].title,
 				"Unit" : tempOSM[i].sensors[j].unit,
 				"Sensor" : tempOSM[i].sensors[j].sensorType,
@@ -1152,6 +1134,7 @@ async function ExtractAllThingsLocation(){
 	  }
 
 	  // From ThingSpeak
+	  console.log(tempThingSpeak);
 	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempThingSpeak));
 
 	  // from Open AQ
@@ -1177,9 +1160,11 @@ async function QueryTSFeed(channel_id){
 		}
 		return response.json()});
 
-		Promise.all([prom]).then(function(values){
+	var prom2 =	Promise.all([prom]).then(function(values){
 			return values[0];
 		});
+
+		return prom2;
 }
 
 async function QuerySCFeed(channel_id){
@@ -1193,9 +1178,11 @@ async function QuerySCFeed(channel_id){
 		}
 		return response.json()});
 
-		Promise.all([prom]).then(function(values){
+	var prom2 =	Promise.all([prom]).then(function(values){
 			return values[0];
 		});
+
+		return prom2;
 }
 
 async function QueryNethSEFeed(station_id){
@@ -1209,9 +1196,13 @@ async function QueryNethSEFeed(station_id){
 		}
 		return response.json()});
 
-		Promise.all([prom]).then(function(values){
+	var prom2=Promise.all([prom]).then(function(values){
 			return values[0];
 		});
+
+		return prom2;
 }
+
+
 
 
