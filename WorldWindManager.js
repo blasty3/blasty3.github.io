@@ -1107,7 +1107,7 @@ function TrigSearchByCountryAndDraw(){
 
     Promise.all([prom]).then(function(values){
 
-        EnableSearchByLocationButton();
+        EnableSearchByLocation();
         EnableReturnAllDevices();
     });
 
@@ -1123,7 +1123,7 @@ function TrigSearchByCityAndDraw(){
 
     Promise.all([prom]).then(function(values){
 
-        EnableSearchByLocationButton();
+        EnableSearchByLocation();
         EnableReturnAllDevices();
     });
 }
