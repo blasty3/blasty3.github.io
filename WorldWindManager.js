@@ -10,9 +10,9 @@ var topPickedObject;
 
 var copyToPass={};
 
-var placemarkLayerAllDev;
+var placemarkLayerAllDev= new WorldWind.RenderableLayer("All Things Placemark");
 
-var placemarkLayerDevByLoc;
+var placemarkLayerDevByLoc=new WorldWind.RenderableLayer("Filtered Placemarks");
 
 var countrycodeJS = { 
     af: { code: 'af', name: 'Afghanistan' },
