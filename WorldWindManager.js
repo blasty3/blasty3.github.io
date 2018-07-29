@@ -60,6 +60,7 @@ var countrycodeJS = {
     td: { code: 'td', name: 'Chad' },
     cl: { code: 'cl', name: 'Chile' },
     cn: { code: 'cn', name: 'China' },
+    cw: { code: 'cw', name: 'Curaçao' },
     cx: { code: 'cx', name: 'Christmas Island' },
     cc: { code: 'cc', name: 'Cocos (Keeling) Islands' },
     co: { code: 'co', name: 'Colombia' },
@@ -1154,7 +1155,7 @@ async function SearchByCountryAndDraw(){
 
             for(i=0;i<allThingsDB.length;i++){
                 if(!!(allThingsDB[i].country)){
-                    console.log(countrycodeJS);
+                   // console.log(countrycodeJS);
                     console.log(allThingsDB[i].country);
                     console.log(countrycodeJS[(allThingsDB[i].country.toLowerCase())]);
                     if(countrycodeJS[(allThingsDB[i].country.toLowerCase())].name == queryLocBy.toLowerCase()){
