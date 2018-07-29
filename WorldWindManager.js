@@ -908,7 +908,7 @@ async function SearchByCountryAndDraw(){
     var queryLocBy = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].value;
 
             for(i=0;i<allThingsDB.length;i++){
-                if(allThingsDB[i].country){
+                if(!!(allThingsDB[i].country)){
                     if(countrycodeJS[allThingsDB[i].country.toLowerCase()].name == queryLocBy.toLowerCase()){
                         
                         var lat = parseFloat(allThingsDB[i].latitude);
