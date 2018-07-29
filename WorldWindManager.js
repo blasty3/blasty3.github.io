@@ -518,6 +518,8 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     // Now set up to handle highlighting.
     var highlightController = new WorldWind.HighlightController(wwd);
 
+    EnableSearchByLocation();
+
 }
 
   async function SearchLocationWithArrEl(query,arrayEl) {    
