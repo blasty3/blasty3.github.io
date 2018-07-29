@@ -1142,7 +1142,6 @@ async function ExtractAllThingsLocation(){
 	  allThingsPreviewDB = clone (allThingsPreviewDB.concat(tempOAQ));
 	  
 	  //copy to WorldWindManager for visualization purposes
-	  copyThDB(allThingsPreviewDB);
 
 	  console.log(allThingsPreviewDB);
 
