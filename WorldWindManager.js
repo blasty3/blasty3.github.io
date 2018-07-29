@@ -1126,7 +1126,6 @@ function TrigSearchByCityAndDraw(){
 
 async function SearchByCountryAndDraw(){
 
-    
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
@@ -1182,6 +1181,7 @@ async function SearchByCountryAndDraw(){
                    // console.log(countrycodeJS);
                     console.log(allThingsDB[i].country);
                     console.log(countrycodeJS[(allThingsDB[i].country.toLowerCase())]);
+
                     if(countrycodeJS[(allThingsDB[i].country.toLowerCase())].name == queryLocBy.toLowerCase()){
                         
                         var lat = parseFloat(allThingsDB[i].latitude);
@@ -1221,9 +1221,9 @@ async function SearchByCountryAndDraw(){
                         } else {
                             placemark.lastSeen = allThingsDB[i].lastSeen;
                         }
-
+                        placemarkLayerDevByLoc.addRenderable(placemark);
                     }
-                    placemarkLayerDevByLoc.addRenderable(placemark);
+                    
                 } else {
 
                 }
@@ -1331,9 +1331,9 @@ async function SearchByCityAndDraw(){
                         placemark.lastSeen = allThingsDB[i].lastSeen;
                     }
                    
-
+                    placemarkLayerDevByLoc.addRenderable(placemark);
                 }
-                placemarkLayerDevByLoc.addRenderable(placemark);
+                
             } else {
                 
             }
