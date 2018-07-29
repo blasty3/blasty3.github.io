@@ -668,13 +668,6 @@ function StartWorldWind() {
     
 }
 
-function AddWWDIoTLayer(LayerToAdd){
-    wwd.addLayer(LayerToAdd);
-}
-
-function RemoveWWDIoTLayer(LayerToRemove){
-    wwd.removeLayer(LayerToRemove); 
-}
 
 //get eye view distance from the globe, output in meters.
 function getViewingRange(){
@@ -684,6 +677,8 @@ function getViewingRange(){
 
 async function CreateWWDIoTRadialMark(ThingsLocationArr){
     
+    placemarkLayerAllDev.removeAllRenderables();
+
     allThingsDB = clone(ThingsLocationArr);
     // Set placemark attributes.
     var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
@@ -1135,6 +1130,8 @@ async function SearchByCountryAndDraw(){
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
+
+     placemarkLayerDevByLoc.removeAllRenderables();
       // Set placemark attributes.
       var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
       // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
@@ -1224,17 +1221,17 @@ async function SearchByCountryAndDraw(){
                         } else {
                             placemark.lastSeen = allThingsDB[i].lastSeen;
                         }
-                        placemarkLayerDevByLoc.addRenderable(placemark);
 
                     }
+                    placemarkLayerDevByLoc.addRenderable(placemark);
                 } else {
 
                 }
             }
             
         wwd.addLayer(placemarkLayerDevByLoc);
+        var highlightController = new WorldWind.HighlightController(wwd);
        
-    
 }
 
 async function SearchByCityAndDraw(){
@@ -1242,6 +1239,8 @@ async function SearchByCityAndDraw(){
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
+
+    placemarkLayerDevByLoc.removeAllRenderables();
       // Set placemark attributes.
       var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
       // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
@@ -1331,15 +1330,17 @@ async function SearchByCityAndDraw(){
                     } else {
                         placemark.lastSeen = allThingsDB[i].lastSeen;
                     }
-                    placemarkLayerDevByLoc.addRenderable(placemark);
+                   
 
                 }
+                placemarkLayerDevByLoc.addRenderable(placemark);
             } else {
                 
             }
         }
 
         wwd.addLayer(placemarkLayerDevByLoc);
+        var highlightController = new WorldWind.HighlightController(wwd);
     
 }
 
