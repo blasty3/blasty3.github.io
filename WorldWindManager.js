@@ -1098,10 +1098,40 @@ function removeOptions(selectbox)
     }
 }
 
-async function SearchByCountryAndDraw(){
+function TrigSearchByCountryAndDraw(){
 
     DisableSearchByLocation();
     DisableReturnAllDevices();
+
+    var prom = SearchByCountryAndDraw();
+
+    Promise.all([prom]).then(function(values){
+
+        EnableSearchByLocationButton();
+        EnableReturnAllDevices();
+    });
+
+
+}
+
+function TrigSearchByCityAndDraw(){
+
+    DisableSearchByLocation();
+    DisableReturnAllDevices();
+
+    var prom = SearchByCityAndDraw();
+
+    Promise.all([prom]).then(function(values){
+
+        EnableSearchByLocationButton();
+        EnableReturnAllDevices();
+    });
+}
+
+
+async function SearchByCountryAndDraw(){
+
+    
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
@@ -1146,10 +1176,7 @@ async function SearchByCountryAndDraw(){
      
       // Now set up to handle highlighting.
       var highlightController = new WorldWind.HighlightController(wwd);
-      
-
-
-    DisableSearchByLocation();
+    
     
     var queryLocBy = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].value;
 
@@ -1205,17 +1232,13 @@ async function SearchByCountryAndDraw(){
                 }
             }
             
-         
         wwd.addLayer(placemarkLayerDevByLoc);
-        EnableSearchByLocationButton();
-        EnableReturnAllDevices();
+       
     
 }
 
 async function SearchByCityAndDraw(){
 
-    DisableSearchByLocation();
-    DisableReturnAllDevices();
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
@@ -1317,19 +1340,17 @@ async function SearchByCityAndDraw(){
         }
 
         wwd.addLayer(placemarkLayerDevByLoc);
-        EnableSearchByLocation();
-        EnableReturnAllDevices();
     
 }
 
 function DisableSearchByLocation(){
 	document.getElementById("SearchByCountryButton").style.color = "gray";
     document.getElementById("SearchByCountryButton").disabled = true;
-    document.getElementById("SearchByCountryButton").innerHTML = "Searching...";
+    document.getElementById("SearchByCountryButton").innerHTML = "Search In Progress...";
 
     document.getElementById("SearchByCityButton").style.color = "gray";
     document.getElementById("SearchByCityButton").disabled = true;
-    document.getElementById("SearchByCityButton").innerHTML = "Searching...";
+    document.getElementById("SearchByCityButton").innerHTML = "Search In Progress...";
  }
 
  function EnableSearchByLocation(){
@@ -1348,13 +1369,12 @@ function DisableSearchByLocation(){
  function DisableReturnAllDevices(){
 	document.getElementById("ReturnAllDevices").style.color = "gray";
     document.getElementById("ReturnAllDevices").disabled = true;
-    document.getElementById("ReturnAllDevices").innerHTML = "...";
+
  }
 
  function EnableReturnAllDevices(){
 	document.getElementById("ReturnAllDevices").style.color = "black";
     document.getElementById("ReturnAllDevices").disabled = false;
-    document.getElementById("ReturnAllDevices").innerHTML = "Return All Devices!";
  }
 
 
