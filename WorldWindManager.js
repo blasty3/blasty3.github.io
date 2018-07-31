@@ -14,254 +14,15 @@ var placemarkLayerAllDev= new WorldWind.RenderableLayer("All Things Placemark");
 
 var placemarkLayerDevByLoc=new WorldWind.RenderableLayer("Filtered Placemarks");
 
-var countrycodeJS = { 
-    af: { code: 'af', name: 'Afghanistan' },
-    ax: { code: 'ax', name: 'Åland Islands' },
-    al: { code: 'al', name: 'Albania' },
-    dz: { code: 'dz', name: 'Algeria' },
-    as: { code: 'as', name: 'American Samoa' },
-    ad: { code: 'ad', name: 'AndorrA' },
-    ao: { code: 'ao', name: 'Angola' },
-    ai: { code: 'ai', name: 'Anguilla' },
-    aq: { code: 'aq', name: 'Antarctica' },
-    ag: { code: 'ag', name: 'Antigua and Barbuda' },
-    ar: { code: 'ar', name: 'Argentina' },
-    am: { code: 'am', name: 'Armenia' },
-    aw: { code: 'aw', name: 'Aruba' },
-    au: { code: 'au', name: 'Australia' },
-    at: { code: 'at', name: 'Austria' },
-    az: { code: 'az', name: 'Azerbaijan' },
-    bs: { code: 'bs', name: 'Bahamas' },
-    bh: { code: 'bh', name: 'Bahrain' },
-    bd: { code: 'bd', name: 'Bangladesh' },
-    bb: { code: 'bb', name: 'Barbados' },
-    by: { code: 'by', name: 'Belarus' },
-    be: { code: 'be', name: 'Belgium' },
-    bz: { code: 'bz', name: 'Belize' },
-    bj: { code: 'bj', name: 'Benin' },
-    bm: { code: 'bm', name: 'Bermuda' },
-    bt: { code: 'bt', name: 'Bhutan' },
-    bo: { code: 'bo', name: 'Bolivia' },
-    ba: { code: 'ba', name: 'Bosnia and Herzegovina' },
-    bw: { code: 'bw', name: 'Botswana' },
-    bv: { code: 'bv', name: 'Bouvet Island' },
-    br: { code: 'br', name: 'Brazil' },
-    io: { code: 'io', name: 'British Indian Ocean Territory' },
-    bn: { code: 'bn', name: 'Brunei Darussalam' },
-    bg: { code: 'bg', name: 'Bulgaria' },
-    bf: { code: 'bf', name: 'Burkina Faso' },
-    bi: { code: 'bi', name: 'Burundi' },
-    kh: { code: 'kh', name: 'Cambodia' },
-    cm: { code: 'cm', name: 'Cameroon' },
-    ca: { code: 'ca', name: 'Canada' },
-    cv: { code: 'cv', name: 'Cape Verde' },
-    ky: { code: 'ky', name: 'Cayman Islands' },
-    cf: { code: 'cf', name: 'Central African Republic' },
-    td: { code: 'td', name: 'Chad' },
-    cl: { code: 'cl', name: 'Chile' },
-    cn: { code: 'cn', name: 'China' },
-    cw: { code: 'cw', name: 'Curaçao' },
-    cx: { code: 'cx', name: 'Christmas Island' },
-    cc: { code: 'cc', name: 'Cocos (Keeling) Islands' },
-    co: { code: 'co', name: 'Colombia' },
-    km: { code: 'km', name: 'Comoros' },
-    cg: { code: 'cg', name: 'Congo' },
-    cd: { code: 'cd', name: 'Congo, Democratic Republic' },
-    ck: { code: 'ck', name: 'Cook Islands' },
-    cr: { code: 'cr', name: 'Costa Rica' },
-    ci: { code: 'ci', name: 'Cote D"Ivoire' },
-    hr: { code: 'hr', name: 'Croatia' },
-    cu: { code: 'cu', name: 'Cuba' },
-    cy: { code: 'cy', name: 'Cyprus' },
-    cz: { code: 'cz', name: 'Czech Republic' },
-    dk: { code: 'dk', name: 'Denmark' },
-    dj: { code: 'dj', name: 'Djibouti' },
-    dm: { code: 'dm', name: 'Dominica' },
-    do: { code: 'do', name: 'Dominican Republic' },
-    ec: { code: 'ec', name: 'Ecuador' },
-    eg: { code: 'eg', name: 'Egypt' },
-    sv: { code: 'sv', name: 'El Salvador' },
-    gq: { code: 'gq', name: 'Equatorial Guinea' },
-    er: { code: 'er', name: 'Eritrea' },
-    ee: { code: 'ee', name: 'Estonia' },
-    et: { code: 'et', name: 'Ethiopia' },
-    fk: { code: 'fk', name: 'Falkland Islands (Malvinas)' },
-    fo: { code: 'fo', name: 'Faroe Islands' },
-    fj: { code: 'fj', name: 'Fiji' },
-    fi: { code: 'fi', name: 'Finland' },
-    fr: { code: 'fr', name: 'France' },
-    gf: { code: 'gf', name: 'French Guiana' },
-    pf: { code: 'pf', name: 'French Polynesia' },
-    tf: { code: 'tf', name: 'French Southern Territories' },
-    ga: { code: 'ga', name: 'Gabon' },
-    gm: { code: 'gm', name: 'Gambia' },
-    ge: { code: 'ge', name: 'Georgia' },
-    de: { code: 'de', name: 'Germany' },
-    gh: { code: 'gh', name: 'Ghana' },
-    gi: { code: 'gi', name: 'Gibraltar' },
-    gr: { code: 'gr', name: 'Greece' },
-    gl: { code: 'gl', name: 'Greenland' },
-    gd: { code: 'gd', name: 'Grenada' },
-    gp: { code: 'gp', name: 'Guadeloupe' },
-    gu: { code: 'gu', name: 'Guam' },
-    gt: { code: 'gt', name: 'Guatemala' },
-    gg: { code: 'gg', name: 'Guernsey' },
-    gn: { code: 'gn', name: 'Guinea' },
-    gw: { code: 'gw', name: 'Guinea-Bissau' },
-    gy: { code: 'gy', name: 'Guyana' },
-    ht: { code: 'ht', name: 'Haiti' },
-    hm: { code: 'hm', name: 'Heard Island and Mcdonald Islands' },
-    va: { code: 'va', name: 'Holy See (Vatican City State)' },
-    hn: { code: 'hn', name: 'Honduras' },
-    hk: { code: 'hk', name: 'Hong Kong' },
-    hu: { code: 'hu', name: 'Hungary' },
-    is: { code: 'is', name: 'Iceland' },
-    in: { code: 'in', name: 'India' },
-    id: { code: 'id', name: 'Indonesia' },
-    ir: { code: 'ir', name: 'Iran' },
-    iq: { code: 'iq', name: 'Iraq' },
-    ie: { code: 'ie', name: 'Ireland' },
-    im: { code: 'im', name: 'Isle of Man' },
-    il: { code: 'il', name: 'Israel' },
-    it: { code: 'it', name: 'Italy' },
-    jm: { code: 'jm', name: 'Jamaica' },
-    jp: { code: 'jp', name: 'Japan' },
-    je: { code: 'je', name: 'Jersey' },
-    jo: { code: 'jo', name: 'Jordan' },
-    kz: { code: 'kz', name: 'Kazakhstan' },
-    ke: { code: 'ke', name: 'Kenya' },
-    ki: { code: 'ki', name: 'Kiribati' },
-    kp: { code: 'kp', name: 'Korea (North)' },
-    kr: { code: 'kr', name: 'Korea (South)' },
-    xk: { code: 'xk', name: 'Kosovo' },
-    kw: { code: 'kw', name: 'Kuwait' },
-    kg: { code: 'kg', name: 'Kyrgyzstan' },
-    la: { code: 'la', name: 'Laos' },
-    lv: { code: 'lv', name: 'Latvia' },
-    lb: { code: 'lb', name: 'Lebanon' },
-    ls: { code: 'ls', name: 'Lesotho' },
-    lr: { code: 'lr', name: 'Liberia' },
-    ly: { code: 'ly', name: 'Libyan Arab Jamahiriya' },
-    li: { code: 'li', name: 'Liechtenstein' },
-    lt: { code: 'lt', name: 'Lithuania' },
-    lu: { code: 'lu', name: 'Luxembourg' },
-    mo: { code: 'mo', name: 'Macao' },
-    mk: { code: 'mk', name: 'Macedonia' },
-    mg: { code: 'mg', name: 'Madagascar' },
-    mw: { code: 'mw', name: 'Malawi' },
-    my: { code: 'my', name: 'Malaysia' },
-    mv: { code: 'mv', name: 'Maldives' },
-    ml: { code: 'ml', name: 'Mali' },
-    mt: { code: 'mt', name: 'Malta' },
-    mh: { code: 'mh', name: 'Marshall Islands' },
-    mq: { code: 'mq', name: 'Martinique' },
-    mr: { code: 'mr', name: 'Mauritania' },
-    mu: { code: 'mu', name: 'Mauritius' },
-    yt: { code: 'yt', name: 'Mayotte' },
-    mx: { code: 'mx', name: 'Mexico' },
-    fm: { code: 'fm', name: 'Micronesia' },
-    md: { code: 'md', name: 'Moldova' },
-    mc: { code: 'mc', name: 'Monaco' },
-    mn: { code: 'mn', name: 'Mongolia' },
-    ms: { code: 'ms', name: 'Montserrat' },
-    ma: { code: 'ma', name: 'Morocco' },
-    mz: { code: 'mz', name: 'Mozambique' },
-    mm: { code: 'mm', name: 'Myanmar' },
-    na: { code: 'na', name: 'Namibia' },
-    nr: { code: 'nr', name: 'Nauru' },
-    np: { code: 'np', name: 'Nepal' },
-    nl: { code: 'nl', name: 'Netherlands' },
-    an: { code: 'an', name: 'Netherlands Antilles' },
-    nc: { code: 'nc', name: 'New Caledonia' },
-    nz: { code: 'nz', name: 'New Zealand' },
-    ni: { code: 'ni', name: 'Nicaragua' },
-    ne: { code: 'ne', name: 'Niger' },
-    ng: { code: 'ng', name: 'Nigeria' },
-    nu: { code: 'nu', name: 'Niue' },
-    nf: { code: 'nf', name: 'Norfolk Island' },
-    mp: { code: 'mp', name: 'Northern Mariana Islands' },
-    no: { code: 'no', name: 'Norway' },
-    om: { code: 'om', name: 'Oman' },
-    pk: { code: 'pk', name: 'Pakistan' },
-    pw: { code: 'pw', name: 'Palau' },
-    ps: { code: 'ps', name: 'Palestinian Territory, Occupied' },
-    pa: { code: 'pa', name: 'Panama' },
-    pg: { code: 'pg', name: 'Papua New Guinea' },
-    py: { code: 'py', name: 'Paraguay' },
-    pe: { code: 'pe', name: 'Peru' },
-    ph: { code: 'ph', name: 'Philippines' },
-    pn: { code: 'pn', name: 'Pitcairn' },
-    pl: { code: 'pl', name: 'Poland' },
-    pt: { code: 'pt', name: 'Portugal' },
-    pr: { code: 'pr', name: 'Puerto Rico' },
-    qa: { code: 'qa', name: 'Qatar' },
-    re: { code: 're', name: 'Reunion' },
-    ro: { code: 'ro', name: 'Romania' },
-    ru: { code: 'ru', name: 'Russia' },
-    rw: { code: 'rw', name: 'Rwanda' },
-    sh: { code: 'sh', name: 'Saint Helena' },
-    kn: { code: 'kn', name: 'Saint Kitts and Nevis' },
-    lc: { code: 'lc', name: 'Saint Lucia' },
-    pm: { code: 'pm', name: 'Saint Pierre and Miquelon' },
-    vc: { code: 'vc', name: 'Saint Vincent and the Grenadines' },
-    ws: { code: 'ws', name: 'Samoa' },
-    sm: { code: 'sm', name: 'San Marino' },
-    st: { code: 'st', name: 'Sao Tome and Principe' },
-    sa: { code: 'sa', name: 'Saudi Arabia' },
-    sn: { code: 'sn', name: 'Senegal' },
-    rs: { code: 'rs', name: 'Serbia' },
-    me: { code: 'me', name: 'Montenegro' },
-    sc: { code: 'sc', name: 'Seychelles' },
-    sl: { code: 'sl', name: 'Sierra Leone' },
-    sg: { code: 'sg', name: 'Singapore' },
-    sk: { code: 'sk', name: 'Slovakia' },
-    si: { code: 'si', name: 'Slovenia' },
-    sb: { code: 'sb', name: 'Solomon Islands' },
-    so: { code: 'so', name: 'Somalia' },
-    za: { code: 'za', name: 'South Africa' },
-    gs: { code: 'gs', name: 'South Georgia and the South Sandwich Islands' },
-    es: { code: 'es', name: 'Spain' },
-    lk: { code: 'lk', name: 'Sri Lanka' },
-    sd: { code: 'sd', name: 'Sudan' },
-    sr: { code: 'sr', name: 'Suriname' },
-    sj: { code: 'sj', name: 'Svalbard and Jan Mayen' },
-    sz: { code: 'sz', name: 'Swaziland' },
-    se: { code: 'se', name: 'Sweden' },
-    ch: { code: 'ch', name: 'Switzerland' },
-    sy: { code: 'sy', name: 'Syrian Arab Republic' },
-    tw: { code: 'tw', name: 'Taiwan, Province of China' },
-    tj: { code: 'tj', name: 'Tajikistan' },
-    tz: { code: 'tz', name: 'Tanzania' },
-    th: { code: 'th', name: 'Thailand' },
-    tl: { code: 'tl', name: 'Timor-Leste' },
-    tg: { code: 'tg', name: 'Togo' },
-    tk: { code: 'tk', name: 'Tokelau' },
-    to: { code: 'to', name: 'Tonga' },
-    tt: { code: 'tt', name: 'Trinidad and Tobago' },
-    tn: { code: 'tn', name: 'Tunisia' },
-    tr: { code: 'tr', name: 'Turkey' },
-    tm: { code: 'tm', name: 'Turkmenistan' },
-    tc: { code: 'tc', name: 'Turks and Caicos Islands' },
-    tv: { code: 'tv', name: 'Tuvalu' },
-    ug: { code: 'ug', name: 'Uganda' },
-    ua: { code: 'ua', name: 'Ukraine' },
-    ae: { code: 'ae', name: 'United Arab Emirates' },
-    gb: { code: 'gb', name: 'United Kingdom' },
-    us: { code: 'us', name: 'United States' },
-    um: { code: 'um', name: 'United States Minor Outlying Islands' },
-    uy: { code: 'uy', name: 'Uruguay' },
-    uz: { code: 'uz', name: 'Uzbekistan' },
-    vu: { code: 'vu', name: 'Vanuatu' },
-    ve: { code: 've', name: 'Venezuela' },
-    vn: { code: 'vn', name: 'Viet Nam' },
-    vg: { code: 'vg', name: 'Virgin Islands, British' },
-    vi: { code: 'vi', name: 'Virgin Islands, U.S.' },
-    wf: { code: 'wf', name: 'Wallis and Futuna' },
-    eh: { code: 'eh', name: 'Western Sahara' },
-    ye: { code: 'ye', name: 'Yemen' },
-    zm: { code: 'zm', name: 'Zambia' },
-    zw: { code: 'zw', name: 'Zimbabwe' }
-  }
+var placemarkLayerDevTS=new WorldWind.RenderableLayer("Single Thing Time Series");
+
+var polygonsLayer = new WorldWind.RenderableLayer();
+
+var timeSeriesLayer = new WorldWind.RenderableLayer();
+
+var ts_var;
+
+var time_step=0;
 
 function StartWorldWind() {
     // Create a WorldWindow for the canvas.
@@ -343,7 +104,7 @@ function StartWorldWind() {
 
         if(topPickedObject.userObject.providerID === "smartcanada"){
 
-
+            //Future updates
 
         } else if (topPickedObject.userObject.providerID === "opensensemap"){
             
@@ -353,7 +114,7 @@ function StartWorldWind() {
             }
            
             var sensorListArr = topPickedObject.userObject.sensorList;
-            var StrToForm = "Device Name: " +topPickedObject.userObject.displayName+ "<br>";
+            var StrToForm = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: openSenseMap <br>";
             var StrToAdd = "";
             for(i=0;i<sensorListArr.length;i++){
                 for(var keys in sensorListArr[i]){
@@ -401,7 +162,7 @@ function StartWorldWind() {
             Promise.all([prom]).then(function(values){
 
                 
-                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+topPickedObject.userObject.lastSeen+"<br> Provider: Smart Citizen <br><br>";
+                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(topPickedObject.userObject.lastSeen).toUTCString()+"<br> Provider: Smart Citizen <br><br>";
                 //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
 
                 document.getElementById('selectSensor').disabled = false;
@@ -449,7 +210,7 @@ function StartWorldWind() {
 
             Promise.all([prom]).then(function(values){
   
-                var str_to_form = "Station Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>";
+                var str_to_form = "Station Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(values[0].feeds[0]["created_at"]).toUTCString()+"<br> Provider: Netherlands Smart Emission Project <br><br>";
                 //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
 
                 for(i=0;i<values[0].length;i++){
@@ -480,7 +241,7 @@ function StartWorldWind() {
 
                 str_to_form = clone(str_to_form+"Sensor: " +topPickedObject.userObject.measurements[i].parameter+"<br>Value: "
                 +topPickedObject.userObject.measurements[i].value+" "+topPickedObject.userObject.measurements[i].unit+"<br>Last Update: "
-                +topPickedObject.userObject.measurements[i].lastUpdated+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
+                +new Date (topPickedObject.userObject.measurements[i].lastUpdated).toUTCString()+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
                 " "+topPickedObject.userObject.measurements[i].averagingPeriod.unit+
                 "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName+"<br><br>");
 
@@ -519,15 +280,15 @@ function StartWorldWind() {
             Promise.all([prom]).then(function(values){
 
                 var filt_res={};
-                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: ThingSpeak <br><br>";
                 i=1;
                 for(var keys in values[0].channel){
                     
                     if(keys.toLowerCase().indexOf("field")>=0){
                         //console.log(values[0].channel);
-                        str_to_form = clone(str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+values[0].feeds[values[0].feeds.length-1][keys]+"<br><br>");
+                        str_to_form = clone(str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+new Date(values[0].feeds[values[0].feeds.length-1][keys]).toUTCString()+"<br><br>");
 
-                        //FIXME!!!
+                        
                         var newContent=document.createElement('option');
                         newContent.id = "sensorOption"+i;
                         newContent.value = i;
@@ -537,7 +298,7 @@ function StartWorldWind() {
                     }
                 }
 
-                str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[values[0].feeds.length-1]["created_at"])
+                str_to_form = clone(str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"])).toUTCString();
 
                 var newContent = document.createElement("div");
                 newContent.id = "existingThingsSummary";
@@ -555,7 +316,8 @@ function StartWorldWind() {
 
 
          } else if (topPickedObject.userObject.providerID === "smartsantander"){
-           // var thSumNameEl = document.getElementById("thingsSummarySmartSantander");
+           
+           // incomplete
 
             if(!!(document.getElementById("existingThingsSummary"))){
                 var existingEl = document.getElementById("existingThingsSummary");
@@ -671,7 +433,10 @@ function StartWorldWind() {
 
 //get eye view distance from the globe, output in meters.
 function getViewingRange(){
+
+    
     return wwd.navigator.range;
+    
 }
 
 
@@ -689,7 +454,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     // Define the pivot point for the placemark at the center of its image source.
     placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
     placemarkAttributes.imageScale = 0.22;
-    //placemarkAttributes.imageColor = WorldWind.Color.WHITE;
+    
     placemarkAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
     placemarkAttributes.outlineColor = WorldWind.Color.BLUE;
     placemarkAttributes.applyLighting = true;
@@ -722,6 +487,9 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
         placemark.highlightAttributes = highlightAttributes;
         placemark.displayName = ThingsLocationArr[i].name;
         placemark.providerID = ThingsLocationArr[i].providerID;
+
+        placemark.latitude = allThingsDB[i].latitude;
+        placemark.longitude = allThingsDB[i].longitude;
         
 
         if(ThingsLocationArr[i].providerID === "smartsantander"){
@@ -1043,9 +811,9 @@ function TrigHistorical(){
             "providerID" : "openaq",
             "parameter": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
             "location" : topPickedObject.userObject.displayName,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-            "date-from": new Date(document.getElementById("startTime").value).toISOString(),
+            "date_from": new Date(document.getElementById("startTime").value).toISOString(),
             "limit": "10000",
-            "date-to": new Date(document.getElementById("endTime").value).toISOString()
+            "date_to": new Date(document.getElementById("endTime").value).toISOString()
         }
         window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
         
@@ -1078,6 +846,227 @@ function TrigHistorical(){
     //}else {
             //window.alert("Historical data is not made available by the providers");
     //}
+}
+
+
+function TrigHistoricalTimeSeries(){
+
+    wwd.removeLayer(placemarkLayerAllDev);
+    wwd.removeLayer(placemarkLayerDevByLoc);
+
+    var prom = GenerateHistoricalTimeSeries();
+
+    Promise.all([prom]).then(function(values){
+        console.log("Historical Data Acquired, proceeding...");
+    });
+}
+
+
+async function GenerateHistoricalTimeSeries(){
+
+    //obtain data first
+
+    if(topPickedObject.userObject.providerID === "smartcitizen"){
+        //var promSC = QuerySCHistoricalData();
+
+        //Promise.all([promSC]).then(function(values){
+            //copyToPass = clone(values[0]);
+            //console.log(copyToPass);
+            /*
+            var params = {
+                "providerID" : "smartcitizen",
+                "channelID": 3773,
+                "sensor_id" : 14,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "rollup": "4h",//document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
+                "from": "2018-02-05",//document.getElementById("startTime").value.getUTCFullYear()+"-"+document.getElementById("startTime").value.getUTCMonth()+"-"+document.getElementById("startTime").value.getUTCDate(),
+                "to": "2018-04-18"//document.getElementById("endTime").value.getUTCFullYear()+"-"+document.getElementById("endTime").value.getUTCMonth()+"-"+document.getElementById("endTime").value.getUTCDate()
+            }
+            window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+            */
+           
+                
+            var channelID =  topPickedObject.userObject.channelID;
+
+            var params = {
+                "sensor_id" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "rollup": document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
+                "from":  new Date(document.getElementById("startTime").value).getUTCFullYear()+"-"+new Date(document.getElementById("startTime").value).getUTCMonth()+"-"+ new Date(document.getElementById("startTime").value).getUTCDate(),
+                "to":  new Date(document.getElementById("endTime").value).getUTCFullYear()+"-"+ new Date(document.getElementById("endTime").value).getUTCMonth()+"-"+new Date(document.getElementById("endTime").value).getUTCDate()
+            }
+            
+            var prom = QuerySCHistoricalData(channelID, params);
+
+            Promise.all([prom]).then(function(values){
+                console.log(values[0]);
+
+                if(values[0].readings.length == 0){
+                    window.alert("No Historical Data available. Please choose different time frame or different sensors/devices");
+                } else {
+                    var data_arr = values[0].readings;
+                    var lat = topPickedObject.userObject.latitude;
+                    var lon = topPickedObject.userObject.longitude;
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),data_arr,{});
+                }
+
+            });
+
+        //});
+        } else
+    if (topPickedObject.userObject.providerID === "opensensemap"){
+        /*
+        var params = {
+            "providerID" : "opensensemap",
+            "yAxisLabel" : "unit",
+            "channelID" : "5a95a44cbc2d4100193f7b40",
+            "sensorID" :"5a95a44cbc2d4100193f7b46",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+            "from-date": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
+            "to-date": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
+        }
+        window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+        */
+
+            var channelID = topPickedObject.userObject.channelID;
+            var sensorID = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value;
+            var params = {
+                //"yAxisLabelType" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType,
+                //"yAxisLabelUnit" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelUnit,
+               
+                
+                "from-date": new Date(document.getElementById("startTime").value).toISOString(),
+                "to-date": new Date(document.getElementById("startTime").value).toISOString()
+            }
+
+            var prom = QueryOSMHistoricalData(channelID, sensorID, params);
+
+            Promise.all([prom]).then(function(values){
+
+
+                var valArr=[];
+
+                if(values[0].length === 0){
+                    var prom2 = QueryOSMHistoricalData(channelID,sensorID,{});
+
+                    Promise.all([prom2]).then(function(values){
+                        console.log(values[0]);
+                        for(i=0;i<values[0].length;i++){
+                            valArr.push([values[0][i].createdAt, values[0][i].value]);
+                        }
+                      
+                        
+                        var lat = topPickedObject.userObject.latitude;
+                        var lon = topPickedObject.userObject.longitude;
+                        DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+
+                    });
+
+                } else {
+                    console.log(values[0]);
+                    for(i=0;i<values[0].length;i++){
+                        valArr.push([values[0][i].createdAt, values[0][i].value]);
+                    }
+
+                   
+                    var lat = topPickedObject.userObject.latitude;
+                    var lon = topPickedObject.userObject.longitude;
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+                  
+
+                }
+
+
+               
+            });
+           
+    }  else if (topPickedObject.userObject.providerID === "openaq"){
+        /*
+        var params = {
+            "providerID" : "openaq",
+            "parameter": "pm25",
+            "location" : "Sveavägen",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+            "date-from": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
+            "date-to": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
+        }
+        window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+        */
+
+        
+        var params = {
+            "parameter": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+            "location" : topPickedObject.userObject.displayName,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+            "date_from": new Date(document.getElementById("startTime").value).toISOString(),
+            "limit": "10000",
+            "date_to": new Date(document.getElementById("endTime").value).toISOString()
+        }
+
+        var prom = QueryOAQHistoricalData(params);
+
+        Promise.all([prom]).then(function(values){
+            
+
+            var valArr=[];
+            for(i=0;i<values[0].results.length;i++){
+                valArr.push([values[0].results[i].date.utc, values[0].results[i].value]);
+            }
+
+            var lat = topPickedObject.userObject.latitude;
+            var lon = topPickedObject.userObject.longitude;
+            DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{"unit":values[0].results[0].unit});
+          
+
+        });
+        
+    //} else if (topPickedObject.userObject.providerID === "thingspeak"){
+     } else if (topPickedObject.userObject.providerID === "thingspeak"){
+
+        var channelID = topPickedObject.userObject.channelID;
+        var fieldID = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value;
+
+            var params = {
+                "results": "8000",
+                "start": new Date(document.getElementById("startTime").value).toISOString(),
+                "end" : new Date(document.getElementById("startTime").value).toISOString()
+            }
+           
+           var prom = QueryTSHistoricalData(channelID,fieldID,params);
+
+           Promise.all([prom]).then(function(values){
+            
+            var valArr=[];
+                    
+            if(values[0].feeds.length === 0){
+                var prom2 = QueryTSHistoricalData(channelID, fieldID, {});
+
+                Promise.all([prom2]).then(function(values){
+                    console.log(values[0].feeds);
+                    for(i=0;i<values[0].feeds.length;i++){
+                        valArr.push([values[0].feeds[i]["created_at"], values[0].feeds[i]["field"+fieldID]]);
+                       
+                    }
+
+                    var lat = topPickedObject.userObject.latitude;
+                    var lon = topPickedObject.userObject.longitude;
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+
+                });
+            } else {
+                for(i=0;i<values[0].feeds.length;i++){
+                    valArr.push([values[0].feeds[i]["created_at"], values[0].feeds[i]["field"+fieldID]]);
+                  
+                }
+
+                var lat = topPickedObject.userObject.latitude;
+                var lon = topPickedObject.userObject.longitude;
+                DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+
+            }
+
+           });
+
+
+        } else {
+            window.alert("Time series not available since the IoT data provider of the selected devices/sensors doesn't provide historical data");
+        }
+        
 }
 
 function FetchDataToPass(){
@@ -1123,6 +1112,20 @@ function TrigSearchByCityAndDraw(){
     });
 }
 
+function TrigReturnAllDevices(){
+
+    DisableSearchByLocation();
+    DisableReturnAllDevices();
+
+    wwd.removeLayer(placemarkLayerDevByLoc);
+
+    wwd.addLayer(placemarkLayerAllDev);
+
+        EnableSearchByLocation();
+        EnableReturnAllDevices();
+    
+}
+
 
 async function SearchByCountryAndDraw(){
 
@@ -1157,7 +1160,7 @@ async function SearchByCountryAndDraw(){
       highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
       highlightAttributes.applyLighting = false;
   
-      placemarkLayerDevByLoc = new WorldWind.RenderableLayer("Things Placemark");
+      placemarkLayerDevByLoc = new WorldWind.RenderableLayer("Filtered Placemarks");
 
           // Create the renderable layer for placemarks.
           
@@ -1175,15 +1178,18 @@ async function SearchByCountryAndDraw(){
     
     
     var queryLocBy = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].value;
-
+    
             for(i=0;i<allThingsDB.length;i++){
                 if(!!(allThingsDB[i].country)){
                    // console.log(countrycodeJS);
-                    console.log(allThingsDB[i].country);
+                    //console.log(allThingsDB[i].country);
+                    console.log(queryLocBy);
                     console.log(countrycodeJS[(allThingsDB[i].country.toLowerCase())]);
 
-                    if(countrycodeJS[(allThingsDB[i].country.toLowerCase())].name == queryLocBy.toLowerCase()){
+                    if(allThingsDB[i].country.toLowerCase() == queryLocBy.toLowerCase()){
                         
+                        console.log("matching name:" +allThingsDB[i].name);
+
                         var lat = parseFloat(allThingsDB[i].latitude);
                         var lon = parseFloat(allThingsDB[i].longitude);
                 
@@ -1196,6 +1202,8 @@ async function SearchByCountryAndDraw(){
                         placemark.highlightAttributes = highlightAttributes;
                         placemark.displayName = allThingsDB[i].name;
                         placemark.providerID = allThingsDB[i].providerID;
+                        placemark.latitude = allThingsDB[i].latitude;
+                        placemark.longitude = allThingsDB[i].longitude;
                         
                 
                         if(allThingsDB[i].providerID === "smartsantander"){
@@ -1228,7 +1236,9 @@ async function SearchByCountryAndDraw(){
 
                 }
             }
-            
+
+        console.log("Done including placemarks in a country");
+        console.log(placemarkLayerDevByLoc);
         wwd.addLayer(placemarkLayerDevByLoc);
         var highlightController = new WorldWind.HighlightController(wwd);
        
@@ -1267,11 +1277,8 @@ async function SearchByCityAndDraw(){
       highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
       highlightAttributes.applyLighting = false;
   
-      placemarkLayerDevByLoc = new WorldWind.RenderableLayer("Things Placemark");
-  
-         
-  
-  
+      placemarkLayerDevByLoc = new WorldWind.RenderableLayer("Filtered Placemarks");
+
           // Create the renderable layer for placemarks.
           
           
@@ -1305,6 +1312,8 @@ async function SearchByCityAndDraw(){
                     placemark.highlightAttributes = highlightAttributes;
                     placemark.displayName = allThingsDB[i].name;
                     placemark.providerID = allThingsDB[i].providerID;
+                    placemark.latitude = allThingsDB[i].latitude;
+                    placemark.longitude = allThingsDB[i].longitude;
                     
             
                     if(allThingsDB[i].providerID === "smartsantander"){
@@ -1379,7 +1388,505 @@ function DisableSearchByLocation(){
  }
 
 
+
+
+async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,params){
+
+    var animationStep = document.getElementById("AnimTimeStep").value;
+
+    timeSeriesLayer.removeAllRenderables();
+    timeSeriesLayer.displayName = "Time Series Polygons";
+    timeSeriesLayer.enabled = true;
+
+        
+    data_val_arr.reverse();
+
+
+    console.log(data_val_arr);
+
+    //data needs to be feature scaled first for presentation purpose
+    var raw_data_only_arr=[];
+
+    var feature_scaled_data_arr = [];
+
+    for(i=0;i<data_val_arr.length;i++){
+        
+        raw_data_only_arr.push(data_val_arr[i][1]);
+    }
+
+    var data_max = Math.max(parseFloat(raw_data_only_arr));
+
+    for(i=0;i<raw_data_only_arr.length;i++){
+        var feature_scaled_data = (parseFloat(raw_data_only_arr[i])-0)/(data_max-0);
+        feature_scaled_data_arr.push(feature_scaled_data);
+    }
+
+    console.log(raw_data_only_arr);
+    console.log(feature_scaled_data_arr);
+   
+    
+    var polygon_arr = [];
+    var real_data_arr = [];
+    var time_stamp_arr = [];
+
+    var sideAPosLat = Th_Lat+0.001;
+    var sideBPosLat = Th_Lat+0.001;
+    var sideCPosLat =Th_Lat+0.01;
+    var sideDPosLat = Th_Lat+0.01;
+    
+    var sideAPosLon = Th_Lon+0.001;
+    var sideBPosLon = Th_Lon+0.01;
+    var sideCPosLon = Th_Lon+0.01;
+    var sideDPosLon = Th_Lon+0.001;
+
+    
+
+
+        for(i=0;i<feature_scaled_data_arr.length;i++){
+
+            var boundaries = [];
+
+            var real_data = raw_data_only_arr[i];
+            var data_val = feature_scaled_data_arr[i];
+            var data_val_timestamp = data_val_arr[i][0];
+        
+            // outer boundary
+            // should be close to the things's lat and lon
+            boundaries[0] = []; 
+            boundaries[0].push(new WorldWind.Position(sideAPosLat, sideAPosLon, data_val*2e3));
+            boundaries[0].push(new WorldWind.Position(sideBPosLat, sideBPosLon, data_val*2e3));
+            boundaries[0].push(new WorldWind.Position(sideCPosLat, sideCPosLon, data_val*2e3));
+            boundaries[0].push(new WorldWind.Position(sideDPosLat, sideDPosLon, data_val*2e3));
+
+            // Create the polygon and assign its attributes.
+
+            var polygon = new WorldWind.Polygon(boundaries, null);
+            polygon.altitudeMode = WorldWind.ABSOLUTE;
+            polygon.extrude = true; // extrude the polygon edges to the ground
+
+            var polygonAttributes = new WorldWind.ShapeAttributes(null);
+            polygonAttributes.drawInterior = true;
+            polygonAttributes.drawOutline = true;
+            polygonAttributes.outlineColor = WorldWind.Color.BLUE;
+            polygonAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
+            polygonAttributes.drawVerticals = polygon.extrude;
+            polygonAttributes.applyLighting = true;
+
+            polygon.attributes = polygonAttributes;
+
+            // Create and assign the polygon's highlight attributes.
+            var highlightAttributes = new WorldWind.ShapeAttributes(polygonAttributes);
+            highlightAttributes.outlineColor = WorldWind.Color.RED;
+            highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
+            polygon.highlightAttributes = highlightAttributes;
+
+            polygon_arr.push(polygon);
+
+            
+            var textAttributes = new WorldWind.TextAttributes(null);
+
+            var textTimeStampAttributes = new WorldWind.TextAttributes(null);
+           
+
+            // A list of prominent peaks in the State of Oregon. Retrieved from:
+            // https://en.wikipedia.org/wiki/List_of_Ultras_of_the_United_States
+
+
+        // Set up the common text attributes.
+        textAttributes.color = WorldWind.Color.CYAN;
+
+        // Set the depth test property such that the terrain does not obscure the text.
+        textAttributes.depthTest = false;
+
+        // Set up the common text attributes.
+        textTimeStampAttributes.color = WorldWind.Color.RED;
+
+        // Set the depth test property such that the terrain does not obscure the text.
+        textTimeStampAttributes.depthTest = false;
+
+        // For each peak, create a text shape.
+        
+            
+            if(JSON.stringify(params) == "{}"){
+
+                var textPosition = new WorldWind.Position(Th_Lat, Th_Lon, data_val*23e2);
+
+                var text = new WorldWind.GeographicText(textPosition, String(real_data));
+
+                var textTimeStampPosition = new WorldWind.Position(Th_Lat-0.03, Th_Lon, 5e2);
+
+                var textTimeStamp = new WorldWind.GeographicText(textTimeStampPosition, new Date(data_val_timestamp).toUTCString());
+
+                // Set the text attributes for this shape.
+                text.attributes = textAttributes;
+                
+                textTimeStamp.attributes = textTimeStampAttributes;
+
+                real_data_arr.push(text);
+                time_stamp_arr.push(textTimeStamp);
+
+            } else {
+
+                if(!!(params.unit)){
+
+                    console.log(real_data+" "+params.unit);
+
+                    //+" "+params.unit
+                    var textPosition = new WorldWind.Position(Th_Lat, Th_Lon, data_val*23e2);
+
+                    var text = new WorldWind.GeographicText(textPosition, String(real_data)+" "+params.unit);
+
+                    
+                    var textTimeStampPosition = new WorldWind.Position(Th_Lat-0.03, Th_Lon, 5e2);
+    
+                    var textTimeStamp = new WorldWind.GeographicText(textTimeStampPosition, new Date(data_val_timestamp).toUTCString());
+    
+                    // Set the text attributes for this shape.
+                    text.attributes = textAttributes;
+                    
+                    textTimeStamp.attributes = textTimeStampAttributes;
+    
+                    real_data_arr.push(text);
+                    time_stamp_arr.push(textTimeStamp);
+
+                } else {
+
+                    var textPosition = new WorldWind.Position(Th_Lat, Th_Lon, data_val*23e2);
+
+                    var text = new WorldWind.GeographicText(textPosition, String(real_data));
+
+                    
+
+                    var textTimeStampPosition = new WorldWind.Position(Th_Lat-0.03, Th_Lon, 5e2);
+    
+                    var textTimeStamp = new WorldWind.GeographicText(textTimeStampPosition, new Date(data_val_timestamp).toUTCString());
+    
+                    // Set the text attributes for this shape.
+                    text.attributes = textAttributes;
+                    
+                    textTimeStamp.attributes = textTimeStampAttributes;
+    
+                    real_data_arr.push(text);
+                    time_stamp_arr.push(textTimeStamp);
+                }
+
+               
+            }
+
+            
+
+            // Add the text to the layer.
+            
+        }
+
+        console.log(polygon_arr);
+        console.log(real_data_arr);
+        console.log(time_stamp_arr);
+
+        wwd.addLayer(timeSeriesLayer);
+
+        
+        wwd.navigator.range = 38000;
+        wwd.navigator.tilt = 60;
+        wwd.navigator.lookAtLocation = {
+           "latitude": Th_Lat,
+           "longitude": Th_Lon
+       }
+       
+
+        function animateTimeSeries() {
+            
+            wwd.redraw();
+            if(time_step === (polygon_arr.length-1)){
+                time_step = 0;
+            }
+
+            console.log("I'm executing... step:" +time_step+ "time now is: " +new Date().getTime());
+
+            wwd.removeLayer(timeSeriesLayer);
+            timeSeriesLayer.removeAllRenderables();
+
+            timeSeriesLayer.addRenderable(polygon_arr[time_step]);
+            timeSeriesLayer.addRenderable(real_data_arr[time_step]);
+            timeSeriesLayer.addRenderable(time_stamp_arr[time_step]);
+            wwd.addLayer(timeSeriesLayer);
+           
+            time_step = ++time_step;
+            
+        }
+
+        // Run the animation at the desired frequency.
+
+       
+
+       ts_var = window.setInterval(animateTimeSeries, animationStep);
+
+
+
+    // Add the polygon to the layer and the layer to the WorldWindow's layer list.
+  
+    // Now set up to handle highlighting.
+    var highlightController = new WorldWind.HighlightController(wwd);
+}
+
+function stopTimeSeriesAnimation(){
+    wwd.removeLayer(timeSeriesLayer);
+    window.clearInterval(ts_var);
+    wwd.addLayer(placemarkLayerAllDev);
+    time_step=0;
+    EnableReturnAllDevices();
+
+  
+}
+
  
-// reference, not in actual file to save time from parsing
- 
+// as reference, not in an actual in order to save time from parsing JSON file
+var countrycodeJS = { 
+    af: { code: 'af', name: 'Afghanistan' },
+    ax: { code: 'ax', name: 'Åland Islands' },
+    al: { code: 'al', name: 'Albania' },
+    dz: { code: 'dz', name: 'Algeria' },
+    as: { code: 'as', name: 'American Samoa' },
+    ad: { code: 'ad', name: 'AndorrA' },
+    ao: { code: 'ao', name: 'Angola' },
+    ai: { code: 'ai', name: 'Anguilla' },
+    aq: { code: 'aq', name: 'Antarctica' },
+    ag: { code: 'ag', name: 'Antigua and Barbuda' },
+    ar: { code: 'ar', name: 'Argentina' },
+    am: { code: 'am', name: 'Armenia' },
+    aw: { code: 'aw', name: 'Aruba' },
+    au: { code: 'au', name: 'Australia' },
+    at: { code: 'at', name: 'Austria' },
+    az: { code: 'az', name: 'Azerbaijan' },
+    bs: { code: 'bs', name: 'Bahamas' },
+    bh: { code: 'bh', name: 'Bahrain' },
+    bd: { code: 'bd', name: 'Bangladesh' },
+    bb: { code: 'bb', name: 'Barbados' },
+    by: { code: 'by', name: 'Belarus' },
+    be: { code: 'be', name: 'Belgium' },
+    bz: { code: 'bz', name: 'Belize' },
+    bj: { code: 'bj', name: 'Benin' },
+    bm: { code: 'bm', name: 'Bermuda' },
+    bt: { code: 'bt', name: 'Bhutan' },
+    bo: { code: 'bo', name: 'Bolivia' },
+    ba: { code: 'ba', name: 'Bosnia and Herzegovina' },
+    bw: { code: 'bw', name: 'Botswana' },
+    bv: { code: 'bv', name: 'Bouvet Island' },
+    br: { code: 'br', name: 'Brazil' },
+    io: { code: 'io', name: 'British Indian Ocean Territory' },
+    bn: { code: 'bn', name: 'Brunei Darussalam' },
+    bg: { code: 'bg', name: 'Bulgaria' },
+    bf: { code: 'bf', name: 'Burkina Faso' },
+    bi: { code: 'bi', name: 'Burundi' },
+    kh: { code: 'kh', name: 'Cambodia' },
+    cm: { code: 'cm', name: 'Cameroon' },
+    ca: { code: 'ca', name: 'Canada' },
+    cv: { code: 'cv', name: 'Cape Verde' },
+    ky: { code: 'ky', name: 'Cayman Islands' },
+    cf: { code: 'cf', name: 'Central African Republic' },
+    td: { code: 'td', name: 'Chad' },
+    cl: { code: 'cl', name: 'Chile' },
+    cn: { code: 'cn', name: 'China' },
+    cw: { code: 'cw', name: 'Curaçao' },
+    cx: { code: 'cx', name: 'Christmas Island' },
+    cc: { code: 'cc', name: 'Cocos (Keeling) Islands' },
+    co: { code: 'co', name: 'Colombia' },
+    km: { code: 'km', name: 'Comoros' },
+    cg: { code: 'cg', name: 'Congo' },
+    cd: { code: 'cd', name: 'Congo, Democratic Republic' },
+    ck: { code: 'ck', name: 'Cook Islands' },
+    cr: { code: 'cr', name: 'Costa Rica' },
+    ci: { code: 'ci', name: 'Cote D"Ivoire' },
+    hr: { code: 'hr', name: 'Croatia' },
+    cu: { code: 'cu', name: 'Cuba' },
+    cy: { code: 'cy', name: 'Cyprus' },
+    cz: { code: 'cz', name: 'Czech Republic' },
+    dk: { code: 'dk', name: 'Denmark' },
+    dj: { code: 'dj', name: 'Djibouti' },
+    dm: { code: 'dm', name: 'Dominica' },
+    do: { code: 'do', name: 'Dominican Republic' },
+    ec: { code: 'ec', name: 'Ecuador' },
+    eg: { code: 'eg', name: 'Egypt' },
+    sv: { code: 'sv', name: 'El Salvador' },
+    gq: { code: 'gq', name: 'Equatorial Guinea' },
+    er: { code: 'er', name: 'Eritrea' },
+    ee: { code: 'ee', name: 'Estonia' },
+    et: { code: 'et', name: 'Ethiopia' },
+    fk: { code: 'fk', name: 'Falkland Islands (Malvinas)' },
+    fo: { code: 'fo', name: 'Faroe Islands' },
+    fj: { code: 'fj', name: 'Fiji' },
+    fi: { code: 'fi', name: 'Finland' },
+    fr: { code: 'fr', name: 'France' },
+    gf: { code: 'gf', name: 'French Guiana' },
+    pf: { code: 'pf', name: 'French Polynesia' },
+    tf: { code: 'tf', name: 'French Southern Territories' },
+    ga: { code: 'ga', name: 'Gabon' },
+    gm: { code: 'gm', name: 'Gambia' },
+    ge: { code: 'ge', name: 'Georgia' },
+    de: { code: 'de', name: 'Germany' },
+    gh: { code: 'gh', name: 'Ghana' },
+    gi: { code: 'gi', name: 'Gibraltar' },
+    gr: { code: 'gr', name: 'Greece' },
+    gl: { code: 'gl', name: 'Greenland' },
+    gd: { code: 'gd', name: 'Grenada' },
+    gp: { code: 'gp', name: 'Guadeloupe' },
+    gu: { code: 'gu', name: 'Guam' },
+    gt: { code: 'gt', name: 'Guatemala' },
+    gg: { code: 'gg', name: 'Guernsey' },
+    gn: { code: 'gn', name: 'Guinea' },
+    gw: { code: 'gw', name: 'Guinea-Bissau' },
+    gy: { code: 'gy', name: 'Guyana' },
+    ht: { code: 'ht', name: 'Haiti' },
+    hm: { code: 'hm', name: 'Heard Island and Mcdonald Islands' },
+    va: { code: 'va', name: 'Holy See (Vatican City State)' },
+    hn: { code: 'hn', name: 'Honduras' },
+    hk: { code: 'hk', name: 'Hong Kong' },
+    hu: { code: 'hu', name: 'Hungary' },
+    is: { code: 'is', name: 'Iceland' },
+    in: { code: 'in', name: 'India' },
+    id: { code: 'id', name: 'Indonesia' },
+    ir: { code: 'ir', name: 'Iran' },
+    iq: { code: 'iq', name: 'Iraq' },
+    ie: { code: 'ie', name: 'Ireland' },
+    im: { code: 'im', name: 'Isle of Man' },
+    il: { code: 'il', name: 'Israel' },
+    it: { code: 'it', name: 'Italy' },
+    jm: { code: 'jm', name: 'Jamaica' },
+    jp: { code: 'jp', name: 'Japan' },
+    je: { code: 'je', name: 'Jersey' },
+    jo: { code: 'jo', name: 'Jordan' },
+    kz: { code: 'kz', name: 'Kazakhstan' },
+    ke: { code: 'ke', name: 'Kenya' },
+    ki: { code: 'ki', name: 'Kiribati' },
+    kp: { code: 'kp', name: 'Korea (North)' },
+    kr: { code: 'kr', name: 'Korea (South)' },
+    xk: { code: 'xk', name: 'Kosovo' },
+    kw: { code: 'kw', name: 'Kuwait' },
+    kg: { code: 'kg', name: 'Kyrgyzstan' },
+    la: { code: 'la', name: 'Laos' },
+    lv: { code: 'lv', name: 'Latvia' },
+    lb: { code: 'lb', name: 'Lebanon' },
+    ls: { code: 'ls', name: 'Lesotho' },
+    lr: { code: 'lr', name: 'Liberia' },
+    ly: { code: 'ly', name: 'Libyan Arab Jamahiriya' },
+    li: { code: 'li', name: 'Liechtenstein' },
+    lt: { code: 'lt', name: 'Lithuania' },
+    lu: { code: 'lu', name: 'Luxembourg' },
+    mo: { code: 'mo', name: 'Macao' },
+    mk: { code: 'mk', name: 'Macedonia' },
+    mg: { code: 'mg', name: 'Madagascar' },
+    mw: { code: 'mw', name: 'Malawi' },
+    my: { code: 'my', name: 'Malaysia' },
+    mv: { code: 'mv', name: 'Maldives' },
+    ml: { code: 'ml', name: 'Mali' },
+    mt: { code: 'mt', name: 'Malta' },
+    mh: { code: 'mh', name: 'Marshall Islands' },
+    mq: { code: 'mq', name: 'Martinique' },
+    mr: { code: 'mr', name: 'Mauritania' },
+    mu: { code: 'mu', name: 'Mauritius' },
+    yt: { code: 'yt', name: 'Mayotte' },
+    mx: { code: 'mx', name: 'Mexico' },
+    fm: { code: 'fm', name: 'Micronesia' },
+    md: { code: 'md', name: 'Moldova' },
+    mc: { code: 'mc', name: 'Monaco' },
+    mn: { code: 'mn', name: 'Mongolia' },
+    ms: { code: 'ms', name: 'Montserrat' },
+    ma: { code: 'ma', name: 'Morocco' },
+    mz: { code: 'mz', name: 'Mozambique' },
+    mm: { code: 'mm', name: 'Myanmar' },
+    na: { code: 'na', name: 'Namibia' },
+    nr: { code: 'nr', name: 'Nauru' },
+    np: { code: 'np', name: 'Nepal' },
+    nl: { code: 'nl', name: 'Netherlands' },
+    an: { code: 'an', name: 'Netherlands Antilles' },
+    nc: { code: 'nc', name: 'New Caledonia' },
+    nz: { code: 'nz', name: 'New Zealand' },
+    ni: { code: 'ni', name: 'Nicaragua' },
+    ne: { code: 'ne', name: 'Niger' },
+    ng: { code: 'ng', name: 'Nigeria' },
+    nu: { code: 'nu', name: 'Niue' },
+    nf: { code: 'nf', name: 'Norfolk Island' },
+    mp: { code: 'mp', name: 'Northern Mariana Islands' },
+    no: { code: 'no', name: 'Norway' },
+    om: { code: 'om', name: 'Oman' },
+    pk: { code: 'pk', name: 'Pakistan' },
+    pw: { code: 'pw', name: 'Palau' },
+    ps: { code: 'ps', name: 'Palestinian Territory, Occupied' },
+    pa: { code: 'pa', name: 'Panama' },
+    pg: { code: 'pg', name: 'Papua New Guinea' },
+    py: { code: 'py', name: 'Paraguay' },
+    pe: { code: 'pe', name: 'Peru' },
+    ph: { code: 'ph', name: 'Philippines' },
+    pn: { code: 'pn', name: 'Pitcairn' },
+    pl: { code: 'pl', name: 'Poland' },
+    pt: { code: 'pt', name: 'Portugal' },
+    pr: { code: 'pr', name: 'Puerto Rico' },
+    qa: { code: 'qa', name: 'Qatar' },
+    re: { code: 're', name: 'Reunion' },
+    ro: { code: 'ro', name: 'Romania' },
+    ru: { code: 'ru', name: 'Russia' },
+    rw: { code: 'rw', name: 'Rwanda' },
+    sh: { code: 'sh', name: 'Saint Helena' },
+    kn: { code: 'kn', name: 'Saint Kitts and Nevis' },
+    lc: { code: 'lc', name: 'Saint Lucia' },
+    pm: { code: 'pm', name: 'Saint Pierre and Miquelon' },
+    vc: { code: 'vc', name: 'Saint Vincent and the Grenadines' },
+    ws: { code: 'ws', name: 'Samoa' },
+    sm: { code: 'sm', name: 'San Marino' },
+    st: { code: 'st', name: 'Sao Tome and Principe' },
+    sa: { code: 'sa', name: 'Saudi Arabia' },
+    sn: { code: 'sn', name: 'Senegal' },
+    rs: { code: 'rs', name: 'Serbia' },
+    me: { code: 'me', name: 'Montenegro' },
+    sc: { code: 'sc', name: 'Seychelles' },
+    sl: { code: 'sl', name: 'Sierra Leone' },
+    sg: { code: 'sg', name: 'Singapore' },
+    sk: { code: 'sk', name: 'Slovakia' },
+    si: { code: 'si', name: 'Slovenia' },
+    sb: { code: 'sb', name: 'Solomon Islands' },
+    so: { code: 'so', name: 'Somalia' },
+    za: { code: 'za', name: 'South Africa' },
+    gs: { code: 'gs', name: 'South Georgia and the South Sandwich Islands' },
+    es: { code: 'es', name: 'Spain' },
+    lk: { code: 'lk', name: 'Sri Lanka' },
+    sd: { code: 'sd', name: 'Sudan' },
+    sr: { code: 'sr', name: 'Suriname' },
+    sj: { code: 'sj', name: 'Svalbard and Jan Mayen' },
+    sz: { code: 'sz', name: 'Swaziland' },
+    se: { code: 'se', name: 'Sweden' },
+    ch: { code: 'ch', name: 'Switzerland' },
+    sy: { code: 'sy', name: 'Syrian Arab Republic' },
+    tw: { code: 'tw', name: 'Taiwan, Province of China' },
+    tj: { code: 'tj', name: 'Tajikistan' },
+    tz: { code: 'tz', name: 'Tanzania' },
+    th: { code: 'th', name: 'Thailand' },
+    tl: { code: 'tl', name: 'Timor-Leste' },
+    tg: { code: 'tg', name: 'Togo' },
+    tk: { code: 'tk', name: 'Tokelau' },
+    to: { code: 'to', name: 'Tonga' },
+    tt: { code: 'tt', name: 'Trinidad and Tobago' },
+    tn: { code: 'tn', name: 'Tunisia' },
+    tr: { code: 'tr', name: 'Turkey' },
+    tm: { code: 'tm', name: 'Turkmenistan' },
+    tc: { code: 'tc', name: 'Turks and Caicos Islands' },
+    tv: { code: 'tv', name: 'Tuvalu' },
+    ug: { code: 'ug', name: 'Uganda' },
+    ua: { code: 'ua', name: 'Ukraine' },
+    ae: { code: 'ae', name: 'United Arab Emirates' },
+    gb: { code: 'gb', name: 'United Kingdom' },
+    us: { code: 'us', name: 'United States' },
+    um: { code: 'um', name: 'United States Minor Outlying Islands' },
+    uy: { code: 'uy', name: 'Uruguay' },
+    uz: { code: 'uz', name: 'Uzbekistan' },
+    vu: { code: 'vu', name: 'Vanuatu' },
+    ve: { code: 've', name: 'Venezuela' },
+    vn: { code: 'vn', name: 'Viet Nam' },
+    vg: { code: 'vg', name: 'Virgin Islands, British' },
+    vi: { code: 'vi', name: 'Virgin Islands, U.S.' },
+    wf: { code: 'wf', name: 'Wallis and Futuna' },
+    eh: { code: 'eh', name: 'Western Sahara' },
+    ye: { code: 'ye', name: 'Yemen' },
+    zm: { code: 'zm', name: 'Zambia' },
+    zw: { code: 'zw', name: 'Zimbabwe' }
+  }
   

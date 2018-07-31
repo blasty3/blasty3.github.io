@@ -96,7 +96,7 @@ function drawCrosshairs(revArr,yAxisLabel) {
                 var prom = QuerySCHistoricalData(channelID,data);
                 //yAxisLabel = val["sensor_key"]
                 Promise.all([prom]).then(function(values){
-                    drawCrosshairs(values[0].readings), values[0]["sensor_key"];
+                    drawCrosshairs(values[0].readings, values[0]["sensor_key"]);
 
                     document.getElementById("generateCSV").innerHTML = "Generate and Download CSV";
                     document.getElementById("generateCSV").disabled = false;

@@ -22,7 +22,7 @@
     <script data-main="example1" src="/require.min.js"></script> 
            <script src="/example1.js" type="text/javascript" ></script>-->
 
-           
+    <link rel="stylesheet" type="text/css" href="/resources.css">      
      <script src="/FetchData.js" type="text/javascript" ></script>
      <script src="/WorldWindManager.js" type="text/javascript" ></script>
      <script src="/GVisualization.js" type="text/javascript" ></script>
@@ -43,7 +43,7 @@
     </canvas>
 </div> -->
 
-<span id="pick-result"></span>
+
 
 <div class="container">
     <div class="jumbotron hidden-xs">
@@ -58,6 +58,7 @@
            <br>
         </div>
         <div class="col-sm-8" id="globe">
+            <span id="TimeSeriesTimeStamp" class="TimeSeriesTimeStamp"></span>
             <canvas id="canvasOne" width="850" height="850"
                     style="width: 100%; height: auto; background-color: black;">
                 Your browser does not support HTML5 Canvas.
@@ -324,6 +325,7 @@
                         <button type="button" id="SearchByCountryButton" onclick="TrigSearchByCountryAndDraw()" disabled="disabled">Search By Country</button>
                         <br>
                     <label for="searchByCity">Search by city: </label>
+                    <br>
                     <input type="text" id="searchByCity" name="searchByCity"></input>
                     <br>
                     <button type="button" id="SearchByCityButton" onclick="TrigSearchByCityAndDraw()" disabled="disabled">Search By City</button>
@@ -332,16 +334,16 @@
 			</fieldset> 
 			<br>
             <!-- <button type="button" id="SearchButton" onclick="StartSearch()" >Search!</button> -->
-            <button type="button" id="ReturnAllDevices" disabled="disabled">Return All Devices!</button>
-            <button type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button>
+            <button type="button" id="ReturnAllDevices" disabled="disabled" onclick="TrigReturnAllDevices()" >Return All Devices!</button>
+             <button type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button> 
             <br>
             <h4>Destination</h4>
             <div class="input-group" id="searchBox">
                 <input type="text" class="form-control" placeholder="GoTo" id="searchText"/>
                 <span class="input-group-btn">
-                    <button id="searchButton" class="btn btn-primary" onclick="SearchButtonTrig()" type="button" disabled="disabled">
+                    <!-- <button id="searchButton" class="btn btn-primary" onclick="SearchButtonTrig()" type="button" disabled="disabled">
                         <span class="glyphicon glyphicon-search"></span>
-                    </button>
+                    </button> -->
                 </span>
             </div>
             <br>
@@ -356,13 +358,13 @@
                      <input name="endTime" type="datetime" id="endTime"  disabled="disabled"/>
                      <br>
                      <label for="spanTimeNum">Span Between Readings: </label>
-                     <input type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled">
+                     <input type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled" min="1">
                      <select name="spanTimeUnit" id="spanTimeUnit" disabled="disabled">
-                            <option value="y" selected="selected">years</option>
+                            <option value="y">years</option>
                             <option value="M">months</option>
                             <option value="w">weeks</option>
                             <option value="d">days</option>
-                            <option value="h">hours</option>
+                            <option value="h" selected="selected">hours</option>
                             <option value="m">minutes</option>
                             <option value="s">seconds</option>
                             <option value="ms">milliseconds</option>
@@ -371,7 +373,14 @@
                      <label for="selectSensor">Sensor to see: </label>
                      <select name="selectSensor" id="selectSensor" disabled="disabled"> </select>
                      <br>
-                     <button type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart!</button>
+                     <button type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart</button>
+                     <br>
+                     <label for="AnimTimeStep">Time Step (ms): </label>
+                     <input type="number" name="AnimTimeStep" id="AnimTimeStep" min="1000" step="100" value="1000">
+                     <br>
+                     <button type="button" id="submitStartEndDateTimeTimeSeries" onclick="TrigHistoricalTimeSeries()">Observe Time Series</button>
+                     <br>
+                     <button type="button" id="stopTimeSeries" onclick="stopTimeSeriesAnimation()">Stop Time Series</button>
                 </form>
               </div>
             </div>
