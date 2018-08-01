@@ -2,7 +2,7 @@
 
 var cors_purl = "https://cors.io/?";
 
-var clonedData;
+var clonedData = [];
 
 
 function initVisualization(){
@@ -20,10 +20,10 @@ function drawCrosshairs(revArr,yAxisLabel) {
     for(i=0;i<revArr.length;i++){
         
         revArrTimeFormttd.push([new Date(revArr[i][0]),parseFloat(revArr[i][1])]);
-        
+        clonedData.push([new Date(revArr[i][0]),revArr[i][1].replace('.', ',')]);
     }
 
-    clonedData = clone(revArrTimeFormttd);
+    //clonedData = clone(revArrTimeFormttd);
 
     console.log(revArrTimeFormttd);
 
@@ -343,10 +343,11 @@ function generateAndDownloadCSV(){
         clonedData.forEach(function(infoArray, index) {
         dataString = infoArray.join(';');
         csvContent += index < clonedData.length ? dataString + '\n' : dataString;
+        
         });
 
         // The download function takes a CSV string, the filename and mimeType as parameters
-        // Scroll/look down at the bottom of this snippet to see how download is called
+        
         var download = function(content, fileName, mimeType) {
         var a = document.createElement('a');
         mimeType = mimeType || 'application/octet-stream';
@@ -364,7 +365,7 @@ function generateAndDownloadCSV(){
             a.click();
             document.body.removeChild(a);
         } else {
-            location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+            location.href = 'data:application/octet-stream,' + encodeURIComponent(content); 
         }
         }
 
