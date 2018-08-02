@@ -43,7 +43,7 @@ function StartWorldWind() {
         // WorldWindow UI layers.
         {layer: new WorldWind.CompassLayer(), enabled: true},
         {layer: new WorldWind.CoordinatesDisplayLayer(wwd), enabled: true},
-        {layer: new WorldWind.ViewControlsLayer(wwd), enabled: true}
+        //{layer: new WorldWind.ViewControlsLayer(wwd), enabled: true}
     ];
 
     for (var l = 0; l < layers.length; l++) {
@@ -769,7 +769,7 @@ function TrigHistorical(){
                 "from":  new Date(document.getElementById("startTime").value).getUTCFullYear()+"-"+new Date(document.getElementById("startTime").value).getUTCMonth()+"-"+ new Date(document.getElementById("startTime").value).getUTCDate(),
                 "to":  new Date(document.getElementById("endTime").value).getUTCFullYear()+"-"+ new Date(document.getElementById("endTime").value).getUTCMonth()+"-"+new Date(document.getElementById("endTime").value).getUTCDate()
             }
-            window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+            window.open("/visualization.html"+toHtmlQuery_(params));
         //});
         } else
     if (topPickedObject.userObject.providerID === "opensensemap"){
@@ -793,7 +793,7 @@ function TrigHistorical(){
                 "from-date": new Date(document.getElementById("startTime").value).toISOString(),
                 "to-date": new Date(document.getElementById("startTime").value).toISOString()
             }
-            window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+            window.open("/visualization.html"+toHtmlQuery_(params));
     }  else if (topPickedObject.userObject.providerID === "openaq"){
         /*
         var params = {
@@ -815,7 +815,7 @@ function TrigHistorical(){
             "limit": "10000",
             "date_to": new Date(document.getElementById("endTime").value).toISOString()
         }
-        window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+        window.open("/visualization.html"+toHtmlQuery_(params));
         
     //} else if (topPickedObject.userObject.providerID === "thingspeak"){
      } else if (topPickedObject.userObject.providerID === "thingspeak"){
@@ -829,7 +829,7 @@ function TrigHistorical(){
                 "end" : new Date(document.getElementById("startTime").value).toISOString()
             }
 
-            window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+            window.open("/visualization.html"+toHtmlQuery_(params));
         } else {
             window.alert("Historical data is not made available by the IoT data provider of the selected devices/sensors");
         }
