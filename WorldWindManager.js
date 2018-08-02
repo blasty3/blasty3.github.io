@@ -1240,6 +1240,8 @@ async function SearchByCountryAndDraw(){
         console.log("Done including placemarks in a country");
         console.log(placemarkLayerDevByLoc);
         wwd.addLayer(placemarkLayerDevByLoc);
+
+        wwd.redraw();
         var highlightController = new WorldWind.HighlightController(wwd);
        
 }
@@ -1349,6 +1351,8 @@ async function SearchByCityAndDraw(){
         }
 
         wwd.addLayer(placemarkLayerDevByLoc);
+
+        wwd.redraw();
         var highlightController = new WorldWind.HighlightController(wwd);
     
 }
