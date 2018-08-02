@@ -1424,8 +1424,13 @@ async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,params){
     var data_max = Math.max(parseFloat(raw_data_only_arr));
 
     for(i=0;i<raw_data_only_arr.length;i++){
-        var feature_scaled_data = (parseFloat(raw_data_only_arr[i])-0)/(data_max-0);
-        feature_scaled_data_arr.push(feature_scaled_data);
+        if(raw_data_only_arr[i]>0){
+            var feature_scaled_data = (parseFloat(raw_data_only_arr[i])-0)/(data_max-0);
+            feature_scaled_data_arr.push(feature_scaled_data);
+        } else {
+            feature_scaled_data_arr.push(parseFloat(raw_data_only_arr[i]));
+        }
+        
     }
 
     console.log(raw_data_only_arr);
