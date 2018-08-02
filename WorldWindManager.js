@@ -528,6 +528,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
 
     // Add the placemarks layer to the WorldWindow's layer list.
     wwd.addLayer(placemarkLayerAllDev);
+    wwd.redraw();
     // Now set up to handle highlighting.
     var highlightController = new WorldWind.HighlightController(wwd);
 
@@ -1120,6 +1121,8 @@ function TrigReturnAllDevices(){
     wwd.removeLayer(placemarkLayerDevByLoc);
 
     wwd.addLayer(placemarkLayerAllDev);
+
+    wwd.redraw();
 
         EnableSearchByLocation();
         EnableReturnAllDevices();
