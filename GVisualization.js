@@ -20,7 +20,7 @@ function drawCrosshairs(revArr,yAxisLabel) {
     for(i=0;i<revArr.length;i++){
         
         revArrTimeFormttd.push([new Date(revArr[i][0]),parseFloat(revArr[i][1])]);
-        clonedData.push([new Date(revArr[i][0]),revArr[i][1].replace('.', ',')]);
+        clonedData.push([new Date(revArr[i][0]),revArr[i][1].toString().replace('.', ',')]);
     }
 
     //clonedData = clone(revArrTimeFormttd);
