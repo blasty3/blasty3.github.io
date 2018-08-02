@@ -1183,12 +1183,12 @@ async function SearchByCountryAndDraw(){
                 if(!!(allThingsDB[i].country)){
                    // console.log(countrycodeJS);
                     //console.log(allThingsDB[i].country);
-                    console.log(queryLocBy);
-                    console.log(countrycodeJS[(allThingsDB[i].country.toLowerCase())]);
+                    //console.log(queryLocBy);
+                    //console.log(countrycodeJS[(allThingsDB[i].country.toLowerCase())]);
 
                     if(allThingsDB[i].country.toLowerCase() == queryLocBy.toLowerCase()){
                         
-                        console.log("matching name:" +allThingsDB[i].name);
+                        //console.log("matching name:" +allThingsDB[i].name);
 
                         var lat = parseFloat(allThingsDB[i].latitude);
                         var lon = parseFloat(allThingsDB[i].longitude);
