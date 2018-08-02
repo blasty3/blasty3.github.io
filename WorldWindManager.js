@@ -1641,9 +1641,8 @@ function stopTimeSeriesAnimation(){
     window.clearInterval(ts_var);
     wwd.addLayer(placemarkLayerAllDev);
     time_step=0;
+    wwd.redraw();
     EnableReturnAllDevices();
-
-  
 }
 
  
