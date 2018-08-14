@@ -24,6 +24,9 @@ var ts_var;
 
 var time_step=0;
 
+var markerCluster;
+
+
 function StartWorldWind() {
     // Create a WorldWindow for the canvas.
     wwd = new WorldWind.WorldWindow("canvasOne");
@@ -99,260 +102,267 @@ function StartWorldWind() {
             }   
         }
         */
+       console.log(topPickedObject);
 
-       removeOptions(document.getElementById("selectSensor"));
-
-        if(topPickedObject.userObject.providerID === "smartcanada"){
-
-            //Future updates
-
-        } else if (topPickedObject.userObject.providerID === "opensensemap"){
+       if(!!(topPickedObject.userObject.placemarkType)){
             
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
-           
-            var sensorListArr = topPickedObject.userObject.sensorList;
-            var StrToForm = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: openSenseMap <br>";
-            var StrToAdd = "";
-            for(i=0;i<sensorListArr.length;i++){
-                for(var keys in sensorListArr[i]){
+            removeOptions(document.getElementById("selectSensor"));
 
-                    if(!(keys === "sensorID")){
-                        StrToAdd = clone(StrToAdd+""+keys+": " +sensorListArr[i][keys]+ "<br>");
-                    }
-                   
-                }
-                var newContent=document.createElement('option');
-                newContent.id = "sensorOption"+i;
-                newContent.yAxisLabelType = sensorListArr[i].Type;
-                newContent.yAxisLabelUnit = sensorListArr[i].Unit;
-                newContent.value = sensorListArr[i]["sensorID"];
-                newContent.innerHTML = sensorListArr[i].Type;
-                document.getElementById('selectSensor').appendChild(newContent);
+            if(topPickedObject.userObject.providerID === "smartcanada"){
 
-                StrToAdd = clone(StrToAdd+"<br>");
-            }
+                //Future updates
 
-            StrToForm = clone(StrToForm+StrToAdd);
-            var newContent = document.createElement("div");
-                newContent.className ="thingsSummary";
-                newContent.id = "existingThingsSummary";
-                newContent.innerHTML = StrToForm;
-                document.getElementById('thingsSummaryID').appendChild(newContent);
-
-
-                document.getElementById('startTime').disabled = false;
-                document.getElementById('endTime').disabled = false;
-                document.getElementById('selectSensor').disabled = false;
-                document.getElementById('submitStartEndDateTime').disabled = false;
-
-         }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
-
-          
-
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
-
-            var prom = QuerySCFeed(topPickedObject.userObject.channelID);
-
-            Promise.all([prom]).then(function(values){
-
+            } else if (topPickedObject.userObject.providerID === "opensensemap"){
                 
-                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(topPickedObject.userObject.lastSeen).toUTCString()+"<br> Provider: Smart Citizen <br><br>";
-                //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+            
+                var sensorListArr = topPickedObject.userObject.sensorList;
+                var StrToForm = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: openSenseMap <br>";
+                var StrToAdd = "";
+                for(i=0;i<sensorListArr.length;i++){
+                    for(var keys in sensorListArr[i]){
 
-                document.getElementById('selectSensor').disabled = false;
-
-                for(i=0;i<values[0].data.sensors.length;i++){
-
-                    str_to_form = clone(str_to_form+"Sensor: " +values[0].data.sensors[i].name+"<br> Description: "+values[0].data.sensors[i].description+"<br> Last Value: "+values[0].data.sensors[i].value+" "+values[0].data.sensors[i].unit+"<br><br>");
+                        if(!(keys === "sensorID")){
+                            StrToAdd = clone(StrToAdd+""+keys+": " +sensorListArr[i][keys]+ "<br>");
+                        }
                     
-                    //document.getElementById('selectSensor').options[i] = document.createElement('option').option.values[0].data.sensors[i];
-                    //document.getElementById('selectSensor').options[i].text = values[0].data.sensors[i].id;
+                    }
                     var newContent=document.createElement('option');
                     newContent.id = "sensorOption"+i;
-                    
-                    newContent.value = values[0].data.sensors[i].id;
-                    newContent.innerHTML = values[0].data.sensors[i].name;
+                    newContent.yAxisLabelType = sensorListArr[i].Type;
+                    newContent.yAxisLabelUnit = sensorListArr[i].Unit;
+                    newContent.value = sensorListArr[i]["sensorID"];
+                    newContent.innerHTML = sensorListArr[i].Type;
                     document.getElementById('selectSensor').appendChild(newContent);
+
+                    StrToAdd = clone(StrToAdd+"<br>");
                 }
 
-
+                StrToForm = clone(StrToForm+StrToAdd);
                 var newContent = document.createElement("div");
-                newContent.id = "existingThingsSummary";
-                newContent.className ="thingsSummary";
-                newContent.innerHTML = str_to_form;
-                
-                document.getElementById('thingsSummaryID').appendChild(newContent);
+                    newContent.className ="thingsSummary";
+                    newContent.id = "existingThingsSummary";
+                    newContent.innerHTML = StrToForm;
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                document.getElementById('startTime').disabled = false;
-                document.getElementById('endTime').disabled = false;
-                document.getElementById('spanTimeNum').disabled = false;
-                document.getElementById('spanTimeUnit').disabled = false;
-                document.getElementById('selectSensor').disabled = false;
-                document.getElementById('submitStartEndDateTime').disabled = false;
-                
-               
-            });
 
-         } else if (topPickedObject.userObject.providerID === "netherlandssmartemission"){
+                    document.getElementById('startTime').disabled = false;
+                    document.getElementById('endTime').disabled = false;
+                    document.getElementById('selectSensor').disabled = false;
+                    document.getElementById('submitStartEndDateTime').disabled = false;
 
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
+            }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
 
-            var prom = QueryNethSEFeed(topPickedObject.userObject.stationID);
-
-            Promise.all([prom]).then(function(values){
-  
-                var str_to_form = "Station Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(values[0].feeds[0]["created_at"]).toUTCString()+"<br> Provider: Netherlands Smart Emission Project <br><br>";
-                //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
-
-                for(i=0;i<values[0].length;i++){
-
-                    str_to_form = clone(str_to_form+"Sensor: " +values[0][i].id+"<br>Description: "+values[0][i].label+"<br> Last Value: "+values[0][i].lastValue.value+" "+values[0][i].uom+"<br><br>");
-                   
-                }
-
-                var newContent = document.createElement("div");
-                newContent.id = "existingThingsSummary";
-                newContent.className ="thingsSummary";
-                newContent.innerHTML = str_to_form;
-                
-                document.getElementById('thingsSummaryID').appendChild(newContent);
-               
-            });
-
-         } else if (topPickedObject.userObject.providerID === "openaq"){
             
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
 
-            var str_to_form = "Observer Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
 
-            for(i=0;i<topPickedObject.userObject.measurements.length;i++){
+                var prom = QuerySCFeed(topPickedObject.userObject.channelID);
 
-                str_to_form = clone(str_to_form+"Sensor: " +topPickedObject.userObject.measurements[i].parameter+"<br>Value: "
-                +topPickedObject.userObject.measurements[i].value+" "+topPickedObject.userObject.measurements[i].unit+"<br>Last Update: "
-                +new Date (topPickedObject.userObject.measurements[i].lastUpdated).toUTCString()+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
-                " "+topPickedObject.userObject.measurements[i].averagingPeriod.unit+
-                "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName+"<br><br>");
+                Promise.all([prom]).then(function(values){
 
-                
-                var newContent=document.createElement('option');
-                newContent.id = "sensorOption"+i;
-                newContent.value = topPickedObject.userObject.measurements[i].parameter;
-                newContent.innerHTML = topPickedObject.userObject.measurements[i].parameter;
-                document.getElementById('selectSensor').appendChild(newContent);
-               
-            }
-
-            var newContent = document.createElement("div");
-            newContent.id = "existingThingsSummary";
-            newContent.className ="thingsSummary";
-            newContent.innerHTML = str_to_form;
-            document.getElementById('thingsSummaryID').appendChild(newContent);
-
-           
-
-                document.getElementById('startTime').disabled = false;
-                document.getElementById('endTime').disabled = false;
-                document.getElementById('selectSensor').disabled = false;
-                document.getElementById('submitStartEndDateTime').disabled = false;
-           
-           
-        } else if (topPickedObject.userObject.providerID === "thingspeak"){
-
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
-
-            var prom = QueryTSFeed(topPickedObject.userObject.channelID);
-
-            Promise.all([prom]).then(function(values){
-
-                var filt_res={};
-                var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: ThingSpeak <br><br>";
-                i=1;
-                for(var keys in values[0].channel){
                     
-                    if(keys.toLowerCase().indexOf("field")>=0){
-                        //console.log(values[0].channel);
-                        str_to_form = clone(str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+new Date(values[0].feeds[values[0].feeds.length-1][keys]).toUTCString()+"<br><br>");
+                    var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(topPickedObject.userObject.lastSeen).toUTCString()+"<br> Provider: Smart Citizen <br><br>";
+                    //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
 
+                    document.getElementById('selectSensor').disabled = false;
+
+                    for(i=0;i<values[0].data.sensors.length;i++){
+
+                        str_to_form = clone(str_to_form+"Sensor: " +values[0].data.sensors[i].name+"<br> Description: "+values[0].data.sensors[i].description+"<br> Last Value: "+values[0].data.sensors[i].value+" "+values[0].data.sensors[i].unit+"<br><br>");
                         
+                        //document.getElementById('selectSensor').options[i] = document.createElement('option').option.values[0].data.sensors[i];
+                        //document.getElementById('selectSensor').options[i].text = values[0].data.sensors[i].id;
                         var newContent=document.createElement('option');
                         newContent.id = "sensorOption"+i;
-                        newContent.value = i;
-                        newContent.innerHTML = values[0].channel[keys];
+                        
+                        newContent.value = values[0].data.sensors[i].id;
+                        newContent.innerHTML = values[0].data.sensors[i].name;
                         document.getElementById('selectSensor').appendChild(newContent);
-                        i++;
                     }
+
+
+                    var newContent = document.createElement("div");
+                    newContent.id = "existingThingsSummary";
+                    newContent.className ="thingsSummary";
+                    newContent.innerHTML = str_to_form;
+                    
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                    document.getElementById('startTime').disabled = false;
+                    document.getElementById('endTime').disabled = false;
+                    document.getElementById('spanTimeNum').disabled = false;
+                    document.getElementById('spanTimeUnit').disabled = false;
+                    document.getElementById('selectSensor').disabled = false;
+                    document.getElementById('submitStartEndDateTime').disabled = false;
+                    
+                
+                });
+
+            } else if (topPickedObject.userObject.providerID === "netherlandssmartemission"){
+
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
                 }
 
-                str_to_form = clone(str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"])).toUTCString();
+                var prom = QueryNethSEFeed(topPickedObject.userObject.stationID);
+
+                Promise.all([prom]).then(function(values){
+    
+                    var str_to_form = "Station Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: "+new Date(values[0].feeds[0]["created_at"]).toUTCString()+"<br> Provider: Netherlands Smart Emission Project <br><br>";
+                    //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
+
+                    for(i=0;i<values[0].length;i++){
+
+                        str_to_form = clone(str_to_form+"Sensor: " +values[0][i].id+"<br>Description: "+values[0][i].label+"<br> Last Value: "+values[0][i].lastValue.value+" "+values[0][i].uom+"<br><br>");
+                    
+                    }
+
+                    var newContent = document.createElement("div");
+                    newContent.id = "existingThingsSummary";
+                    newContent.className ="thingsSummary";
+                    newContent.innerHTML = str_to_form;
+                    
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
+                
+                });
+
+            } else if (topPickedObject.userObject.providerID === "openaq"){
+                
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+
+                var str_to_form = "Observer Name: " +topPickedObject.userObject.displayName+ "<br><br>";
+
+                for(i=0;i<topPickedObject.userObject.measurements.length;i++){
+
+                    str_to_form = clone(str_to_form+"Sensor: " +topPickedObject.userObject.measurements[i].parameter+"<br>Value: "
+                    +topPickedObject.userObject.measurements[i].value+" "+topPickedObject.userObject.measurements[i].unit+"<br>Last Update: "
+                    +new Date (topPickedObject.userObject.measurements[i].lastUpdated).toUTCString()+"<br>Averaging Period: "+topPickedObject.userObject.measurements[i].averagingPeriod.value+
+                    " "+topPickedObject.userObject.measurements[i].averagingPeriod.unit+
+                    "<br> Source: " +topPickedObject.userObject.measurements[i].sourceName+"<br><br>");
+
+                    
+                    var newContent=document.createElement('option');
+                    newContent.id = "sensorOption"+i;
+                    newContent.value = topPickedObject.userObject.measurements[i].parameter;
+                    newContent.innerHTML = topPickedObject.userObject.measurements[i].parameter;
+                    document.getElementById('selectSensor').appendChild(newContent);
+                
+                }
 
                 var newContent = document.createElement("div");
                 newContent.id = "existingThingsSummary";
                 newContent.className ="thingsSummary";
                 newContent.innerHTML = str_to_form;
-                
                 document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                document.getElementById('startTime').disabled = false;
-                document.getElementById('endTime').disabled = false;
-                document.getElementById('selectSensor').disabled = false;
-                document.getElementById('submitStartEndDateTime').disabled = false;
-               
-            });
+            
+
+                    document.getElementById('startTime').disabled = false;
+                    document.getElementById('endTime').disabled = false;
+                    document.getElementById('selectSensor').disabled = false;
+                    document.getElementById('submitStartEndDateTime').disabled = false;
+            
+            
+            } else if (topPickedObject.userObject.providerID === "thingspeak"){
+
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+
+                var prom = QueryTSFeed(topPickedObject.userObject.channelID);
+
+                Promise.all([prom]).then(function(values){
+
+                    var filt_res={};
+                    var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: ThingSpeak <br><br>";
+                    i=1;
+                    for(var keys in values[0].channel){
+                        
+                        if(keys.toLowerCase().indexOf("field")>=0){
+                            //console.log(values[0].channel);
+                            str_to_form = clone(str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+new Date(values[0].feeds[values[0].feeds.length-1][keys]).toUTCString()+"<br><br>");
+
+                            
+                            var newContent=document.createElement('option');
+                            newContent.id = "sensorOption"+i;
+                            newContent.value = i;
+                            newContent.innerHTML = values[0].channel[keys];
+                            document.getElementById('selectSensor').appendChild(newContent);
+                            i++;
+                        }
+                    }
+
+                    str_to_form = clone(str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"])).toUTCString();
+
+                    var newContent = document.createElement("div");
+                    newContent.id = "existingThingsSummary";
+                    newContent.className ="thingsSummary";
+                    newContent.innerHTML = str_to_form;
+                    
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                    document.getElementById('startTime').disabled = false;
+                    document.getElementById('endTime').disabled = false;
+                    document.getElementById('selectSensor').disabled = false;
+                    document.getElementById('submitStartEndDateTime').disabled = false;
+                
+                });
 
 
-         } else if (topPickedObject.userObject.providerID === "smartsantander"){
-           
-           // incomplete
+            } else if (topPickedObject.userObject.providerID === "smartsantander"){
+            
+            // incomplete
 
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
-            }
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+
+                    var newContent = document.createElement("div");
+                    newContent.id = "existingThingsSummary";
+                    
+                    newContent.innerHTML = topPickedObject.userObject.content;
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
+                
+
+            } else {
+
+                
+
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
 
                 var newContent = document.createElement("div");
                 newContent.id = "existingThingsSummary";
-                
-                newContent.innerHTML = topPickedObject.userObject.content;
+                newContent.className ="thingsSummary";
+                newContent.innerHTML= "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
                 document.getElementById('thingsSummaryID').appendChild(newContent);
-            
 
-        } else {
-
-            
-
-            if(!!(document.getElementById("existingThingsSummary"))){
-                var existingEl = document.getElementById("existingThingsSummary");
-                existingEl.parentNode.removeChild(existingEl);
+                    document.getElementById('startTime').disabled = true;
+                    document.getElementById('endTime').disabled = true;
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
+                    document.getElementById('selectSensor').disabled = true;
+                    document.getElementById('submitStartEndDateTime').disabled = true;
             }
 
-            var newContent = document.createElement("div");
-            newContent.id = "existingThingsSummary";
-            newContent.className ="thingsSummary";
-            newContent.innerHTML= "Device Name: " +topPickedObject.userObject.displayName+ "<br> Last Seen: " +topPickedObject.userObject.lastSeen;
-            document.getElementById('thingsSummaryID').appendChild(newContent);
+       }
 
-                document.getElementById('startTime').disabled = true;
-                document.getElementById('endTime').disabled = true;
-                document.getElementById('spanTimeNum').disabled = true;
-                document.getElementById('spanTimeUnit').disabled = true;
-                document.getElementById('selectSensor').disabled = true;
-                document.getElementById('submitStartEndDateTime').disabled = true;
-        }
+      
         //pickResult.style.cursor = "pointer";
         //pickResult.style.left = o.pageX;
         //pickResult.style.top = o.pageY;
@@ -518,7 +528,7 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
 
 
         // Create the renderable layer for placemarks.
-        
+        placemark.placemarkType = "iothings";
         
         // Add the placemark to the layer.
         placemarkLayerAllDev.addRenderable(placemark);
@@ -535,6 +545,220 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
     EnableSearchByLocation();
 
 }
+
+
+async function CreateClusteredThings(ThingsLocationArr){
+
+    if(!(typeof markerCluster == 'undefined')){
+        markerCluster.removeClusterLayer();
+        wwd.redraw();
+        delete markerCluster;
+    }
+
+   // if (typeof markerCluster == 'undefined') {
+        markerCluster = new MarkerCluster(wwd, {
+                maxLevel: 7,
+                smooth: false,
+                name: "All Things Cluster",
+                maxCount: 3000,
+                //clusterSources: null,
+                //attributeColor: null,
+                radius: 45
+        });
+   // }
+
+    //placemarkLayerAllDev.removeAllRenderables();
+
+    allThingsDB = clone(ThingsLocationArr);
+    // Set placemark attributes.
+    var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
+    // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
+    //placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
+    //placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
+    placemarkAttributes.imageSource = "images/thing_node.png";
+    // Define the pivot point for the placemark at the center of its image source.
+    placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
+    placemarkAttributes.imageScale = 0.22;
+    
+    placemarkAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
+    placemarkAttributes.outlineColor = WorldWind.Color.BLUE;
+    placemarkAttributes.applyLighting = true;
+
+    // Set placemark highlight attributes.
+    // Note that the normal attributes are specified as the default highlight attributes so that all properties
+    // are identical except the image scale. You could instead vary the color, image, or other property
+    // to control the highlight representation.
+    var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+    highlightAttributes.imageScale = 0.3;
+    //highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
+    highlightAttributes.imageSource = "images/thing_node_highlight.png";
+    
+    highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
+    highlightAttributes.applyLighting = false;
+
+    //placemarkLayerAllDev = new WorldWind.RenderableLayer("Things Placemark");
+
+    for(i=0;i<ThingsLocationArr.length;i++){
+        
+        var lat = parseFloat(ThingsLocationArr[i].latitude);
+        var lon = parseFloat(ThingsLocationArr[i].longitude);
+
+        /*
+        // Create the placemark with the attributes defined above.
+        var placemarkPosition = new WorldWind.Position(lat, lon, 0);
+        var placemark = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
+        // Draw placemark at altitude defined above.
+        placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+        // Assign highlight attributes for the placemark.
+        placemark.highlightAttributes = highlightAttributes;
+        placemark.displayName = ThingsLocationArr[i].name;
+        placemark.providerID = ThingsLocationArr[i].providerID;
+
+        placemark.latitude = allThingsDB[i].latitude;
+        placemark.longitude = allThingsDB[i].longitude;
+        
+
+        if(ThingsLocationArr[i].providerID === "smartsantander"){
+            placemark.content = ThingsLocationArr[i].content;
+        } else if(ThingsLocationArr[i].providerID === "opensensemap"){
+            placemark.sensorList = ThingsLocationArr[i].sensorList;
+            placemark.channelID = ThingsLocationArr[i].channelID;
+            
+        } else if(ThingsLocationArr[i].providerID === "openaq"){
+            placemark.measurements = ThingsLocationArr[i].measurements;
+            
+        } else if(ThingsLocationArr[i].providerID === "netherlandssmartemission"){
+            placemark.stationID = ThingsLocationArr[i].stationID;
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+        } else if(ThingsLocationArr[i].providerID === "thingspeak"){
+            placemark.channelID = ThingsLocationArr[i].id;
+            placemark.description = ThingsLocationArr[i].description;
+            
+        } else if(ThingsLocationArr[i].providerID === "smartcitizen"){
+            placemark.channelID = ThingsLocationArr[i].deviceID;
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+            
+        } else {
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+        }
+
+        placemark.placemarkType = "iothings";
+        */
+        // Create the renderable layer for placemarks.
+        
+
+        var params = {};
+
+        params.placemarkAttributes = placemarkAttributes;
+        params.highlightAttributes = highlightAttributes;
+
+        params.info = {};
+
+        params.info.displayName = ThingsLocationArr[i].name;
+        params.info.providerID = ThingsLocationArr[i].providerID;
+
+        params.info.latitude = allThingsDB[i].latitude;
+        params.info.longitude = allThingsDB[i].longitude;
+        
+
+        if(ThingsLocationArr[i].providerID === "smartsantander"){
+            params.info.content = ThingsLocationArr[i].content;
+        } else if(ThingsLocationArr[i].providerID === "opensensemap"){
+            params.info.sensorList = ThingsLocationArr[i].sensorList;
+            params.info.channelID = ThingsLocationArr[i].channelID;
+            
+        } else if(ThingsLocationArr[i].providerID === "openaq"){
+            params.info.measurements = ThingsLocationArr[i].measurements;
+            
+        } else if(ThingsLocationArr[i].providerID === "netherlandssmartemission"){
+            params.info.stationID = ThingsLocationArr[i].stationID;
+            params.info.lastSeen = ThingsLocationArr[i].lastSeen;
+        } else if(ThingsLocationArr[i].providerID === "thingspeak"){
+            params.info.channelID = ThingsLocationArr[i].id;
+            params.info.description = ThingsLocationArr[i].description;
+            
+        } else if(ThingsLocationArr[i].providerID === "smartcitizen"){
+            params.info.channelID = ThingsLocationArr[i].deviceID;
+            params.info.lastSeen = ThingsLocationArr[i].lastSeen;
+            
+        } else {
+            params.info.lastSeen = ThingsLocationArr[i].lastSeen;
+        }
+
+        params.info.placemarkType = "iothings";
+
+        //console.log(params);
+
+        var placemark = markerCluster.newInitPlacemark([lat, lon], placemarkAttributes,{
+            imageSource: "images/thing_node.png", 
+            label: ""
+        }, params);
+        
+        /*
+       var placemarkPosition = new WorldWind.Position(lat, lon, 0);
+       var placemark = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
+       // Draw placemark at altitude defined above.
+       placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+       */
+       
+       /*
+        placemark.highlightAttributes = highlightAttributes;
+        placemark.displayName = ThingsLocationArr[i].name;
+        placemark.providerID = ThingsLocationArr[i].providerID;
+
+        placemark.latitude = allThingsDB[i].latitude;
+        placemark.longitude = allThingsDB[i].longitude;
+        
+
+        if(ThingsLocationArr[i].providerID === "smartsantander"){
+            placemark.content = ThingsLocationArr[i].content;
+        } else if(ThingsLocationArr[i].providerID === "opensensemap"){
+            placemark.sensorList = ThingsLocationArr[i].sensorList;
+            placemark.channelID = ThingsLocationArr[i].channelID;
+            
+        } else if(ThingsLocationArr[i].providerID === "openaq"){
+            placemark.measurements = ThingsLocationArr[i].measurements;
+            
+        } else if(ThingsLocationArr[i].providerID === "netherlandssmartemission"){
+            placemark.stationID = ThingsLocationArr[i].stationID;
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+        } else if(ThingsLocationArr[i].providerID === "thingspeak"){
+            placemark.channelID = ThingsLocationArr[i].id;
+            placemark.description = ThingsLocationArr[i].description;
+            
+        } else if(ThingsLocationArr[i].providerID === "smartcitizen"){
+            placemark.channelID = ThingsLocationArr[i].deviceID;
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+            
+        } else {
+            placemark.lastSeen = ThingsLocationArr[i].lastSeen;
+        }
+
+        placemark.placemarkType = "iothings";
+        
+        */
+        //console.log(placemark);
+        markerCluster.addToPlacemarkArray(placemark);
+        
+        // Add the placemark to the layer.
+        //placemarkLayerAllDev.addRenderable(placemark);
+       
+
+    }
+
+    // Add the placemarks layer to the WorldWindow's layer list.
+    //wwd.addLayer(placemarkLayerAllDev);
+
+    markerCluster.generateClusterFromPlacemarksArray();
+
+    wwd.redraw();
+    // Now set up to handle highlighting.
+    var highlightController = new WorldWind.HighlightController(wwd);
+
+    EnableSearchByLocation();
+
+}
+
 
   async function SearchLocationWithArrEl(query,arrayEl) {    
     
@@ -855,6 +1079,10 @@ function TrigHistoricalTimeSeries(){
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
 
+    if(!typeof markerCluster == 'undefined'){
+        markerCluster.removeClusterLayer();
+    }
+
     var prom = GenerateHistoricalTimeSeries();
 
     Promise.all([prom]).then(function(values){
@@ -1120,7 +1348,11 @@ function TrigReturnAllDevices(){
 
     wwd.removeLayer(placemarkLayerDevByLoc);
 
-    wwd.addLayer(placemarkLayerAllDev);
+    //wwd.addLayer(placemarkLayerAllDev);
+
+    if(!typeof markerCluster == 'undefined'){
+        markerCluster.addClusterLayer();
+    }
 
     wwd.redraw();
 
@@ -1132,9 +1364,12 @@ function TrigReturnAllDevices(){
 
 async function SearchByCountryAndDraw(){
 
-
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
+
+    if(!typeof markerCluster == 'undefined'){
+        markerCluster.removeClusterLayer();
+    }
 
      placemarkLayerDevByLoc.removeAllRenderables();
       // Set placemark attributes.
@@ -1232,6 +1467,7 @@ async function SearchByCountryAndDraw(){
                         } else {
                             placemark.lastSeen = allThingsDB[i].lastSeen;
                         }
+                        placemark.placemarkType = "iothings";
                         placemarkLayerDevByLoc.addRenderable(placemark);
                     }
                     
@@ -1254,6 +1490,10 @@ async function SearchByCityAndDraw(){
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
+
+    if(!typeof markerCluster == 'undefined'){
+        markerCluster.removeClusterLayer();
+    }
 
     placemarkLayerDevByLoc.removeAllRenderables();
       // Set placemark attributes.
@@ -1344,7 +1584,7 @@ async function SearchByCityAndDraw(){
                     } else {
                         placemark.lastSeen = allThingsDB[i].lastSeen;
                     }
-                   
+                    placemark.placemarkType = "iothings";
                     placemarkLayerDevByLoc.addRenderable(placemark);
                 }
                 
@@ -1452,7 +1692,6 @@ async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,params){
     var sideDPosLon = Th_Lon+0.001;
 
     
-
 
         for(i=0;i<feature_scaled_data_arr.length;i++){
 
