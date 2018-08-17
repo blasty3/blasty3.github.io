@@ -27,7 +27,7 @@ $(function() {
 
   $('#providers-list').owlCarousel({
     items:3,
-    autoplay:false,
+    autoplay:true,
     smartSpeed:700,
     loop:true,
     autoplayHoverPause:true,
@@ -47,7 +47,7 @@ $(function() {
 
   $('#process-members').owlCarousel({
     items:1,
-    autoplay:true,
+    autoplay:false,
     smartSpeed:700,
     loop:true,
     autoplayHoverPause:true,
