@@ -14,6 +14,8 @@ var placemarkLayerAllDev= new WorldWind.RenderableLayer("All Things Placemark");
 
 var placemarkLayerDevByLoc=new WorldWind.RenderableLayer("Filtered Placemarks");
 
+var placemarkLayerDevByOthers =new WorldWind.RenderableLayer("Filtered by Others Placemarks");
+
 
 
 var placemarkMobThLayer;
@@ -2801,9 +2803,15 @@ async function DrawPolygonMobThTimeSeries(data_val_arr, data_centraLoc){
 
         wwd.addLayer(timeSeriesLayer);
 
+        var latitudeToLook = data_val_arr[0].geometry.coordinates[1];
+        var longitudeToLook = data_val_arr[0].geometry.coordinates[0];
+
         wwd.navigator.range = 55000;
         wwd.navigator.tilt = 60;
-        wwd.navigator.lookAtLocation = data_centraLoc;
+        wwd.navigator.lookAtLocation = {
+            "latitude":latitudeToLook,
+            "longitude" : longitudeToLook
+        }
        
 
         function animateTimeSeries() {
@@ -3227,6 +3235,77 @@ async function QuerySafecastMobTh(){
                 document.getElementById('SearchMobileThings').innerHTML = "Search Mobile IoT";
             });
 }
+
+
+function TrigSearchByRadius(){
+
+}
+
+async function SearchByRadius(){
+    var latitudeOnSight = wwd.navigator.lookAtLocation.latitude;
+    var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
+    var radius = document.getElementById("radiusNum").value;
+
+    var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
+
+    var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
+
+    for(i=0;i<allThingsDB.length;i++){
+        wwPositions.push(new WorldWind.Position(allThingsDB[i].latitude,allThingsDB[i].longitude,0));
+
+        var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
+
+        if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
+            var dist = (geographicDistance / 1e3).toFixed(3);
+
+            if(dist<=radius){
+
+
+                placemarkLayerDevByOthers.removeAllRenderables();
+                // Set placemark attributes.
+                var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
+                // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
+                //placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
+                //placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
+                placemarkAttributes.imageSource = "images/thing_node.png";
+                // Define the pivot point for the placemark at the center of its image source.
+                placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
+                placemarkAttributes.imageScale = 0.22;
+                //placemarkAttributes.imageColor = WorldWind.Color.WHITE;
+                placemarkAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
+                placemarkAttributes.outlineColor = WorldWind.Color.BLUE;
+                placemarkAttributes.applyLighting = true;
+            
+                // Set placemark highlight attributes.
+                // Note that the normal attributes are specified as the default highlight attributes so that all properties
+                // are identical except the image scale. You could instead vary the color, image, or other property
+                // to control the highlight representation.
+                var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+                highlightAttributes.imageScale = 0.3;
+                //highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
+                highlightAttributes.imageSource = "images/thing_node_highlight.png";
+                
+                highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
+                highlightAttributes.applyLighting = false;
+            
+                placemarkLayerDevByOthers =  new WorldWind.RenderableLayer("Filtered by Others Placemarks");
+
+                var lat = parseFloat(allThingsDB[i].latitude);
+                var lon = parseFloat(allThingsDB[i].longitude);
+                
+                        // Create the placemark with the attributes defined above.
+                var placemarkPosition = new WorldWind.Position(lat, lon, 0);
+
+            }
+
+        } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
+            var dist = (geographicDistance).toFixed(3);
+        }
+        wwPositions.pop();
+
+    }
+}
+
 
  
 // as reference, not in an actual in order to save time from parsing JSON file
