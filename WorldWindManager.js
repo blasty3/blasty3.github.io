@@ -14,7 +14,11 @@ var placemarkLayerAllDev= new WorldWind.RenderableLayer("All Things Placemark");
 
 var placemarkLayerDevByLoc=new WorldWind.RenderableLayer("Filtered Placemarks");
 
-var placemarkLayerDevByOthers =new WorldWind.RenderableLayer("Filtered by Others Placemarks");
+
+
+var placemarkLayerDevByRadius =new WorldWind.RenderableLayer("Filtered by Radius Placemarks");
+
+var placemarkLayerDevByKeywords =new WorldWind.RenderableLayer("Filtered by Keywords Placemarks");
 
 
 
@@ -47,6 +51,10 @@ var mobileThingsQueryProm=[];
 var mobThToVisList={};
 
 var mobThToVisTimeSeries=[];
+
+var ThingsListSearchByRadius=[];
+
+var ThingsListSearchByKeywords=[];
 
 
 async function StartWorldWind() {
@@ -851,17 +859,13 @@ async function CreateWWDIoTRadialMark(ThingsLocationArr){
             placemark.thingTag = ThingsLocationArr[i].thingTag;
 
          
-           
+            placemark.placemarkType = "iothings";
 
              // Create the renderable layer for placemarks.
             
             
              // Add the placemark to the layer.
              placemarkLayerAllDev.addRenderable(placemark);
-            
-        } else if(ThingsLocationArr[i].providerID === "safecastlog"){
-           
-            mobileThingsDB.push(ThingsLocationArr[i]);
             
         } else {
 
@@ -3238,10 +3242,28 @@ async function QuerySafecastMobTh(){
 
 
 function TrigSearchByRadius(){
-
+    if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
+        SearchByRadius();
+    } 
+    
 }
 
 async function SearchByRadius(){
+
+    wwd.removeLayer(placemarkLayerDevByLoc);
+    wwd.removeLayer(placemarkLayerAllDev);
+    wwd.removeLayer(placemarkLayerDevByRadius);
+    //wwd.removeLayer(placemarkLayerDevByKeywords);
+
+    if(typeof markerCluster !== "undefined"){
+        markerCluster.updateGlobe(wwd);
+        markerCluster.removeClusterLayer();
+        wwd = markerCluster.getGlobe();
+    }
+
+    ThingsListSearchByRadius.length=0;
+    placemarkLayerDevByRadius.removeAllRenderables();
+
     var latitudeOnSight = wwd.navigator.lookAtLocation.latitude;
     var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
     var radius = document.getElementById("radiusNum").value;
@@ -3260,50 +3282,182 @@ async function SearchByRadius(){
 
             if(dist<=radius){
 
-
-                placemarkLayerDevByOthers.removeAllRenderables();
-                // Set placemark attributes.
-                var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
-                // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
-                //placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
-                //placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
-                placemarkAttributes.imageSource = "images/thing_node.png";
-                // Define the pivot point for the placemark at the center of its image source.
-                placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
-                placemarkAttributes.imageScale = 0.22;
-                //placemarkAttributes.imageColor = WorldWind.Color.WHITE;
-                placemarkAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
-                placemarkAttributes.outlineColor = WorldWind.Color.BLUE;
-                placemarkAttributes.applyLighting = true;
-            
-                // Set placemark highlight attributes.
-                // Note that the normal attributes are specified as the default highlight attributes so that all properties
-                // are identical except the image scale. You could instead vary the color, image, or other property
-                // to control the highlight representation.
-                var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-                highlightAttributes.imageScale = 0.3;
-                //highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
-                highlightAttributes.imageSource = "images/thing_node_highlight.png";
-                
-                highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
-                highlightAttributes.applyLighting = false;
-            
-                placemarkLayerDevByOthers =  new WorldWind.RenderableLayer("Filtered by Others Placemarks");
-
-                var lat = parseFloat(allThingsDB[i].latitude);
-                var lon = parseFloat(allThingsDB[i].longitude);
-                
-                        // Create the placemark with the attributes defined above.
-                var placemarkPosition = new WorldWind.Position(lat, lon, 0);
-
+                var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+                ThingsListSearchByRadius.push(allThingsDB[i]);
+                placemarkLayerDevByRadius.addRenderable(placemark);
             }
 
         } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
             var dist = (geographicDistance).toFixed(3);
+
+            if(dist<=radius){
+
+                var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+                ThingsListSearchByRadius.push(allThingsDB[i]);
+                placemarkLayerDevByRadius.addRenderable(placemark);
+            }
+
         }
         wwPositions.pop();
 
     }
+    wwd.addLayer(placemarkLayerDevByRadius);
+    wwd.redraw();
+}
+
+function CreatePlacemarkSearchByOthersLayer(ThingsListEl){
+    
+    // Set placemark attributes.
+    var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
+    // Wrap the canvas created above in an ImageSource object to specify it as the placemarkAttributes image source.
+    //placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
+    //placemarkAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node.png";
+    placemarkAttributes.imageSource = "images/thing_node.png";
+    // Define the pivot point for the placemark at the center of its image source.
+    placemarkAttributes.imageOffset = new WorldWind.Offset(WorldWind.OFFSET_FRACTION, 0.5, WorldWind.OFFSET_FRACTION, 0.5);
+    placemarkAttributes.imageScale = 0.22;
+    
+    placemarkAttributes.interiorColor = new WorldWind.Color(0, 1, 1, 0.5);
+    placemarkAttributes.outlineColor = WorldWind.Color.BLUE;
+    placemarkAttributes.applyLighting = true;
+
+    // Set placemark highlight attributes.
+    // Note that the normal attributes are specified as the default highlight attributes so that all properties
+    // are identical except the image scale. You could instead vary the color, image, or other property
+    // to control the highlight representation.
+    var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+    highlightAttributes.imageScale = 0.3;
+    //highlightAttributes.imageSource = WorldWind.configuration.baseUrl + "images/thing_node_highlight.png";
+    highlightAttributes.imageSource = "images/thing_node_highlight.png";
+    
+    highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 1);
+    highlightAttributes.applyLighting = false;
+
+    //placemarkLayerDevByOthers = new WorldWind.RenderableLayer("Filtered by Others Placemarks");
+
+
+            var lat = parseFloat(ThingsListEl.latitude);
+            var lon = parseFloat(ThingsListEl.longitude);
+
+            var placemarkPosition = new WorldWind.Position(lat, lon, 0);
+            var placemark = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
+            // Draw placemark at altitude defined above.
+            placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+            // Assign highlight attributes for the placemark.
+            placemark.highlightAttributes = highlightAttributes;
+
+            placemark.displayName = ThingsListEl.name;
+            placemark.providerID = ThingsListEl.providerID;
+
+            placemark.latitude = ThingsListEl.latitude;
+            placemark.longitude = ThingsListEl.longitude;
+
+            placemark.thingTag = ThingsListEl.thingTag;
+
+            placemark.placemarkType = "iothings";
+
+        if(ThingsListEl.providerID === "smartsantander"){
+
+            // Create the placemark with the attributes defined above.
+            
+    
+            placemark.content = ThingsListEl.content;
+
+            
+
+            // Create the renderable layer for placemarks.
+            
+            
+            // Add the placemark to the layer.
+           
+
+        } else if(ThingsListEl.providerID === "opensensemap"){
+
+           
+            // Draw placemark at altitude defined above.
+           
+
+            placemark.sensorList = ThingsListEl.sensorList;
+            placemark.channelID = ThingsListEl.channelID;
+
+             // Create the renderable layer for placemarks.
+            
+            
+             // Add the placemark to the layer.
+            
+            
+        } else if(ThingsListEl.providerID === "openaq"){
+
+          
+
+            placemark.measurements = ThingsListEl.measurements;
+
+             // Create the renderable layer for placemarks.
+        
+            
+        } else if(ThingsListEl.providerID === "netherlandssmartemission"){
+
+          
+    
+
+            
+
+            placemark.stationID = ThingsListEl.stationID;
+            placemark.lastSeen = ThingsListEl.lastSeen;
+
+             // Create the renderable layer for placemarks.
+         
+            
+             // Add the placemark to the layer.
+            
+
+        } else if(ThingsListEl.providerID === "thingspeak"){
+
+          
+
+            placemark.channelID = ThingsListEl.id;
+            placemark.description = ThingsListEl.description;
+
+          
+            
+           
+            
+        } else if(ThingsListEl.providerID === "smartcitizen"){
+
+           
+    
+            placemark.channelID = ThingsListEl.deviceID;
+            placemark.lastSeen = ThingsListEl.lastSeen;
+
+          
+            
+             // Add the placemark to the layer.
+             
+            
+        } else if(ThingsListEl.providerID === "safecast"){
+
+            placemark.sensorList = ThingsListEl.sensorList;
+
+             // Create the renderable layer for placemarks.
+            
+            
+             // Add the placemark to the layer.
+           
+            
+        }  else {
+
+           
+
+            placemark.lastSeen = ThingsListEl.lastSeen;
+
+            
+            
+             // Add the placemark to the layer.
+            
+
+        }
+
+    return placemark;
 }
 
 
