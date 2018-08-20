@@ -3276,10 +3276,7 @@ async function SearchByRadius(){
     var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
     var radius = document.getElementById("radiusNum").value;
 
-    console.log(radius);
-
-    console.log(latitudeOnSight+","+longitudeOnSight);
-
+    
     var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
 
     var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
@@ -3294,7 +3291,9 @@ async function SearchByRadius(){
             var dist = (geographicDistance / 1e3).toFixed(3);
 
             if(dist<=radius){
-                console.log(geographicDistance);
+                console.log(dist);
+                console.log(radius);
+                console.log(latitudeOnSight+","+longitudeOnSight);
                 var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
                 ThingsListSearchByRadius.push(allThingsDB[i]);
                 placemarkLayerDevByRadius.addRenderable(placemark);
