@@ -3258,62 +3258,106 @@ async function SearchByRadius(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByRadius);
-    
-    if(!(document.getElementById("CombinedSearch").checked)){
-        wwd.removeLayer(placemarkLayerDevByKeywords);
-    }
 
     if(typeof markerCluster !== "undefined"){
         markerCluster.updateGlobe(wwd);
         markerCluster.removeClusterLayer();
         wwd = markerCluster.getGlobe();
     }
-
-    ThingsListSearchByRadius.length=0;
-    placemarkLayerDevByRadius.removeAllRenderables();
-
-    var latitudeOnSight = wwd.navigator.lookAtLocation.latitude;
-    var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
-    var radius = document.getElementById("radiusNum").value;
-
     
-    var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
+    
+        //wwd.removeLayer(placemarkLayerDevByKeywords);
 
-    var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
-
-    for(i=0;i<allThingsDB.length;i++){
-        wwPositions.push(new WorldWind.Position(allThingsDB[i].latitude,allThingsDB[i].longitude,0));
-
-        var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
-
+        ThingsListSearchByRadius.length=0;
+        placemarkLayerDevByRadius.removeAllRenderables();
+    
+        var latitudeOnSight = wwd.navigator.lookAtLocation.latitude;
+        var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
+        var radius = document.getElementById("radiusNum").value;
+    
         
-        if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
-            var dist = (geographicDistance / 1e3).toFixed(3);
-
-            if(Number(dist)<=Number(radius)){
-                //console.log(dist);
-                //console.log(radius);
-                //console.log(latitudeOnSight+","+longitudeOnSight);
-                var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
-                ThingsListSearchByRadius.push(allThingsDB[i]);
-                placemarkLayerDevByRadius.addRenderable(placemark);
+        var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
+    
+        var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
+        
+    if(document.getElementById("CombinedSearch").checked){
+        
+        for(i=0;i<ThingsListSearchByKeywords.length;i++){
+            wwPositions.push(new WorldWind.Position(ThingsListSearchByKeywords[i].latitude,ThingsListSearchByKeywords[i].longitude,0));
+    
+            var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
+    
+            
+            if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
+                var dist = (geographicDistance / 1e3).toFixed(3);
+    
+                if(Number(dist)<=Number(radius)){
+                    //console.log(dist);
+                    //console.log(radius);
+                    //console.log(latitudeOnSight+","+longitudeOnSight);
+                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    placemarkLayerDevByRadius.addRenderable(placemark);
+                }
+    
+            } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
+                var dist = (geographicDistance).toFixed(3);
+    
+                if(dist<=radius){
+    
+                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    placemarkLayerDevByRadius.addRenderable(placemark);
+                }
+    
             }
-
-        } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
-            var dist = (geographicDistance).toFixed(3);
-
-            if(dist<=radius){
-
-                var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
-                ThingsListSearchByRadius.push(allThingsDB[i]);
-                placemarkLayerDevByRadius.addRenderable(placemark);
-            }
-
+            wwPositions.pop();
+    
         }
-        wwPositions.pop();
+        wwd.addLayer(placemarkLayerDevByRadius);
+
+
+    } else {
+
+        for(i=0;i<allThingsDB.length;i++){
+            wwPositions.push(new WorldWind.Position(allThingsDB[i].ThingsListSearchByKeywords,allThingsDB[i].longitude,0));
+    
+            var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
+    
+            
+            if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
+                var dist = (geographicDistance / 1e3).toFixed(3);
+    
+                if(Number(dist)<=Number(radius)){
+                    //console.log(dist);
+                    //console.log(radius);
+                    //console.log(latitudeOnSight+","+longitudeOnSight);
+                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    placemarkLayerDevByRadius.addRenderable(placemark);
+                }
+    
+            } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
+                var dist = (geographicDistance).toFixed(3);
+    
+                if(dist<=radius){
+    
+                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    placemarkLayerDevByRadius.addRenderable(placemark);
+                }
+    
+            }
+            wwPositions.pop();
+    
+        }
+        wwd.addLayer(placemarkLayerDevByRadius);
 
     }
-    wwd.addLayer(placemarkLayerDevByRadius);
+
+    
+
+   
     wwd.redraw();
 }
 
@@ -3329,15 +3373,13 @@ async function SearchByKeywords(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByKeywords);
-    if(!(document.getElementById("CombinedSearch").checked)){
-        wwd.removeLayer(placemarkLayerDevByRadius);
-    }
+    
     //
 
 
     var origKeywordsArr = document.getElementById("searchKeywords").value.split(";");
     
-    //wwd.removeLayer(placemarkLayerDevByRadius);
+    
 
     if(typeof markerCluster !== "undefined"){
         markerCluster.updateGlobe(wwd);
@@ -3348,22 +3390,46 @@ async function SearchByKeywords(){
     ThingsListSearchByKeywords.length=0;
     placemarkLayerDevByKeywords.removeAllRenderables();
 
-    for(i=0;i<allThingsDB.length;i++){
+    if(document.getElementById("CombinedSearch").checked){
         
-        for(i=0;i<origKeywordsArr.length;i++){
-            origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+        for(i=0;i<ThingsListSearchByRadius.length;i++){
+        
+            for(i=0;i<origKeywordsArr.length;i++){
+                origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+            }
+    
+            var arrayToSearch = ThingsListSearchByRadius[i].thingTag;
+    
+            var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+    
+            if(matching){
+                var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByRadius[i]);
+                ThingsListSearchByKeywords.push(ThingsListSearchByRadius[i]);
+                placemarkLayerDevByKeywords.addRenderable(placemark);
+            }
         }
 
-        var arrayToSearch = allThingsDB[i].thingTag;
+    } else {
 
-        var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
-
-        if(matching){
-            var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
-            ThingsListSearchByKeywords.push(allThingsDB[i]);
-            placemarkLayerDevByKeywords.addRenderable(placemark);
+        for(i=0;i<allThingsDB.length;i++){
+        
+            for(i=0;i<origKeywordsArr.length;i++){
+                origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+            }
+    
+            var arrayToSearch = allThingsDB[i].thingTag;
+    
+            var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+    
+            if(matching){
+                var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+                ThingsListSearchByKeywords.push(allThingsDB[i]);
+                placemarkLayerDevByKeywords.addRenderable(placemark);
+            }
         }
+
     }
+
     wwd.addLayer(placemarkLayerDevByKeywords);
     wwd.redraw();
 }
