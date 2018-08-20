@@ -3291,9 +3291,9 @@ async function SearchByRadius(){
             var dist = (geographicDistance / 1e3).toFixed(3);
 
             if(Number(dist)<=Number(radius)){
-                console.log(dist);
-                console.log(radius);
-                console.log(latitudeOnSight+","+longitudeOnSight);
+                //console.log(dist);
+                //console.log(radius);
+                //console.log(latitudeOnSight+","+longitudeOnSight);
                 var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
                 ThingsListSearchByRadius.push(allThingsDB[i]);
                 placemarkLayerDevByRadius.addRenderable(placemark);
