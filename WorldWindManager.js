@@ -1531,6 +1531,10 @@ function getPosition(el) {
     wwd.navigator.lookAtLocation = chosenLoc;
     wwd.navigator.range = 5e5;
 
+    markerClusterMobTh.updateGlobe(wwd);
+    markerClusterMobTh.handleClusterZoom(5e5,true);
+    wwd = markerClusterMobTh.getGlobe();
+
     wwd.redraw();
  }
 
@@ -2018,7 +2022,7 @@ function TrigReturnAllDevices(){
            // markerCluster.hideAllLevels();
            // markerCluster.hideAllSingle();
            markerCluster.updateGlobe(wwd);
-           markerCluster.removeClusterLayer();
+           markerCluster.addClusterLayer();
            wwd = markerCluster.getGlobe();
            //wwd.removeLayer("All Things Cluster");
            wwd.redraw();
@@ -2029,7 +2033,7 @@ function TrigReturnAllDevices(){
             //markerClusterMobTh.hideAllLevels();
             //markerClusterMobTh.hideAllSingle();
             markerClusterMobTh.updateGlobe(wwd);
-            markerClusterMobTh.removeClusterLayer();
+            markerClusterMobTh.addClusterLayer();
             wwd = markerClusterMobTh.getGlobe();
            // wwd.removeLayer("Mob Things Cluster");
             wwd.redraw();
