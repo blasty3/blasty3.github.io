@@ -3335,7 +3335,7 @@ async function SearchByKeywords(){
     //
 
 
-    var origKeywordsArr = document.getElementById("searchKeywords").split(";");
+    var origKeywordsArr = document.getElementById("searchKeywords").value.split(";");
     
     //wwd.removeLayer(placemarkLayerDevByRadius);
 
