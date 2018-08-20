@@ -336,22 +336,27 @@
               </div>
                 <div class="form-group">
                   <label for="searchByCity">Search by city: </label>
-                  <input class="form-control" type="text" id="searchByCity" name="searchByCity"></input>
+                  <input class="form-control" type="text" id="searchByCity" name="searchByCity">
                   <button class="btn btn-primary" type="button" id="SearchByCityButton" onclick="TrigSearchByCityAndDraw()" disabled="disabled">Search By City</button>
                 </div>
                 <!-- <button type="button" id="SearchButton" onclick="StartSearch()" >Search!</button> -->
                 <button class="btn btn-primary" type="button" id="ReturnAllDevices" disabled="disabled" onclick="TrigReturnAllDevices()" >Return All Devices!</button>
                  <button  class="btn btn-primary" type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button>
-
-                   <label for="radiusNum">Radius: </label>
+                  <br>
+                   <label for="radiusNum">Search by Radius: </label>
                    <input class="form-control" type="number" name="radiusNum" id="radiusNum" disabled="disabled" min="1">
                    <select class="form-control" name="radiusNumUnit" id="radiusNumUnit" disabled="disabled">
                           <option value="km" selected="selected">km</option>
                           <option value="m">m</option>
                    </select>
                    <br>
+                   <input type="checkbox" name="CombinedSearch" id="CombinedSearch" value="Combined">Combined Search?<br>
                    <button class="btn btn-default" type="button" id="searchRadius" onclick="TrigSearchByRadius()">Search Devices By Radius</button>
-
+                   <br>
+                   <label for="searchByCity">Search by keywords: </label>
+                   <input class="form-control" type="text" id="searchByKeywords" name="searchByKeywords">
+                   <br>
+                   <button class="btn btn-default" type="button" id="searchKeywords" onclick="TrigSearchByKeywords()">Search Devices By Keywords</button>
             </div>
 
               <form class="form-inline">

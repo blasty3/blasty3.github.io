@@ -3305,6 +3305,59 @@ async function SearchByRadius(){
     wwd.redraw();
 }
 
+function TrigSearchByKeywords(){
+    if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
+        
+    } 
+}
+
+//keyword should be separated with a ';'
+async function SearchByKeywords(){
+
+    wwd.removeLayer(placemarkLayerDevByLoc);
+    wwd.removeLayer(placemarkLayerAllDev);
+    wwd.removeLayer(placemarkLayerDevByKeywords);
+    //wwd.removeLayer(placemarkLayerDevByRadius);
+
+    var origKeywordsArr = document.getElementById("searchKeywords").split(";");
+    
+    //wwd.removeLayer(placemarkLayerDevByRadius);
+
+    if(typeof markerCluster !== "undefined"){
+        markerCluster.updateGlobe(wwd);
+        markerCluster.removeClusterLayer();
+        wwd = markerCluster.getGlobe();
+    }
+
+    ThingsListSearchByKeywords.length=0;
+    placemarkLayerDevByKeywords.removeAllRenderables();
+
+    for(i=0;i<allThingsDB.length;i++){
+        
+        for(i=0;i<origKeywordsArr.length;i++){
+            origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+        }
+
+        var arrayToSearch = allThingsDB[i].thingTag;
+
+        var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+
+        if(matching){
+            var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+            ThingsListSearchByKeywords.push(allThingsDB[i]);
+            placemarkLayerDevByKeywords.addRenderable(placemark);
+        }
+    }
+    wwd.addLayer(placemarkLayerDevByKeywords);
+    wwd.redraw();
+}
+
+function CheckArrayForMatches (arrayToSearch, arrWithItemsToCheck) {
+    return arrWithItemsToCheck.some(function (v) {
+        return arrayToSearch.indexOf(v) >= 0;
+    });
+};
+
 function CreatePlacemarkSearchByOthersLayer(ThingsListEl){
     
     // Set placemark attributes.
