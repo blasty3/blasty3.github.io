@@ -3290,7 +3290,7 @@ async function SearchByRadius(){
         if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
             var dist = (geographicDistance / 1e3).toFixed(3);
 
-            if(dist<=radius){
+            if(Number(dist)<=Number(radius)){
                 console.log(dist);
                 console.log(radius);
                 console.log(latitudeOnSight+","+longitudeOnSight);
