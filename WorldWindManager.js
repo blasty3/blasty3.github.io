@@ -2912,6 +2912,9 @@ function OnChangeStationaryMobile(){
         document.getElementById('spanTimeUnit').disabled = true;
         document.getElementById('selectToSee').innerHTML = "Mobile Things to see";
 
+        document.getElementById("searchRadius").disabled = true;
+        document.getElementById("searchKeywords").disabled = true;
+
         removeOptions(document.getElementById("selectSensor"));
             
 
@@ -2958,6 +2961,9 @@ function OnChangeStationaryMobile(){
         document.getElementById("startTime").disabled = true;
         document.getElementById("endTime").disabled = true;
         document.getElementById('selectToSee').innerHTML = "Sensor to see";
+
+        document.getElementById("searchRadius").disabled = false;
+        document.getElementById("searchKeywords").disabled = false;
 
         removeOptions(document.getElementById("selectSensor"));
 
@@ -3242,9 +3248,9 @@ async function QuerySafecastMobTh(){
 
 
 function TrigSearchByRadius(){
-    if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
+    //if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
         SearchByRadius();
-    } 
+    //} 
     
 }
 
@@ -3253,7 +3259,10 @@ async function SearchByRadius(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByRadius);
-    //wwd.removeLayer(placemarkLayerDevByKeywords);
+    
+    if(!(document.getElementById("CombinedSearch").checked)){
+        wwd.removeLayer(placemarkLayerDevByKeywords);
+    }
 
     if(typeof markerCluster !== "undefined"){
         markerCluster.updateGlobe(wwd);
@@ -3306,9 +3315,9 @@ async function SearchByRadius(){
 }
 
 function TrigSearchByKeywords(){
-    if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
-        
-    } 
+    //if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
+        SearchByKeywords();
+    //} 
 }
 
 //keyword should be separated with a ';'
@@ -3317,7 +3326,11 @@ async function SearchByKeywords(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByKeywords);
-    //wwd.removeLayer(placemarkLayerDevByRadius);
+    if(!(document.getElementById("CombinedSearch").checked)){
+        wwd.removeLayer(placemarkLayerDevByRadius);
+    }
+    //
+
 
     var origKeywordsArr = document.getElementById("searchKeywords").split(";");
     
