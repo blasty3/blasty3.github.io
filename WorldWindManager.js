@@ -1529,10 +1529,10 @@ function getPosition(el) {
 
 
     wwd.navigator.lookAtLocation = chosenLoc;
-    wwd.navigator.range = 5e5;
+    wwd.navigator.range = 2e5;
 
     markerClusterMobTh.updateGlobe(wwd);
-    markerClusterMobTh.handleClusterZoom(5e5,true);
+    markerClusterMobTh.handleClusterZoom(2e5,true);
     wwd = markerClusterMobTh.getGlobe();
 
     wwd.redraw();
@@ -2050,8 +2050,6 @@ function TrigReturnAllDevices(){
 
 
 async function SearchByCountryAndDraw(){
-
-
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
