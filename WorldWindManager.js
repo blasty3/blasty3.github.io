@@ -968,7 +968,6 @@ async function CreateClusteredThings(ThingsLocationArr){
     for(i=0;i<ThingsLocationArr.length;i++){
         
         
-
         /*
         // Create the placemark with the attributes defined above.
         var placemarkPosition = new WorldWind.Position(lat, lon, 0);
@@ -3277,6 +3276,10 @@ async function SearchByRadius(){
     var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
     var radius = document.getElementById("radiusNum").value;
 
+    console.log(radius);
+
+    console.log(latitudeOnSight+","+longitudeOnSight);
+
     var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
 
     var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
@@ -3286,11 +3289,12 @@ async function SearchByRadius(){
 
         var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
 
+        
         if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
             var dist = (geographicDistance / 1e3).toFixed(3);
 
             if(dist<=radius){
-
+                console.log(geographicDistance);
                 var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
                 ThingsListSearchByRadius.push(allThingsDB[i]);
                 placemarkLayerDevByRadius.addRenderable(placemark);
