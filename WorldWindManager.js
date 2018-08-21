@@ -2346,6 +2346,26 @@ function DisableSearchByLocation(){
     document.getElementById("SearchByCityButton").innerHTML = "Search In Progress...";
  }
 
+ function DisableSearchByLocationInMobileMode(){
+	document.getElementById("SearchByCountryButton").style.color = "gray";
+    document.getElementById("SearchByCountryButton").disabled = true;
+    document.getElementById("SearchByCountryButton").innerHTML = "Not Available";
+
+    document.getElementById("SearchByCityButton").style.color = "gray";
+    document.getElementById("SearchByCityButton").disabled = true;
+    document.getElementById("SearchByCityButton").innerHTML = "Not Available";
+ }
+
+ function EnableSearchByLocation(){
+	document.getElementById("SearchByCountryButton").style.color = "black";
+    document.getElementById("SearchByCountryButton").disabled = false;
+    document.getElementById("SearchByCountryButton").innerHTML = "Search By Country";
+
+    document.getElementById("SearchByCityButton").style.color = "black";
+    document.getElementById("SearchByCityButton").disabled = false;
+    document.getElementById("SearchByCityButton").innerHTML = "Search By City";
+ }
+
  function EnableSearchByLocation(){
 	document.getElementById("SearchByCountryButton").style.color = "black";
     document.getElementById("SearchByCountryButton").disabled = false;
@@ -2959,6 +2979,9 @@ function OnChangeStationaryMobile(){
         }
         //wwd.redraw();
 
+        DisableSearchByLocationInMobileMode();
+        DisableReturnAllDevices();
+
 
     } else if (selectedVal == 'S') {
 
@@ -3004,6 +3027,9 @@ function OnChangeStationaryMobile(){
             //wwd.addLayer("All Things Cluster");
             wwd.redraw();
             //wwd.redraw();
+
+            EnableSearchByLocation();
+            EnableReturnAllDevices();
 
     }
 
