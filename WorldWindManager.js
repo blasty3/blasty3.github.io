@@ -1262,6 +1262,7 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.longitude = allThingsDB[i].longitude;
 
             params.info.lastSeen = ThingsLocationArr[i].lastSeen;
+            params.info.placemarkType = "iothings";
 
             var lat = parseFloat(ThingsLocationArr[i].latitude);
             var lon = parseFloat(ThingsLocationArr[i].longitude);
@@ -1271,7 +1272,8 @@ async function CreateClusteredThings(ThingsLocationArr){
                 label: ""
             }, params);
 
-            markerCluster.addToPlacemarkArray(placemark);
+            //exclude others for now
+            //markerCluster.addToPlacemarkArray(placemark);
         }
 
        
@@ -1591,106 +1593,113 @@ function getPosition(el) {
 */
 
 function TrigHistorical(){
-    if(topPickedObject.userObject.providerID === "smartcitizen"){
-        //var promSC = QuerySCHistoricalData();
 
-        //Promise.all([promSC]).then(function(values){
-            //copyToPass = clone(values[0]);
-            //console.log(copyToPass);
+    if(!!topPickedObject.userObject.placemarkType === "iothings"){
+        
+        if(topPickedObject.userObject.providerID === "smartcitizen"){
+            //var promSC = QuerySCHistoricalData();
+    
+            //Promise.all([promSC]).then(function(values){
+                //copyToPass = clone(values[0]);
+                //console.log(copyToPass);
+                /*
+                var params = {
+                    "providerID" : "smartcitizen",
+                    "channelID": 3773,
+                    "sensor_id" : 14,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "rollup": "4h",//document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
+                    "from": "2018-02-05",//document.getElementById("startTime").value.getUTCFullYear()+"-"+document.getElementById("startTime").value.getUTCMonth()+"-"+document.getElementById("startTime").value.getUTCDate(),
+                    "to": "2018-04-18"//document.getElementById("endTime").value.getUTCFullYear()+"-"+document.getElementById("endTime").value.getUTCMonth()+"-"+document.getElementById("endTime").value.getUTCDate()
+                }
+                window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+                */
+               var params = {
+                    "providerID" : "smartcitizen",
+                    "channelID": topPickedObject.userObject.channelID,
+                    "sensor_id" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "rollup": document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
+                    "from":  new Date(document.getElementById("startTime").value).getUTCFullYear()+"-"+new Date(document.getElementById("startTime").value).getUTCMonth()+"-"+ new Date(document.getElementById("startTime").value).getUTCDate(),
+                    "to":  new Date(document.getElementById("endTime").value).getUTCFullYear()+"-"+ new Date(document.getElementById("endTime").value).getUTCMonth()+"-"+new Date(document.getElementById("endTime").value).getUTCDate()
+                }
+                window.open("/visualization.html"+toHtmlQuery_(params));
+            //});
+            } else
+        if (topPickedObject.userObject.providerID === "opensensemap"){
             /*
             var params = {
-                "providerID" : "smartcitizen",
-                "channelID": 3773,
-                "sensor_id" : 14,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-                "rollup": "4h",//document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
-                "from": "2018-02-05",//document.getElementById("startTime").value.getUTCFullYear()+"-"+document.getElementById("startTime").value.getUTCMonth()+"-"+document.getElementById("startTime").value.getUTCDate(),
-                "to": "2018-04-18"//document.getElementById("endTime").value.getUTCFullYear()+"-"+document.getElementById("endTime").value.getUTCMonth()+"-"+document.getElementById("endTime").value.getUTCDate()
+                "providerID" : "opensensemap",
+                "yAxisLabel" : "unit",
+                "channelID" : "5a95a44cbc2d4100193f7b40",
+                "sensorID" :"5a95a44cbc2d4100193f7b46",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "from-date": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
+                "to-date": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
             }
             window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
             */
-           var params = {
-                "providerID" : "smartcitizen",
-                "channelID": topPickedObject.userObject.channelID,
-                "sensor_id" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-                "rollup": document.getElementById("spanTimeNum").value+document.getElementById("spanTimeUnit").options[(document.getElementById("spanTimeUnit")).selectedIndex].value,
-                "from":  new Date(document.getElementById("startTime").value).getUTCFullYear()+"-"+new Date(document.getElementById("startTime").value).getUTCMonth()+"-"+ new Date(document.getElementById("startTime").value).getUTCDate(),
-                "to":  new Date(document.getElementById("endTime").value).getUTCFullYear()+"-"+ new Date(document.getElementById("endTime").value).getUTCMonth()+"-"+new Date(document.getElementById("endTime").value).getUTCDate()
-            }
-            window.open("/visualization.html"+toHtmlQuery_(params));
-        //});
-        } else
-    if (topPickedObject.userObject.providerID === "opensensemap"){
-        /*
-        var params = {
-            "providerID" : "opensensemap",
-            "yAxisLabel" : "unit",
-            "channelID" : "5a95a44cbc2d4100193f7b40",
-            "sensorID" :"5a95a44cbc2d4100193f7b46",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-            "from-date": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
-            "to-date": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
-        }
-        window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
-        */
+                var params = {
+                    "providerID" : "opensensemap",
+                    "yAxisLabelType" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType,
+                    "yAxisLabelUnit" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelUnit,
+                    "channelID" : topPickedObject.userObject.channelID,
+                    "sensorID" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "from-date": new Date(document.getElementById("startTime").value).toISOString(),
+                    "to-date": new Date(document.getElementById("endTime").value).toISOString()
+                }
+                window.open("/visualization.html"+toHtmlQuery_(params));
+        }  else if (topPickedObject.userObject.providerID === "openaq"){
+            /*
             var params = {
-                "providerID" : "opensensemap",
-                "yAxisLabelType" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType,
-                "yAxisLabelUnit" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelUnit,
-                "channelID" : topPickedObject.userObject.channelID,
-                "sensorID" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-                "from-date": new Date(document.getElementById("startTime").value).toISOString(),
-                "to-date": new Date(document.getElementById("endTime").value).toISOString()
+                "providerID" : "openaq",
+                "parameter": "pm25",
+                "location" : "Sveavägen",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "date-from": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
+                "date-to": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
+            }
+            window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
+            */
+    
+            
+            var params = {
+                "providerID" : "openaq",
+                "parameter": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "location" : topPickedObject.userObject.displayName,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                "date_from": new Date(document.getElementById("startTime").value).toISOString(),
+                "limit": "10000",
+                "date_to": new Date(document.getElementById("endTime").value).toISOString()
             }
             window.open("/visualization.html"+toHtmlQuery_(params));
-    }  else if (topPickedObject.userObject.providerID === "openaq"){
-        /*
-        var params = {
-            "providerID" : "openaq",
-            "parameter": "pm25",
-            "location" : "Sveavägen",//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-            "date-from": "2018-02-19T17:21:07.090Z",//document.getElementById("startTime").value.toISOString(),
-            "date-to": "2018-04-19T17:21:07.090Z"//document.getElementById("endTime").value.toISOString()
-        }
-        window.open("http://gaiota.ddns.net/visualization.html"+toHtmlQuery_(params));
-        */
-
-        
-        var params = {
-            "providerID" : "openaq",
-            "parameter": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-            "location" : topPickedObject.userObject.displayName,//document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-            "date_from": new Date(document.getElementById("startTime").value).toISOString(),
-            "limit": "10000",
-            "date_to": new Date(document.getElementById("endTime").value).toISOString()
-        }
-        window.open("/visualization.html"+toHtmlQuery_(params));
-        
-    //} else if (topPickedObject.userObject.providerID === "thingspeak"){
-     } else if (topPickedObject.userObject.providerID === "thingspeak"){
-
-            var params={
-                "providerID" : "thingspeak",
-                "channelID" : topPickedObject.userObject.channelID,
-                "results": "8000",
-                "fieldID": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-                "start": new Date(document.getElementById("startTime").value).toISOString(),
-                "end" : new Date(document.getElementById("endTime").value).toISOString()
+            
+        //} else if (topPickedObject.userObject.providerID === "thingspeak"){
+         } else if (topPickedObject.userObject.providerID === "thingspeak"){
+    
+                var params={
+                    "providerID" : "thingspeak",
+                    "channelID" : topPickedObject.userObject.channelID,
+                    "results": "8000",
+                    "fieldID": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "start": new Date(document.getElementById("startTime").value).toISOString(),
+                    "end" : new Date(document.getElementById("endTime").value).toISOString()
+                }
+    
+                window.open("/visualization.html"+toHtmlQuery_(params));
+            } else if (topPickedObject.userObject.providerID === "safecast"){
+    
+                var params={
+                    "providerID" : "safecast",
+                    "sensorUnitID": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "deviceID" : topPickedObject.userObject.displayName,
+                    //"start": new Date(document.getElementById("startTime").value).toISOString(),
+                    //"end" : new Date(document.getElementById("endTime").value).toISOString()
+                }
+    
+                window.open("/visualization.html"+toHtmlQuery_(params));
+            } else {
+                window.alert("Historical data is not made available by the IoT data provider of the selected devices/sensors");
             }
 
-            window.open("/visualization.html"+toHtmlQuery_(params));
-        } else if (topPickedObject.userObject.providerID === "safecast"){
+    }
 
-            var params={
-                "providerID" : "safecast",
-                "sensorUnitID": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
-                "deviceID" : topPickedObject.userObject.displayName,
-                //"start": new Date(document.getElementById("startTime").value).toISOString(),
-                //"end" : new Date(document.getElementById("endTime").value).toISOString()
-            }
-
-            window.open("/visualization.html"+toHtmlQuery_(params));
-        } else {
-            window.alert("Historical data is not made available by the IoT data provider of the selected devices/sensors");
-        }
+    
         /*
         var params = {
             "providerID" : "thingspeak",

@@ -30,6 +30,8 @@ var allThingsPreviewDB=[];
 
 var all_Query_Proms = [];
 
+var tempBCN=[];
+
 
 var cors_purl = "https://cors.io/?";
 
@@ -643,6 +645,25 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 					  all_Query_Proms.push(prom_mob);
 			})
 			all_Query_Proms.push(safecast_mobile_dev_prom);
+
+
+			// Barcelona Smart City Sentilo
+
+			var bcn_url = "http://connecta.bcn.cat/connecta-catalog-web/component/map/json";
+
+			var bcn_smart_city_prom = $.ajax(
+				{
+					url: bcn_url,
+					headers: { 'Host': "connecta.bcn.cat" }
+				}
+			  ).then(function(data){
+				
+				 tempBCN = data.components;
+				 delete data;
+				 
+			})
+			
+			all_Query_Proms.push(bcn_smart_city_prom);
 			
 			/*
 			    if (!response.ok) {
@@ -1125,6 +1146,8 @@ tempDweet=[];
 	 tempSafecast = [];
 
 	 allThingsPreviewDB=[];
+
+	 tempBCN=[];
 
 	
  }
