@@ -653,6 +653,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 			var bcn_smart_city_prom = $.ajax(
 				{
+					contentType: "application/json",
 					url: bcn_url,
 					headers: { 'Host': "connecta.bcn.cat" }
 				}
