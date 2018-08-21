@@ -1483,14 +1483,14 @@ function getPosition(el) {
           var tokens = queryString.split(",");
           latitude = parseFloat(tokens[0]);
           longitude = parseFloat(tokens[1]);
-          self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude),IncrementalGlobeSetViewRange([50000]));
+          self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude),IncrementalGlobeSetViewRange(100000));
           
         } else {
           self.geocoder.lookup(queryString, function(geocoder, result) {
             if (result.length > 0) {
               latitude = parseFloat(result[0].lat);
               longitude = parseFloat(result[0].lon);
-              self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude),IncrementalGlobeSetViewRange([50000]));
+              self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude),IncrementalGlobeSetViewRange(100000));
              
             }
           });
@@ -1499,17 +1499,32 @@ function getPosition(el) {
      }
   }
 
-  function GlobeSetViewRange(range){
-    wwd.navigator.range = range;
-    wwd.redraw();
-  }
+ 
 
   function IncrementalGlobeSetViewRange(range_arr){
 
-      for(i=0;i<range_arr.length;i++){
-        wwd.navigator.range = range_arr[i];
-        wwd.redraw();
-      }
+      //for(i=0;i<range_arr.length;i++){
+    wwd.navigator.range = range_arr;
+        
+    var selectedStOrMobDiv = document.getElementById("StationaryOrMobile");
+    var selectedVal = selectedStOrMobDiv.options[selectedStOrMobDiv.selectedIndex].value;
+
+    if(selectedVal == 'M'){
+        if(typeof markerClusterMobTh !== "undefined"){
+            markerClusterMobTh.updateGlobe(wwd);
+            markerClusterMobTh.handleClusterZoom(range_arr,true);
+            wwd = markerClusterMobTh.getGlobe();
+        }
+    } else if (selectedVal == "S"){
+        if(typeof markerCluster !== "undefined"){
+            markerCluster.updateGlobe(wwd);
+            markerCluster.handleClusterZoom(range_arr,true);
+            wwd = markerCluster.getGlobe();
+        }
+    }
+
+    wwd.redraw();
+      
   }
 
  function SearchButtonTrig(){
