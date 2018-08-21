@@ -3134,25 +3134,25 @@ async function VisualizeMobileThings(){
                     mobThToVisEl.longitude = midLon;
 
                     
-                    for (i=0;i<mobGeoJSON.features.length;i++){
+                    for (j=0;j<mobGeoJSON.features.length;j++){
 
                         
-                        var description = mobGeoJSON.features[i].properties.description;
+                        var description = mobGeoJSON.features[j].properties.description;
                         var descrArr = description.split("/");
     
                         var cpmStr = descrArr[0].substr(0,descrArr[0].length-4);
-                        mobGeoJSON.features[i].properties.params = {};
-                        mobGeoJSON.features[i].properties.params.info = {};
+                        mobGeoJSON.features[j].properties.params = {};
+                        mobGeoJSON.features[j].properties.params.info = {};
 
-                        mobGeoJSON.features[i].properties.params.info.cpm = cpmStr;
-                        mobGeoJSON.features[i].properties.params.info.cpmValue = cpmStr.split(" = ")[1];
-                        mobGeoJSON.features[i].properties.params.info.displayName = mobileThingsDB[i].id;
-                        mobGeoJSON.features[i].properties.params.info.sievert =  mobGeoJSON.features[i].properties.name.split(" ")[0];
-                        mobGeoJSON.features[i].properties.params.info.sievertUnit =  mobGeoJSON.features[i].properties.name.split(" ")[1];
+                        mobGeoJSON.features[j].properties.params.info.cpm = cpmStr;
+                        mobGeoJSON.features[j].properties.params.info.cpmValue = cpmStr.split(" = ")[1];
+                        mobGeoJSON.features[j].properties.params.info.displayName = mobileThingsDB[i].id;
+                        mobGeoJSON.features[j].properties.params.info.sievert =  mobGeoJSON.features[j].properties.name.split(" ")[0];
+                        mobGeoJSON.features[j].properties.params.info.sievertUnit =  mobGeoJSON.features[j].properties.name.split(" ")[1];
                         //mobGeoJSON.features[i].properties.params.info.icon = mobGeoJSON.features[i].properties.icon;
                         
                         
-                        var imgFileName = mobGeoJSON.features[i].properties.icon.split("/kml/")[1];
+                        var imgFileName = mobGeoJSON.features[j].properties.icon.split("/kml/")[1];
                         
 
                         var year = descrArr[0].substr(descrArr[0].length-4);
@@ -3163,17 +3163,17 @@ async function VisualizeMobileThings(){
                         var fullDate = new Date();
                         fullDate.setFullYear(year,parseInt(month)-1,day_date);
                         fullDate.setHours(timeArr[0],timeArr[1],timeArr[2]);
-                        mobGeoJSON.features[i].properties.params.info.time = fullDate.toUTCString();
-                        mobGeoJSON.features[i].properties.params.info.providerID = "safecast";
-                        mobGeoJSON.features[i].properties.params.info.placemarkType = "mobiothings";
+                        mobGeoJSON.features[j].properties.params.info.time = fullDate.toUTCString();
+                        mobGeoJSON.features[j].properties.params.info.providerID = "safecast";
+                        mobGeoJSON.features[j].properties.params.info.placemarkType = "mobiothings";
                        // mobGeoJSON.features[i].properties.providerID = "safecast";
                         
                         var placemarkAttr = CreatePlacemarkAttributes("/images/"+imgFileName);
                         var highlightAttr = CreateHighlightAttributes(placemarkAttr);
                         placemarkAttr.highlightAttributes = highlightAttr;
 
-                        mobGeoJSON.features[i].properties.params.placemarkAttributes = placemarkAttr;
-                        mobGeoJSON.features[i].properties.params.highlightAttributes = highlightAttr;
+                        mobGeoJSON.features[j].properties.params.placemarkAttributes = placemarkAttr;
+                        mobGeoJSON.features[j].properties.params.highlightAttributes = highlightAttr;
                         
                     }
                     //console.log(mobGeoJSON);
