@@ -665,6 +665,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 				 tempBCN = JSON.parse(data).components;
 				 console.log(data);
+				 console.log(tempBCN);
 				 delete data;
 				
 				 
