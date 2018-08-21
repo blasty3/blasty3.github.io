@@ -2029,6 +2029,8 @@ function TrigReturnAllDevices(){
     DisableReturnAllDevices();
 
     wwd.removeLayer(placemarkLayerDevByLoc);
+    wwd.removeLayer(placemarkLayerDevByKeywords);
+    wwd.removeLayer(placemarkLayerDevByRadius);
 
     //wwd.addLayer(placemarkLayerAllDev);
     if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
