@@ -255,6 +255,54 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
 
                 });
                 
+            } else if(providerID === "bcncat"){
+                var sensorID = data.sensorUnitID;
+
+                var start_time = data.start;
+
+                var end_time = data.end;
+
+                var yAxis = data.yAxisLabelType+" ("+data.yAxisLabelUnit+")";
+
+                
+                //delete data.sensorUnitID;
+
+                var deviceID = data.deviceID;
+                //delete data.sensorUnitID;
+
+                var prom = QueryBCNCatHistoricalData(deviceID,sensorID);
+                //yAxisLabel = val["sensor_key"]
+                Promise.all([prom]).then(function(values){
+
+                    if(new Date(start_time).getTime()>values[0].fromTime){
+
+                    } else {
+                        delete start_time;
+                        start_time = new Date(values[0].fromTime).toISOString();
+                    }
+    
+                    if(new Date(end_time).getTime()<values[0].toTime){
+    
+                    } else {
+                        delete end_time;
+                        end_time = new Date(values[0].toTime).toISOString();
+                    }
+
+                    var measurementArr = values[0].events;
+                    var measurementToPlot = [];
+                    for(j=0;j<measurementArr.length;j++){
+
+                        if(measurementArr[j].time>=new Date(start_time).getTime() && measurementArr[j].time<=new Date(end_time).getTime()){
+                            measurementToPlot.push([measurementArr[j].value,new Date(measurementArr[j].time).toUTCString()])
+                        }
+
+                    }
+
+                    drawCrosshairs(measurementToPlot, yAxis,"chart_div",false);
+
+                    document.getElementById("generateCSV").innerHTML = "Generate and Download CSV";
+                    document.getElementById("generateCSV").disabled = false;
+                });
             }
 
     }
@@ -392,6 +440,30 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
         var urlSafeCast = "https://s3-us-west-2.amazonaws.com/safecastdata-us-west-2/ingest/prd/json/view24h.json";
 
 			var safecast_dev_prom = fetch(urlSafeCast).then(function(response) {
+				if (!response.ok) {
+					EnableSearchButton();
+					throw Error(response.statusText);
+				}
+				return response;})
+				.then((response) => response.json())
+					 .then(function(data){
+
+						return data;
+						//console.log(tempSafecast);
+					
+
+             })
+             
+             return safecast_dev_prom;
+
+    }
+
+
+    async function QueryBCNCatHistoricalData(deviceID,sensorID){
+
+        var urlBCNCat = "http://connecta.bcn.cat/connecta-catalog-web/admin/sensor/lastObs/"+deviceID+"."+sensorID+"/?limit=200";
+
+			var safecast_dev_prom = fetch(cors_purl+urlBCNCat).then(function(response) {
 				if (!response.ok) {
 					EnableSearchButton();
 					throw Error(response.statusText);

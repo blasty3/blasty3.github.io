@@ -1383,6 +1383,22 @@ async function ExtractAllThingsLocation(){
 	  delete tempOAQ;
 
 	  console.log(allThingsPreviewDB);
+
+	  //Barcelona smart city
+	  
+	  for(i=0;i<tempBCN.length;i++){
+
+		var BCNArrEl = {};
+		BCNArrEl.name = tempBCN[i].id;
+		BCNArrEl.latitude = tempBCN[i].centroid.latitude;
+		BCNArrEl.longitude = tempBCN[i].centroid.longitude;
+		BCNArrEl.thingTag = [(tempBCN[i].type).replace("_"," ")];
+		BCNArrEl.providerID = "bcncat"
+		allThingsPreviewDB.push(BCNArrEl);
+	  }
+
+	  delete tempBCN;
+
 	  // from SafeCast
 
 	  for(i=0;i<tempSafecast.length;i++){
@@ -1478,6 +1494,24 @@ async function QueryNethSEFeed(station_id){
 	var url = "http://data.smartemission.nl/sosemu/api/v1/timeseries?station="+station_id+"&expanded=true";
 
 	var prom = fetch(url).then(function(response) {
+		if (!response.ok) {
+			EnableSearchButton();
+			throw Error(response.statusText);
+		}
+		return response.json()});
+
+	var prom2=Promise.all([prom]).then(function(values){
+			return values[0];
+		});
+
+		return prom2;
+}
+
+async function QueryBCNCat(station_id){
+
+	var url = "https://connecta.bcn.cat/connecta-catalog-web/component/map/"+station_id+"/lastOb/?ts="+Date.now().toString();
+
+	var prom = fetch(cors_purl+url).then(function(response) {
 		if (!response.ok) {
 			EnableSearchButton();
 			throw Error(response.statusText);

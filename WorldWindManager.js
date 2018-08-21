@@ -177,6 +177,64 @@ async function StartWorldWind() {
 
                 //Future updates
 
+            } else if(topPickedObject.userObject.providerID === "bcncat"){
+
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+
+                //var str_to_form = "Name: " +topPickedObject.userObject.displayName+ "<br> Provider: Ajuntament de Barcelona <br><br>";
+
+                var prom = QueryBCNCat(topPickedObject.userObject.displayName);
+
+                Promise.all([prom]).then(function(values){
+                    
+                    var str_to_form = "Name: " +values[0].componentName+"<br> Description: "+values[0].componentDesc+ "<br> Last Update: "+values[0].lastUpdateTimeMessage+"<br> Provider: Ajuntament de Barcelona <br><br>";
+                    //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
+
+                    document.getElementById('selectSensor').disabled = false;
+
+                    for(i=0;i<values[0].sensorLastObservations.length;i++){
+
+                        if(values[0].sensorLastObservations[i].found == true){
+
+                            str_to_form = clone(str_to_form+"Sensor: " +values[0].sensorLastObservations[i].sensor+"<br> Description: "+values[0].sensorLastObservations[i].sensorType+"<br> Last Value: "+values[0].sensorLastObservations[i].value+" "+values[0].sensorLastObservations[i].unit+"<br> Last Update: "+values[0].sensorLastObservations[i].timestamp+"<br><br>");
+                        
+                            //document.getElementById('selectSensor').options[i] = document.createElement('option').option.values[0].data.sensors[i];
+                            //document.getElementById('selectSensor').options[i].text = values[0].data.sensors[i].id;
+                            var newContent=document.createElement('option');
+                            newContent.id = "sensorOption"+i;
+
+                            newContent.yAxisLabelType = values[0].sensorLastObservations[i].sensorType;
+                            newContent.yAxisLabelUnit = values[0].sensorLastObservations[i].unit;
+
+                            newContent.value = values[0].sensorLastObservations[i].sensor;
+                            newContent.innerHTML = values[0].sensorLastObservations[i].sensor+" ("+values[0].sensorLastObservations[i].sensorType+") ";
+                            document.getElementById('selectSensor').appendChild(newContent);
+
+                        }
+
+                        
+                    }
+
+
+                    var newContent = document.createElement("div");
+                    newContent.id = "existingThingsSummary";
+                    newContent.className ="thingsSummary";
+                    newContent.innerHTML = str_to_form;
+                    
+                    document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                    document.getElementById('startTime').disabled = false;
+                    document.getElementById('endTime').disabled = false;
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
+                    document.getElementById('selectSensor').disabled = false;
+                    document.getElementById('submitStartEndDateTime').disabled = false;
+                
+                });
+
             } else if (topPickedObject.userObject.providerID === "opensensemap"){
                 
                 
@@ -222,7 +280,6 @@ async function StartWorldWind() {
 
             }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
 
-            
 
                 if(!!(document.getElementById("existingThingsSummary"))){
                     var existingEl = document.getElementById("existingThingsSummary");
@@ -447,6 +504,7 @@ async function StartWorldWind() {
                         document.getElementById('endTime').disabled = false;
                         document.getElementById('selectSensor').disabled = false;
                         document.getElementById('submitStartEndDateTime').disabled = false;
+
                 } else if (topPickedObject.userObject.placemarkType == "mobiothings"){
 
                     var StrToForm = "ID: " +topPickedObject.userObject.displayName+ " (nuclear radiation) <br> Provider: Safecast <br>"
@@ -1242,11 +1300,36 @@ async function CreateClusteredThings(ThingsLocationArr){
 
             markerCluster.addToPlacemarkArray(placemark);
 
-        }   else if(ThingsLocationArr[i].providerID === "safecastlog"){
+        }   else if(ThingsLocationArr[i].providerID === "bcncat"){
             
-            mobileThingsDB.push(ThingsLocationArr[i]);
+            var params = {};
 
-        } else {
+            params.placemarkAttributes = placemarkAttributes;
+            params.highlightAttributes = highlightAttributes;
+
+            params.info = {};
+
+            params.info.displayName = ThingsLocationArr[i].name;
+            params.info.providerID = ThingsLocationArr[i].providerID;
+
+            params.info.latitude = allThingsDB[i].latitude;
+            params.info.longitude = allThingsDB[i].longitude;
+            
+            params.info.placemarkType = "iothings";
+
+            var lat = parseFloat(ThingsLocationArr[i].latitude);
+            var lon = parseFloat(ThingsLocationArr[i].longitude);
+
+            var placemark = markerCluster.newInitPlacemark([lat, lon], placemarkAttributes,{
+                imageSource: "images/thing_node.png", 
+                label: ""
+            }, params);
+
+            markerCluster.addToPlacemarkArray(placemark);
+           
+        }
+        /*} 
+        else {
 
             var params = {};
 
@@ -1275,6 +1358,7 @@ async function CreateClusteredThings(ThingsLocationArr){
             //exclude others for now
             //markerCluster.addToPlacemarkArray(placemark);
         }
+        */
 
        
 
@@ -1594,7 +1678,7 @@ function getPosition(el) {
 
 function TrigHistorical(){
 
-    if(!!topPickedObject.userObject.placemarkType === "iothings"){
+    if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
         
         if(topPickedObject.userObject.providerID === "smartcitizen"){
             //var promSC = QuerySCHistoricalData();
@@ -1693,7 +1777,22 @@ function TrigHistorical(){
                 }
     
                 window.open("/visualization.html"+toHtmlQuery_(params));
-            } else {
+            } else if (topPickedObject.userObject.providerID === "bcncat"){
+    
+                var params={
+                    "providerID" : "bcncat",
+                    "sensorUnitID": document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                    "deviceID" : topPickedObject.userObject.displayName,
+                    "start": new Date(document.getElementById("startTime").value).toISOString(),
+                    "end" : new Date(document.getElementById("endTime").value).toISOString(),
+                    "yAxisLabelType" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType,
+                    "yAxisLabelUnit" : document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelUnit,
+                }
+    
+                window.open("/visualization.html"+toHtmlQuery_(params));
+            } 
+            
+            else {
                 window.alert("Historical data is not made available by the IoT data provider of the selected devices/sensors");
             }
 
@@ -1720,7 +1819,8 @@ function TrigHistoricalTimeSeries(){
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
-
+    wwd.removeLayer(placemarkLayerDevByKeywords);
+    wwd.removeLayer(placemarkLayerDevByRadius);
 
     if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "S"){
         
@@ -1821,7 +1921,7 @@ async function GenerateHistoricalTimeSeries(){
                     var data_arr = values[0].readings;
                     var lat = topPickedObject.userObject.latitude;
                     var lon = topPickedObject.userObject.longitude;
-                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),data_arr,{});
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),data_arr,true,{});
                 }
 
             });
@@ -1849,7 +1949,7 @@ async function GenerateHistoricalTimeSeries(){
                
                 
                 "from-date": new Date(document.getElementById("startTime").value).toISOString(),
-                "to-date": new Date(document.getElementById("startTime").value).toISOString()
+                "to-date": new Date(document.getElementById("endTime").value).toISOString()
             }
 
             var prom = QueryOSMHistoricalData(channelID, sensorID, params);
@@ -1871,7 +1971,7 @@ async function GenerateHistoricalTimeSeries(){
                         
                         var lat = topPickedObject.userObject.latitude;
                         var lon = topPickedObject.userObject.longitude;
-                        DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+                        DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{});
 
                     });
 
@@ -1884,7 +1984,7 @@ async function GenerateHistoricalTimeSeries(){
                    
                     var lat = topPickedObject.userObject.latitude;
                     var lon = topPickedObject.userObject.longitude;
-                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{});
                   
 
                 }
@@ -1926,7 +2026,7 @@ async function GenerateHistoricalTimeSeries(){
 
             var lat = topPickedObject.userObject.latitude;
             var lon = topPickedObject.userObject.longitude;
-            DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{"unit":values[0].results[0].unit});
+            DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{"unit":values[0].results[0].unit});
           
 
         });
@@ -1940,7 +2040,7 @@ async function GenerateHistoricalTimeSeries(){
             var params = {
                 "results": "8000",
                 "start": new Date(document.getElementById("startTime").value).toISOString(),
-                "end" : new Date(document.getElementById("startTime").value).toISOString()
+                "end" : new Date(document.getElementById("endTime").value).toISOString()
             }
            
            var prom = QueryTSHistoricalData(channelID,fieldID,params);
@@ -1961,7 +2061,7 @@ async function GenerateHistoricalTimeSeries(){
 
                     var lat = topPickedObject.userObject.latitude;
                     var lon = topPickedObject.userObject.longitude;
-                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{});
 
                 });
             } else {
@@ -1972,14 +2072,63 @@ async function GenerateHistoricalTimeSeries(){
 
                 var lat = topPickedObject.userObject.latitude;
                 var lon = topPickedObject.userObject.longitude;
-                DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,{});
+                DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{});
 
             }
 
            });
 
 
-        } else {
+        } else if (topPickedObject.userObject.providerID === "bcncat"){
+
+            //var sensorID = data.sensorUnitID;
+            var deviceID = topPickedObject.userObject.displayName;
+            var sensorID = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+                
+
+                //var yAxisLabelType = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType;
+                var yAxisLabelUnit = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelUnit;
+                var start_time = new Date(document.getElementById("startTime").value).toISOString();
+                var end_time = new Date(document.getElementById("endTime").value).toISOString();
+
+                var lat = topPickedObject.userObject.latitude;
+                var lon = topPickedObject.userObject.longitude;
+               
+
+                var prom = QueryBCNCatHistoricalData(deviceID,sensorID);
+                //yAxisLabel = val["sensor_key"]
+                Promise.all([prom]).then(function(values){
+
+                    if(new Date(start_time).getTime()>values[0].fromTime){
+
+                    } else {
+                        delete start_time;
+                        start_time = new Date(values[0].fromTime).toISOString();
+                    }
+    
+                    if(new Date(end_time).getTime()<values[0].toTime){
+    
+                    } else {
+                        delete end_time;
+                        end_time = new Date(values[0].toTime).toISOString();
+                    }
+
+                    var measurementArr = values[0].events;
+                    var measurementToPlot = [];
+                    for(j=0;j<measurementArr.length;j++){
+
+                        if(measurementArr[j].time>=new Date(start_time).getTime() && measurementArr[j].time<=new Date(end_time).getTime()){
+                            measurementToPlot.push([new Date(measurementArr[j].time).toISOString(),measurementArr[j].value])
+                        }
+
+                    }
+
+                    DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),measurementToPlot,false,{"unit":yAxisLabelUnit});
+
+                   
+                });
+
+        }  else {
             window.alert("Time series not available since the IoT data provider of the selected devices/sensors doesn't provide historical data");
         }
         
@@ -2331,7 +2480,7 @@ async function SearchByCityAndDraw(){
                         placemark.sensorList = allThingsDB[i].sensorList;
                         placemark.lastSeen = allThingsDB[i].lastSeen;
                         
-                    }  else if(allThingsDB[i].providerID === "safecastlog"){
+                    }  else if(allThingsDB[i].providerID === "bcncat"){
                        
                         
                         
@@ -2411,7 +2560,7 @@ function DisableSearchByLocation(){
 
 
 
-async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,params){
+async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,needReverse,params){
 
     var animationStep = document.getElementById("AnimTimeStep").value;
 
@@ -2419,10 +2568,10 @@ async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,params){
     timeSeriesLayer.displayName = "Time Series Polygons";
     timeSeriesLayer.enabled = true;
 
-        
-    data_val_arr.reverse();
-
-
+    if(needReverse){
+        data_val_arr.reverse();
+    }   
+    
     console.log(data_val_arr);
 
     //data needs to be feature scaled first for presentation purpose
