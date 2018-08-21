@@ -3186,7 +3186,7 @@ async function VisualizeMobileThings(){
                     newContent.id = "sensorOption"+i;
                     
                     newContent.value =  mobileThingsDB[i].id;
-                    newContent.innerHTML =  mobileThingsDB[i].id;
+                    newContent.innerHTML =  mobileThingsDB[i].id+" ("+mobGeoJSON.features[0].properties.params.info.time+") ";
                     document.getElementById('selectSensor').appendChild(newContent);
 
                     return mobGeoJSON.features;
