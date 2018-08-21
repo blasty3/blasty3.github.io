@@ -659,7 +659,9 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 			  ).then(function(data){
 				
 				 tempBCN = data.components;
+				 console.log(data);
 				 delete data;
+				
 				 
 			})
 			
