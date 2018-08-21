@@ -651,15 +651,15 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 			var bcn_url = "https://connecta.bcn.cat/connecta-catalog-web/component/map/json";
 
-			var bcn_smart_city_prom = $.ajax(
-				
+			var bcn_smart_city_prom = $.ajax(cors_purl+bcn_url
+				/*
 				{
 					type: "GET",
 					contentType: "application/json",
 					url: bcn_url,
 					headers: { 'Host': "connecta.bcn.cat" }
 				}
-				
+				*/
 			  ).then(function(data){
 				
 				 tempBCN = data.components;
