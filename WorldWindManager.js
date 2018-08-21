@@ -2028,6 +2028,8 @@ function TrigReturnAllDevices(){
     DisableSearchByLocation();
     DisableReturnAllDevices();
 
+    wwd.removeLayer(placemarkLayerAllDev);
+
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerDevByKeywords);
     wwd.removeLayer(placemarkLayerDevByRadius);
@@ -2045,7 +2047,9 @@ function TrigReturnAllDevices(){
            wwd.redraw();
         }
 
-    } else if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "M"){
+    }
+    /* 
+    else if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "M"){
         if(!(typeof markerClusterMobTh == 'undefined')){
             //markerClusterMobTh.hideAllLevels();
             //markerClusterMobTh.hideAllSingle();
@@ -2056,9 +2060,10 @@ function TrigReturnAllDevices(){
             wwd.redraw();
         }
     }
+    */
     
 
-    wwd.redraw();
+    //wwd.redraw();
 
         EnableSearchByLocation();
         EnableReturnAllDevices();
@@ -2070,6 +2075,8 @@ async function SearchByCountryAndDraw(){
 
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByLoc);
+    wwd.removeLayer(placemarkLayerDevByKeywords);
+    wwd.removeLayer(placemarkLayerDevByRadius);
 
     if(!(typeof markerCluster == 'undefined')){
        // markerCluster.hideAllLevels();
@@ -2348,7 +2355,7 @@ function DisableSearchByLocation(){
     document.getElementById("SearchByCityButton").innerHTML = "Search In Progress...";
  }
 
- function DisableSearchByLocationInMobileMode(){
+ function DisableSearchByLocationForMobileMode(){
 	document.getElementById("SearchByCountryButton").style.color = "gray";
     document.getElementById("SearchByCountryButton").disabled = true;
     document.getElementById("SearchByCountryButton").innerHTML = "Not Available";
@@ -2950,7 +2957,10 @@ function OnChangeStationaryMobile(){
         document.getElementById('spanTimeUnit').disabled = true;
         document.getElementById('selectToSee').innerHTML = "Mobile Things to see";
 
+        document.getElementById("searchRadius").style.color = "gray";
         document.getElementById("searchRadius").disabled = true;
+
+        document.getElementById("searchKeywords").style.color = "gray";
         document.getElementById("searchKeywords").disabled = true;
 
         removeOptions(document.getElementById("selectSensor"));
@@ -2981,7 +2991,7 @@ function OnChangeStationaryMobile(){
         }
         //wwd.redraw();
 
-        DisableSearchByLocationInMobileMode();
+        DisableSearchByLocationForMobileMode();
         DisableReturnAllDevices();
 
 
@@ -3003,7 +3013,10 @@ function OnChangeStationaryMobile(){
         document.getElementById("endTime").disabled = true;
         document.getElementById('selectToSee').innerHTML = "Sensor to see";
 
+        document.getElementById("searchRadius").style.color = "black";
         document.getElementById("searchRadius").disabled = false;
+
+        document.getElementById("searchKeywords").style.color = "black";
         document.getElementById("searchKeywords").disabled = false;
 
         removeOptions(document.getElementById("selectSensor"));
