@@ -649,7 +649,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 			// Barcelona Smart City Sentilo
 
-			var bcn_url = "http://connecta.bcn.cat/connecta-catalog-web/component/map/json";
+			var bcn_url = "https://connecta.bcn.cat/connecta-catalog-web/component/map/json";
 
 			var bcn_smart_city_prom = $.ajax(
 				{
