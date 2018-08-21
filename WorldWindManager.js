@@ -3287,9 +3287,9 @@ async function QuerySafecastMobTh(){
 					//tempThingSpeak = clone(data);
 					//console.log(tempThingSpeak);
 						
-								for(i=0;i<data.length;i++){
-									data[i].providerID = "safecastlog";
-									mobileThingsDB.push(data[i]);
+								for(j=0;j<data.length;j++){
+									data[j].providerID = "safecast";
+									mobileThingsDB.push(data[j]);
 								}
 								
 				 }))
