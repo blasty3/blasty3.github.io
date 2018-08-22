@@ -461,7 +461,7 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
 
     async function QueryBCNCatHistoricalData(deviceID,sensorID){
 
-        var urlBCNCat = "http://connecta.bcn.cat/connecta-catalog-web/admin/sensor/lastObs/"+deviceID+"."+sensorID+"/?limit=200";
+        var urlBCNCat = "https://connecta.bcn.cat/connecta-catalog-web/admin/sensor/lastObs/"+deviceID+"."+sensorID+"/?limit=200";
 
 			var safecast_dev_prom = fetch(cors_purl+urlBCNCat).then(function(response) {
 				if (!response.ok) {
