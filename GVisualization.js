@@ -274,14 +274,14 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
                 //yAxisLabel = val["sensor_key"]
                 Promise.all([prom]).then(function(values){
 
-                    if(new Date(start_time).getTime()>values[0].fromTime){
+                    if(new Date(start_time).getTime()>=values[0].fromTime && new Date(start_time).getTime()<=values[0].toTime){
 
                     } else {
                         delete start_time;
                         start_time = new Date(values[0].fromTime).toISOString();
                     }
     
-                    if(new Date(end_time).getTime()<values[0].toTime){
+                    if(new Date(end_time).getTime()>=values[0].fromTime && new Date(end_time).getTime()<=values[0].toTime){
     
                     } else {
                         delete end_time;

@@ -189,6 +189,8 @@ async function StartWorldWind() {
                 var prom = QueryBCNCat(topPickedObject.userObject.displayName);
 
                 Promise.all([prom]).then(function(values){
+
+
                     
                     var str_to_form = "Name: " +values[0].componentName+"<br> Description: "+values[0].componentDesc+ "<br> Last Update: "+values[0].lastUpdateTimeMessage+"<br> Provider: Ajuntament de Barcelona <br><br>";
                     //str_to_form = clone(str_to_form+"Last Seen: "+values[0].feeds[0]["created_at"]+"<br><br>");
@@ -198,6 +200,9 @@ async function StartWorldWind() {
                     for(i=0;i<values[0].sensorLastObservations.length;i++){
 
                         if(values[0].sensorLastObservations[i].found == true){
+
+
+                           
 
                             str_to_form = clone(str_to_form+"Sensor: " +values[0].sensorLastObservations[i].sensor+"<br> Description: "+values[0].sensorLastObservations[i].sensorType+"<br> Last Value: "+values[0].sensorLastObservations[i].value+" "+values[0].sensorLastObservations[i].unit+"<br> Last Update: "+values[0].sensorLastObservations[i].timestamp+"<br><br>");
                         
