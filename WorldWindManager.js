@@ -3654,10 +3654,13 @@ async function SearchByKeywords(){
             }
     
             var arrayToSearch = allThingsDB[i].thingTag;
+
+            console.log(arrayToSearch);
     
             //var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
 
             var matching = false;
+
             for(k=0;k<arrayToSearch.length;k++){
 
                 for(l=0;l<origKeywordsArr.length;l++){
