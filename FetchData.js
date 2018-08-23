@@ -1227,7 +1227,7 @@ async function ExtractAllThingsLocation(){
 			"lastSeen" : tempSC[i]["last_reading_at"],
 			"providerID": "smartcitizen",
 			"deviceID": tempSC[i].id,
-			"thingTag": ["air quality"]
+			"thingTag": ["air quality","air","environment"]
 		});
 		/*
 		allThingsPreviewDB[tempSC[i].name] = {
@@ -1247,7 +1247,7 @@ async function ExtractAllThingsLocation(){
 
 	for(i=0;i<tempOSM.length;i++){
 		var sensorList = [];
-		var thingTag = ["air quality"];
+		var thingTag = ["air quality","air","environment"];
 		var OSMTh = {
 			// Relevant parameters would go here
 			"name" : tempOSM[i].name,
@@ -1366,7 +1366,7 @@ async function ExtractAllThingsLocation(){
 		SENethArr.lastSeen = SENeth[i].properties["last_update"];
 		SENethArr.providerID = "netherlandssmartemission";
 		SENethArr.stationID = SENeth[i].properties.id;
-		SENethArr.thingTag = ["air quality"];
+		SENethArr.thingTag = ["air quality","air","environment"];
 		allThingsPreviewDB.push(SENethArr);
 	  }
 
@@ -1406,7 +1406,7 @@ async function ExtractAllThingsLocation(){
 		var sensorList = [];
 
 		SafecastArrEl.providerID = "safecast";
-		SafecastArrEl.thingTag = ["air quality","radiation","nuclear","alpha","gamma","nuclear radiation"];
+		SafecastArrEl.thingTag = ["air quality","air","environment","radiation","nuclear","alpha","gamma","nuclear radiation"];
 		SafecastArrEl.latitude = tempSafecast[i].lat;
 		SafecastArrEl.longitude = tempSafecast[i].lon;
 
