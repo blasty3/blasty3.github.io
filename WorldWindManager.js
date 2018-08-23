@@ -2088,7 +2088,7 @@ async function GenerateHistoricalTimeSeries(){
 
             //var sensorID = data.sensorUnitID;
             var deviceID = topPickedObject.userObject.displayName;
-            var sensorID = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value,
+            var sensorID = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].value;
                 
 
                 //var yAxisLabelType = document.getElementById("selectSensor").options[(document.getElementById("selectSensor")).selectedIndex].yAxisLabelType;
