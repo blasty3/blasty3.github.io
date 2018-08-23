@@ -3595,13 +3595,12 @@ async function SearchByKeywords(){
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByKeywords);
     
+    
     //
 
 
-    var origKeywordsArr = document.getElementById("searchKeywords").value.split(";");
+    var origKeywordsArr = document.getElementById("searchByKeywords").value.split(";");
     
-    
-
     if(typeof markerCluster !== "undefined"){
         markerCluster.updateGlobe(wwd);
         markerCluster.removeClusterLayer();
