@@ -3658,7 +3658,7 @@ async function SearchByKeywords(){
     
             var arrayToSearch = allThingsDB[i].thingTag;
 
-            console.log(arrayToSearch);
+            //console.log(arrayToSearch);
     
             //var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
 
