@@ -3482,6 +3482,7 @@ async function SearchByRadius(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByRadius);
+    wwd.removeLayer(placemarkLayerDevByKeywords);
 
     if(typeof markerCluster !== "undefined"){
         markerCluster.updateGlobe(wwd);
@@ -3503,15 +3504,57 @@ async function SearchByRadius(){
         var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
     
         var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
+
         
     if(document.getElementById("CombinedSearch").checked){
         
+        if(ThingsListSearchByKeywords.length == 0){
+
+                var origKeywordsArr = document.getElementById("searchByKeywords").value.split(";");
+
+
+                for(i=0;i<allThingsDB.length;i++){
+        
+                    for(j=0;j<origKeywordsArr.length;j++){
+                        origKeywordsArr[j] = origKeywordsArr[j].trim().toLowerCase();
+                    }
+            
+                    var arrayToSearch = allThingsDB[i].thingTag;
+            
+                    var matching = false;
+                    for(k=0;k<arrayToSearch.length;k++){
+        
+                        for(l=0;l<origKeywordsArr.length;l++){
+                            if(origKeywordsArr[l] == arrayToSearch[k]){
+                                matching = true;
+                                break;
+                            }
+                        }
+        
+                        if(matching == true){
+                            break;
+                        }
+        
+                    }
+        
+                    //var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+            
+                    if(matching){
+                        //var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByRadius[i]);
+                        ThingsListSearchByKeywords.push(allThingsDB[i]);
+                        //placemarkLayerDevByKeywords.addRenderable(placemark);
+                    }
+                }
+            
+
+        }
+
+
         for(i=0;i<ThingsListSearchByKeywords.length;i++){
             wwPositions.push(new WorldWind.Position(ThingsListSearchByKeywords[i].latitude,ThingsListSearchByKeywords[i].longitude,0));
     
             var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
     
-            
             if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
                 var dist = (geographicDistance / 1e3).toFixed(3);
     
@@ -3544,7 +3587,7 @@ async function SearchByRadius(){
     } else {
 
         for(i=0;i<allThingsDB.length;i++){
-            wwPositions.push(new WorldWind.Position(allThingsDB[i].ThingsListSearchByKeywords,allThingsDB[i].longitude,0));
+            wwPositions.push(new WorldWind.Position(allThingsDB[i].latitude,allThingsDB[i].longitude,0));
     
             var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
     
@@ -3597,7 +3640,7 @@ async function SearchByKeywords(){
     wwd.removeLayer(placemarkLayerDevByLoc);
     wwd.removeLayer(placemarkLayerAllDev);
     wwd.removeLayer(placemarkLayerDevByKeywords);
-    
+    wwd.removeLayer(placemarkLayerDevByRadius);
     
     //
 
@@ -3614,6 +3657,57 @@ async function SearchByKeywords(){
     placemarkLayerDevByKeywords.removeAllRenderables();
 
     if(document.getElementById("CombinedSearch").checked){
+
+
+        if(ThingsListSearchByRadius.length == 0){
+
+            var latitudeOnSight = wwd.navigator.lookAtLocation.latitude;
+            var longitudeOnSight = wwd.navigator.lookAtLocation.longitude;
+            var radius = document.getElementById("radiusNum").value;
+        
+            
+            var lengthMeasurer = new WorldWind.LengthMeasurer(wwd);
+        
+            var wwPositions = [new WorldWind.Position(latitudeOnSight, longitudeOnSight, 0)];
+
+            for(i=0;i<allThingsDB.length;i++){
+    
+                
+                wwPositions.push(new WorldWind.Position(allThingsDB[i].latitude,allThingsDB[i].longitude,0));
+    
+                var geographicDistance = lengthMeasurer.getGeographicDistance(wwPositions, WorldWind.GREAT_CIRCLE);
+        
+                
+                if(document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "km"){
+                    var dist = (geographicDistance / 1e3).toFixed(3);
+        
+                    if(Number(dist)<=Number(radius)){
+                        //console.log(dist);
+                        //console.log(radius);
+                        //console.log(latitudeOnSight+","+longitudeOnSight);
+                       // var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                       // placemarkLayerDevByRadius.addRenderable(placemark);
+                    }
+        
+                } else if (document.getElementById("radiusNumUnit").options[(document.getElementById("radiusNumUnit")).selectedIndex].value == "m"){
+                    var dist = (geographicDistance).toFixed(3);
+        
+                    if(dist<=radius){
+        
+                      //  var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                      //  placemarkLayerDevByRadius.addRenderable(placemark);
+                    }
+        
+                }
+                wwPositions.pop();
+
+            }
+        
+
+        }
+
         
         for(i=0;i<ThingsListSearchByRadius.length;i++){
         
@@ -3649,6 +3743,8 @@ async function SearchByKeywords(){
         }
 
     } else {
+
+        //wwd.removeLayer(placemarkLayerDevByRadius);
 
         for(i=0;i<allThingsDB.length;i++){
         

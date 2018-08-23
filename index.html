@@ -343,7 +343,7 @@
                  <button  class="btn btn-primary" type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button>
                   <br>
                    <label for="radiusNum">Search by Radius: </label>
-                   <input class="form-control" type="number" name="radiusNum" id="radiusNum" min="1">
+                   <input class="form-control" type="number" name="radiusNum" id="radiusNum" min="1" value=1>
                    <select class="form-control" name="radiusNumUnit" id="radiusNumUnit">
                           <option value="km" selected="selected">km</option>
                           <option value="m">m</option>
@@ -405,7 +405,7 @@
                    
                    <br>
                    <label for="spanTimeNum">Span Between Readings: </label>
-                   <input class="form-control" type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled" min="1">
+                   <input class="form-control" type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled" min="1" value=1>
                    <select class="form-control" name="spanTimeUnit" id="spanTimeUnit" disabled="disabled">
                           <option value="y">years</option>
                           <option value="M">months</option>
@@ -417,7 +417,7 @@
                           <option value="ms">milliseconds</option>
                    </select>
                    <br>
-                   <label for="selectSensor" id ="selectToSee">Sensor to see: </label>
+                   <label for="selectSensor" id="selectToSee">Sensor to see: </label>
                    <select class="form-control" name="selectSensor" id="selectSensor" disabled="disabled"> </select>
                    <button class="btn btn-default" type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart</button>
                    <br>
