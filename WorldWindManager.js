@@ -3271,6 +3271,9 @@ async function VisualizeMobileThings(){
 
     console.log(mobileThingsDB);
 
+    var mobThPromArrList = [];
+    var mobThUserIDArrList = [];
+
     for(i=0;i<mobileThingsDB.length;i++){
 
         var timeCreated = new Date(mobileThingsDB[i]["created_at"]);
@@ -3289,93 +3292,90 @@ async function VisualizeMobileThings(){
                 //fetch(urlSCBg).then(function(xml) {
                    var prom = $.ajax(urlSCBg).then(function(xml){
 
-                    var mobGeoJSON = toGeoJSON.kml(xml);
-
-                    
-                    var mobThToVisEl = {};
-
-                    var midEl = Math.floor((mobGeoJSON.features.length)/2);
-                    var midLon = mobGeoJSON.features[midEl].geometry.coordinates[0];
-                    var midLat = mobGeoJSON.features[midEl].geometry.coordinates[1];
-
-                    mobThToVisEl.latitude = midLat;
-                    mobThToVisEl.longitude = midLon;
-
-                    
-                    for (j=0;j<mobGeoJSON.features.length;j++){
-
-                        
-                        var description = mobGeoJSON.features[j].properties.description;
-                        var descrArr = description.split("/");
-    
-                        var cpmStr = descrArr[0].substr(0,descrArr[0].length-4);
-                        mobGeoJSON.features[j].properties.params = {};
-                        mobGeoJSON.features[j].properties.params.info = {};
-
-                        mobGeoJSON.features[j].properties.params.info.cpm = cpmStr;
-                        mobGeoJSON.features[j].properties.params.info.cpmValue = cpmStr.split(" = ")[1];
-                        mobGeoJSON.features[j].properties.params.info.displayName = mobileThingsDB[i].id;
-                        mobGeoJSON.features[j].properties.params.info.sievert =  mobGeoJSON.features[j].properties.name.split(" ")[0];
-                        mobGeoJSON.features[j].properties.params.info.sievertUnit =  mobGeoJSON.features[j].properties.name.split(" ")[1];
-                        //mobGeoJSON.features[i].properties.params.info.icon = mobGeoJSON.features[i].properties.icon;
-                        
-                        
-                        var imgFileName = mobGeoJSON.features[j].properties.icon.split("/kml/")[1];
-                        
-
-                        var year = descrArr[0].substr(descrArr[0].length-4);
-                        var month = descrArr[1];
-                        var day_date =  descrArr[2].split(" ")[0];
-                        var timeArr = descrArr[2].split(" ")[1].split(":");
-    
-                        var fullDate = new Date();
-                        fullDate.setFullYear(year,parseInt(month)-1,day_date);
-                        fullDate.setHours(timeArr[0],timeArr[1],timeArr[2]);
-                        mobGeoJSON.features[j].properties.params.info.time = fullDate.toUTCString();
-                        mobGeoJSON.features[j].properties.params.info.providerID = "safecast";
-                        mobGeoJSON.features[j].properties.params.info.placemarkType = "mobiothings";
-                       // mobGeoJSON.features[i].properties.providerID = "safecast";
-                        
-                        var placemarkAttr = CreatePlacemarkAttributes("/images/"+imgFileName);
-                        var highlightAttr = CreateHighlightAttributes(placemarkAttr);
-                        placemarkAttr.highlightAttributes = highlightAttr;
-
-                        mobGeoJSON.features[j].properties.params.placemarkAttributes = placemarkAttr;
-                        mobGeoJSON.features[j].properties.params.highlightAttributes = highlightAttr;
-                        
-                    }
-                    //console.log(mobGeoJSON);
-
-                    mobThToVisEl.data =  mobGeoJSON.features;
-
-                    mobThToVisList[mobileThingsDB[i].id] = mobThToVisEl;
-
-                    var newContent=document.createElement('option');
-                    newContent.id = "sensorOption"+i;
-                    
-                    newContent.value =  mobileThingsDB[i].id;
-                    newContent.innerHTML =  mobileThingsDB[i].id+" ("+mobGeoJSON.features[0].properties.params.info.time+") ";
-                    document.getElementById('selectSensor').appendChild(newContent);
-
-                    return mobGeoJSON.features;
+                            return xml;
 
 
-                })
+                   })
 
-                promArr.push(prom);
-
+                   mobThPromArrList.push(prom);
+                   mobThUserIDArrList.push(userID);
 
         }
 
     }
 
-    
-    Promise.all(promArr).then(function(values){
+    Promise.all(mobThPromArrList).then(function(values){
 
         for(i=0;i<values.length;i++){
 
-            geoJSONArr = geoJSONArr.concat(values[i]);
-           
+            var userID = mobThUserIDArrList[i];
+            var mobGeoJSON = toGeoJSON.kml(values[i]);
+
+            var mobThToVisEl = {};
+
+            var midEl = Math.floor((mobGeoJSON.features.length)/2);
+            var midLon = mobGeoJSON.features[midEl].geometry.coordinates[0];
+            var midLat = mobGeoJSON.features[midEl].geometry.coordinates[1];
+
+            mobThToVisEl.latitude = midLat;
+            mobThToVisEl.longitude = midLon;
+
+            
+            for (j=0;j<mobGeoJSON.features.length;j++){
+
+                var description = mobGeoJSON.features[j].properties.description;
+                var descrArr = description.split("/");
+
+                var cpmStr = descrArr[0].substr(0,descrArr[0].length-4);
+                mobGeoJSON.features[j].properties.params = {};
+                mobGeoJSON.features[j].properties.params.info = {};
+
+                mobGeoJSON.features[j].properties.params.info.cpm = cpmStr;
+                mobGeoJSON.features[j].properties.params.info.cpmValue = cpmStr.split(" = ")[1];
+                mobGeoJSON.features[j].properties.params.info.displayName = userID;
+                mobGeoJSON.features[j].properties.params.info.sievert =  mobGeoJSON.features[j].properties.name.split(" ")[0];
+                mobGeoJSON.features[j].properties.params.info.sievertUnit =  mobGeoJSON.features[j].properties.name.split(" ")[1];
+                //mobGeoJSON.features[i].properties.params.info.icon = mobGeoJSON.features[i].properties.icon;
+                
+                
+                var imgFileName = mobGeoJSON.features[j].properties.icon.split("/kml/")[1];
+                
+
+                var year = descrArr[0].substr(descrArr[0].length-4);
+                var month = descrArr[1];
+                var day_date =  descrArr[2].split(" ")[0];
+                var timeArr = descrArr[2].split(" ")[1].split(":");
+
+                var fullDate = new Date();
+                fullDate.setFullYear(year,parseInt(month)-1,day_date);
+                fullDate.setHours(timeArr[0],timeArr[1],timeArr[2]);
+                mobGeoJSON.features[j].properties.params.info.time = fullDate.toUTCString();
+                mobGeoJSON.features[j].properties.params.info.providerID = "safecast";
+                mobGeoJSON.features[j].properties.params.info.placemarkType = "mobiothings";
+            // mobGeoJSON.features[i].properties.providerID = "safecast";
+                
+                var placemarkAttr = CreatePlacemarkAttributes("/images/"+imgFileName);
+                var highlightAttr = CreateHighlightAttributes(placemarkAttr);
+                placemarkAttr.highlightAttributes = highlightAttr;
+
+                mobGeoJSON.features[j].properties.params.placemarkAttributes = placemarkAttr;
+                mobGeoJSON.features[j].properties.params.highlightAttributes = highlightAttr;
+                
+            }
+            //console.log(mobGeoJSON);
+
+            mobThToVisEl.data =  mobGeoJSON.features;
+
+            mobThToVisList[userID] = mobThToVisEl;
+
+            var newContent=document.createElement('option');
+            newContent.id = "sensorOption"+i;
+            
+            newContent.value =  userID;
+            newContent.innerHTML =  userID+" ("+mobGeoJSON.features[0].properties.params.info.time+") ";
+            document.getElementById('selectSensor').appendChild(newContent);
+
+            geoJSONArr = geoJSONArr.concat(mobGeoJSON.features);
         }
 
         console.log(geoJSONArr),
@@ -3386,8 +3386,6 @@ async function VisualizeMobileThings(){
         document.getElementById('selectSensor').addEventListener("change", MobThOnSelectedGlobeLookAtLoc); 
         document.getElementById('selectSensor').disabled = false;
         document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-
-        
 
     });
     
