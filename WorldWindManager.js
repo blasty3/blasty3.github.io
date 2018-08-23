@@ -3102,6 +3102,8 @@ function OnChangeStationaryMobile(){
         wwd.removeLayer(timeSeriesLayer);
         wwd.removeLayer(placemarkLayerAllDev);
         wwd.removeLayer(placemarkLayerDevByLoc);
+        wwd.removeLayer(placemarkLayerDevByKeywords);
+        wwd.removeLayer(placemarkLayerDevByRadius);
 
        // markerCluster.hideAllLevels();
        // markerCluster.hideAllSingle();
@@ -3218,6 +3220,7 @@ function TrigMobileThingsVis(){
 }
 
 async function copyToMobileDB(jsDB){
+
     mobileThingsDB.length=0;
 
     for(i=0;i<jsDB.length;i++){
@@ -3265,6 +3268,8 @@ async function VisualizeMobileThings(){
     }
 
     wwd = markerClusterMobTh.getGlobe();
+
+    console.log(mobileThingsDB);
 
     for(i=0;i<mobileThingsDB.length;i++){
 
