@@ -3667,7 +3667,7 @@ async function SearchByKeywords(){
             for(k=0;k<arrayToSearch.length;k++){
 
                 for(l=0;l<origKeywordsArr.length;l++){
-                    if(origKeywordsArr[l] == arrayToSearch[k]){
+                    if(origKeywordsArr[l] == arrayToSearch[k].toLowerCase()){
                         matching = true;
                         break;
                     }
