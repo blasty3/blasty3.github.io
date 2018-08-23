@@ -1329,7 +1329,7 @@ async function ExtractAllThingsLocation(){
 	  // this task has been done during queries
 
 
-	  allThingsPreviewDB = allThingsPreviewDB.concat(tempDweet);
+	  //allThingsPreviewDB = allThingsPreviewDB.concat(tempDweet);
 	  
 
 	  // Extract from SmartSantander

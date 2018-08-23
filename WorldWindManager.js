@@ -3166,7 +3166,7 @@ function OnChangeStationaryMobile(){
 
         //markerClusterMobTh.hideAllLevels();
         //markerClusterMobTh.hideAllSingle();
-        if(!typeof markerClusterMobTh == 'undefined'){
+        if(typeof markerClusterMobTh !== 'undefined'){
             markerClusterMobTh.updateGlobe(wwd);
             markerClusterMobTh.removeClusterLayer();
             wwd = markerClusterMobTh.getGlobe();
