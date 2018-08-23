@@ -3614,13 +3614,29 @@ async function SearchByKeywords(){
         
         for(i=0;i<ThingsListSearchByRadius.length;i++){
         
-            for(i=0;i<origKeywordsArr.length;i++){
-                origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+            for(j=0;j<origKeywordsArr.length;j++){
+                origKeywordsArr[j] = origKeywordsArr[j].trim().toLowerCase();
             }
     
             var arrayToSearch = ThingsListSearchByRadius[i].thingTag;
     
-            var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+            var matching = false;
+            for(k=0;k<arrayToSearch.length;k++){
+
+                for(l=0;l<origKeywordsArr.length;l++){
+                    if(origKeywordsArr[l] == arrayToSearch[k]){
+                        matching = true;
+                        break;
+                    }
+                }
+
+                if(matching == true){
+                    break;
+                }
+
+            }
+
+            //var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
     
             if(matching){
                 var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByRadius[i]);
@@ -3633,13 +3649,29 @@ async function SearchByKeywords(){
 
         for(i=0;i<allThingsDB.length;i++){
         
-            for(i=0;i<origKeywordsArr.length;i++){
-                origKeywordsArr[i] = origKeywordsArr[i].trim().toLowerCase();
+            for(j=0;j<origKeywordsArr.length;j++){
+                origKeywordsArr[j] = origKeywordsArr[j].trim().toLowerCase();
             }
     
             var arrayToSearch = allThingsDB[i].thingTag;
     
-            var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+            //var matching = CheckArrayForMatches(arrayToSearch,origKeywordsArr);
+
+            var matching = false;
+            for(k=0;k<arrayToSearch.length;k++){
+
+                for(l=0;l<origKeywordsArr.length;l++){
+                    if(origKeywordsArr[l] == arrayToSearch[k]){
+                        matching = true;
+                        break;
+                    }
+                }
+
+                if(matching == true){
+                    break;
+                }
+
+            }
     
             if(matching){
                 var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
@@ -3654,11 +3686,14 @@ async function SearchByKeywords(){
     wwd.redraw();
 }
 
-function CheckArrayForMatches (arrayToSearch, arrWithItemsToCheck) {
+/*
+async function CheckArrayForMatches (arrayToSearch, arrWithItemsToCheck) {
     return arrWithItemsToCheck.some(function (v) {
         return arrayToSearch.indexOf(v) >= 0;
     });
 };
+*/
+
 
 function CreatePlacemarkSearchByOthersLayer(ThingsListEl){
     
