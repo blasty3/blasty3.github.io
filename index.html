@@ -336,15 +336,15 @@
                 <button class="btn btn-primary" type="button" id="ReturnAllDevices" disabled="disabled" onclick="TrigReturnAllDevices()" >Return All Devices!</button>
                  <button  class="btn btn-primary" type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button>
                   <br>
-                  <!-- <div class="form-group input-group" id="searchBox"> -->
-                    <label for="searchText">Go To Location: </label>
+                  <h4>Go to Location:</h4>
+                  <div class="form-group input-group" id="searchBox">
                     <input type="text" class="form-control" placeholder="GoTo" id="searchText"/>
                     <span class="input-group-btn">
                          <button id="searchButton" class="btn btn-primary" onclick="SearchButtonTrig()" type="button">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
-                  <!-- </div> -->
+                   </div>
                   <br>
                    <label for="radiusNum">Search by Radius: </label>
                    <input class="form-control" type="number" name="radiusNum" id="radiusNum" min="1" value=1>
