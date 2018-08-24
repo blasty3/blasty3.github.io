@@ -126,12 +126,12 @@ section{
 
 #home-sm-video{
   position: relative;
-      //Option 1
+      /*Option 1*/
       /*top:50%; left: 20%;
       margin-left: -150px;
       margin-top: -75px;*/
       width: 50%;
-      height: 50%
+      height: 50%;
 }
 
 

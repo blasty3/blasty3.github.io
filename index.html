@@ -348,14 +348,13 @@
                           <option value="km" selected="selected">km</option>
                           <option value="m">m</option>
                    </select>
-                   <br>
-                   <input type="checkbox" name="CombinedSearch" id="CombinedSearch" value="Combined">Combined Search?<br>
-                   <button class="btn btn-default" type="button" id="searchRadius" onclick="TrigSearchByRadius()">Search Devices By Radius</button>
+                   <button class="btn btn-primary" type="button" id="searchRadius" onclick="TrigSearchByRadius()">Search Devices By Radius</button>
                    <br>
                    <label for="searchByCity">Search by keywords: </label>
                    <input class="form-control" type="text" id="searchByKeywords" name="searchByKeywords">
+                   <button class="btn btn-primary" type="button" id="searchKeywords" onclick="TrigSearchByKeywords()">Search Devices By Keywords</button>
                    <br>
-                   <button class="btn btn-default" type="button" id="searchKeywords" onclick="TrigSearchByKeywords()">Search Devices By Keywords</button>
+                   <input type="checkbox" name="CombinedSearch" id="CombinedSearch">Combined Search?<br>
             </div>
 
               <form class="form-inline">
