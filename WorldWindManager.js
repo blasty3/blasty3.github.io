@@ -3099,6 +3099,8 @@ function OnChangeStationaryMobile(){
 
     if(selectedVal == 'M'){
 
+        EnableMobileThingsVis();
+
         wwd.removeLayer(timeSeriesLayer);
         wwd.removeLayer(placemarkLayerAllDev);
         wwd.removeLayer(placemarkLayerDevByLoc);
@@ -3162,6 +3164,9 @@ function OnChangeStationaryMobile(){
 
     } else if (selectedVal == 'S') {
 
+        DisableMobileThingsVis();
+
+        document.getElementById('mobileThingsDraw').style.color = "gray";
         document.getElementById('mobileThingsDraw').disabled = true;
 
         //markerClusterMobTh.hideAllLevels();

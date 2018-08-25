@@ -768,7 +768,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 											//window.alert("Search is complete!");
 
 											EnableStationaryMobileThingsSelection();
-											EnableMobileThingsVis();
+											//EnableMobileThingsVis();
 
 											Promise.all([prom]).then(function(values){
 												delete allThingsPreviewDB;
