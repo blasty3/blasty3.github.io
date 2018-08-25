@@ -1418,7 +1418,7 @@ async function ExtractAllThingsLocation(){
 			if(j==tempSafecast[i]["device_ids"].length-1){
 
 			} else {
-				combName = combName+","
+				combName = combName+",";
 			}
 		}
 		SafecastArrEl.name = combName;
