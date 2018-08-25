@@ -21,7 +21,7 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
 
     for(i=0;i<revArr.length;i++){
         
-        revArrTimeFormttd.push([new Date(revArr[i][0]),parseFloat(revArr[i][1])]);
+        revArrTimeFormttd.push([new Date(revArr[i][0]),Number(revArr[i][1])]);
         clonedData.push([new Date(revArr[i][0]),revArr[i][1].toString().replace('.', ',')]);
     }
 
@@ -229,8 +229,9 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
                                         sensIDVal = k;
 
                                         var timeStEl = new Date(dataToVis["start_date"]).getTime();
-                                        console.log(dataToVis);
+                                        
                                         for(l=0;l<29;l++){
+                                            console.log(dataToVis.values[l]);
                                             //dataTimeStampToVis.push([values[0][i].data[k]["time_series"][0].values[l],new Date(timeStEl).toUTCString()]);
                                             dataTimeStampToVis.push([dataToVis["values"][l],new Date(timeStEl).toUTCString()]);
                                             timeStEl = timeStEl+86400;
