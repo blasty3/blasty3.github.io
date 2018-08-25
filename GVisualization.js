@@ -12,18 +12,29 @@ function initVisualization(){
 
 function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
     var data = new google.visualization.DataTable();
-    
-    if(needReverse){
-        revArr.reverse();
-    }
-
     var revArrTimeFormttd = [];
 
-    for(i=0;i<revArr.length;i++){
+
+    if(needReverse){
+        revArr.reverse();
+
+        for(i=0;i<revArr.length;i++){
         
-        revArrTimeFormttd.push([new Date(revArr[i][0]),Number(revArr[i][1])]);
-        clonedData.push([new Date(revArr[i][0]),revArr[i][1].toString().replace('.', ',')]);
+            revArrTimeFormttd.push([new Date(revArr[i][0]),Number(revArr[i][1])]);
+            clonedData.push([new Date(revArr[i][0]),revArr[i][1].toString().replace('.', ',')]);
+        }
+
+    } else {
+
+        for(i=0;i<revArr.length;i++){
+        
+            revArrTimeFormttd.push([new Date(revArr[i][1]),Number(revArr[i][0])]);
+            clonedData.push([new Date(revArr[i][1]),revArr[i][0].toString().replace('.', ',')]);
+        }
+
     }
+
+    
 
     //clonedData = clone(revArrTimeFormttd);
 
@@ -120,7 +131,7 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
                     //reconstruct measurements array so it's ready for plotting
                     var valArr=[];
 
-                    if(values[0].length === 0){
+                    if(values[0].length == 0){
                         var prom2 = QueryOSMHistoricalData(channelID,sensorID,{});
 
                         Promise.all([prom2]).then(function(values){
@@ -155,13 +166,22 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
 
                     //reconstruct measurements array so it's ready for plotting
                     var valArr=[];
-                    for(i=0;i<values[0].results.length;i++){
-                        valArr.push([values[0].results[i].date.utc, values[0].results[i].value]);
-                    }
-                    drawCrosshairs(valArr,values[0].results[0].parameter+" ("+values[0].results[0].unit+")","chart_div",true);
 
-                    document.getElementById("generateCSV").innerHTML = "Generate and Download CSV";
-                    document.getElementById("generateCSV").disabled = false;
+                    if(values[0].results.length>0){
+                        
+                        for(i=0;i<values[0].results.length;i++){
+                            valArr.push([values[0].results[i].date.utc, values[0].results[i].value]);
+                        }
+                        drawCrosshairs(valArr,values[0].results[0].parameter+" ("+values[0].results[0].unit+")","chart_div",true);
+    
+                        document.getElementById("generateCSV").innerHTML = "Generate and Download CSV";
+                        document.getElementById("generateCSV").disabled = false;
+
+                    } else {
+                        document.getElementById("generateCSV").innerHTML = "No data within the selected timeframe is available";
+                    }
+
+                    
                 });
 
             } else if(providerID === "thingspeak"){
