@@ -231,11 +231,13 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
                                         var timeStEl = new Date(dataToVis["start_date"]).getTime();
                                         console.log(dataToVis);
                                         for(l=0;l<29;l++){
-                                            dataTimeStampToVis.push([values[0][i].data[k]["time_series"][0].values[l],new Date(timeStEl).toUTCString()]);
+                                            //dataTimeStampToVis.push([values[0][i].data[k]["time_series"][0].values[l],new Date(timeStEl).toUTCString()]);
+                                            dataTimeStampToVis.push([dataToVis["values"][l],new Date(timeStEl).toUTCString()]);
                                             timeStEl = timeStEl+86400;
                                         }
                                        
-                                        dataTimeStampToVis.push([values[0][i].data[k]["time_series"][0].values[29],new Date(dataToVis["end_date"]).toUTCString()]);
+                                        //dataTimeStampToVis.push([values[0][i].data[k]["time_series"][0].values[29],new Date(dataToVis["end_date"]).toUTCString()]);
+                                        dataTimeStampToVis.push([dataToVis["values"][29],new Date(dataToVis["end_date"]).toUTCString()]);
                                         
                                         //drawCrosshairs(values[0][i].data[sensIDVal]["time_series"][0], sensorUnitID+" ("+values[0][i].data[sensIDVal]["ui_display_unit_parts"].si+") ", "chart_div", false);
                                         drawCrosshairs(dataTimeStampToVis, sensorUnitID+" ("+values[0][i].data[sensIDVal]["ui_display_unit_parts"].si+") ", "chart_div", false);
