@@ -229,6 +229,42 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 						values[0][i].city = "Helsinki";
 					}
 
+					if(values[0][i].city.trim() == "Oulun verkko"){
+						values[0][i].city = "Oulu";
+					}
+
+					if(values[0][i].city.trim() == "Tampereen verkko"){
+						values[0][i].city = "Tampere";
+					}
+
+					if(values[0][i].city.trim() == "Harjavallan verkko"){
+						values[0][i].city = "Harjavalta";
+					}
+
+					if(values[0][i].city.trim() == "Raahen verkko"){
+						values[0][i].city = "Raahe";
+					}
+
+					if(values[0][i].city.trim() == "Kotkan verkko"){
+						values[0][i].city = "Kotka";
+					}
+
+					if(values[0][i].city.trim() == "Turun seudun verkko"){
+						values[0][i].city = "Turku";
+					}
+
+					if(values[0][i].city.trim() == "Lahden verkko"){
+						values[0][i].city = "Lahti";
+					}
+
+					if(values[0][i].city.trim() == "Kuopion verkko"){
+						values[0][i].city = "Kuopio";
+					}
+
+					if(values[0][i].city.trim() == "Etelä-Karjalan verkko"){
+						values[0][i].city = "South Karelia";
+					}
+
 					  values[0][i].latitude = values[0][i].coordinates.latitude;
 					  values[0][i].longitude = values[0][i].coordinates.longitude;
 					  values[0][i].thingTag = thingTag;
