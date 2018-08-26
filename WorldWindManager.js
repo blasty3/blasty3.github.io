@@ -2440,8 +2440,10 @@ async function SearchByCityAndDraw(){
 
         for(i=0;i<allThingsDB.length;i++){
             if(allThingsDB[i].city){
-                if(allThingsDB[i].city.toLowerCase() === queryString.toLowerCase()){
-                    
+
+                //this requires IE 12.0 and above
+                if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase() || queryString.trim().toLowerCase().indexOf(allThingsDB[i].city.toLowerCase()) !== -1){
+                //if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase()){    
                     var lat = parseFloat(allThingsDB[i].latitude);
                     var lon = parseFloat(allThingsDB[i].longitude);
             
@@ -3377,15 +3379,17 @@ async function VisualizeMobileThings(){
             newContent.id = "sensorOption"+i;
             
             newContent.value =  userID;
-            newContent.innerHTML =  userID+" ("+mobGeoJSON.features[0].properties.params.info.time+") ";
+            newContent.innerHTML =  userID;
+            //newContent.innerHTML =  userID+" ("+mobGeoJSON.features[0].properties.params.info.time+") ";
             document.getElementById('selectSensor').appendChild(newContent);
 
             geoJSONArr = geoJSONArr.concat(mobGeoJSON.features);
         }
 
-        console.log(geoJSONArr),
+        //console.log(geoJSONArr),
 
         markerClusterMobTh.generateClusterCustomImg(geoJSONArr);
+        delete geoJSONArr;
         wwd = markerClusterMobTh.getGlobe();
 
         document.getElementById('selectSensor').addEventListener("change", MobThOnSelectedGlobeLookAtLoc); 

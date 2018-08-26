@@ -29,7 +29,15 @@ function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
 
+function openNavHistorical() {
+  document.getElementById("mySidenavHistorical").style.width = "250px";
+}
+
 /* Set the width of the side navigation to 0 */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+
+function closeNavHistorical() {
+  document.getElementById("mySidenavHistorical").style.width = "0";
 }
