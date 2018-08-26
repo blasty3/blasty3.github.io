@@ -195,6 +195,11 @@ background-color: #C0C0C0;
 
 }
 
+#logo {
+  position: absolute;
+
+}
+
 #head {
   color: black;
 
