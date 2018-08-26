@@ -2440,7 +2440,7 @@ async function SearchByCityAndDraw(){
 
         for(i=0;i<allThingsDB.length;i++){
             if(allThingsDB[i].city){
-                if(allThingsDB[i].city.toLowerCase() === queryString.toLowerCase()){
+                if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase() || allThingsDB[i].city.toLowerCase().includes(queryString.trim().toLowerCase())){
                     
                     var lat = parseFloat(allThingsDB[i].latitude);
                     var lon = parseFloat(allThingsDB[i].longitude);
