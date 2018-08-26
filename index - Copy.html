@@ -24,7 +24,7 @@
     <!--<script src="https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/worldwind.min.js" type="text/javascript"> </script>-->
 
     <script src="/worldwind.min.js" type="text/javascript" ></script>
-
+    
     <link rel="stylesheet" type="text/css" href="/resources.css">
     <script src="/lib/supercluster.min.js" type="text/javascript" ></script>
      <script src="/lib/MarkerCluster.js" type="text/javascript" ></script>
@@ -33,20 +33,43 @@
      <script src="/WorldWindManager.js" type="text/javascript" ></script>
      <script src="/GVisualization.js" type="text/javascript" ></script>
      <script src="/lib/togeojson.js" type="text/javascript" ></script>
-     <script src="/jquery.slidereveal.min.js" type="text/javascript"></script>
-      <script src="/script.js" type="text/javascript"></script>
 
 </head>
 <body>
 
+<div class="container">
+  <div class="row" id="gaio">
+    <div class="col-md-9">
+    <div class="jumbotron jumbotron-fluid" id="home-content">
+      <div class="text-left" id="home-content-inner">
+        <div class="" id="home-heading">
+          <h1 id="home-heading-1"> Ga<span>IoT</span>a</h1> <br>
+          <h2 id="home-heading-2"> IoT Data for the world </h2>
+        </div>
+        <div class="text-left" id="home-text">
+          <p><strong>Transparency</strong>&emsp;<strong>Connectivity</strong>&emsp;<strong>Innovation</strong>
+          </p>
+        </div>
 
+      </div>
+    </div>
+    </div>
+    <div class="col-md-3">
+      <div class="gaio">
+        <img src="/logo.png" class="img-responsive" alt="">
+
+      </div>
+
+    </div>
+
+</div>
     <div class="row">
       <div class="col-md-12">
         <fieldset>
               <legend>Search for IoT Devices</legend>
-
+              
             <div class="form-inline">
-
+              
               <div class="form-group">
                 <div class="dropdown">
                   <label for="selectByCountry">Search by Country: </label>
@@ -364,9 +387,7 @@
                 Your browser does not support HTML5 Canvas.
             </canvas>
         </div>
-        <div class="col-sm-2" id="head slider">
-          <button id="trigger">Hello World!!</button>
-
+        <div class="col-sm-2" id="head">
           <h4>Historical Data Readings</h4>
             <div class=" input-group" id="hist-parent">
               <form class="" action="index.html" method="post">
@@ -376,7 +397,7 @@
                         <option value="S" selected="selected">Stationary IoT</option>
                         <option value="M">Mobile IoT</option>
                    </select>
-
+                   
                    <!-- <button class="btn btn-default" type="button" id="SearchMobileThings" onclick="TrigMobileThingsSearch()">Search Mobile IoT</button> -->
                    <br>
                   <!-- The following is at least available for smart citizen -->
@@ -385,7 +406,7 @@
                    <br>
                    <label for="endTime">End: </label>
                    <input class="form-control" name="endTime" type="datetime" id="endTime"  disabled="disabled"/>
-
+                   
                    <br>
                    <label for="spanTimeNum">Span Between Readings: </label>
                    <input class="form-control" type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled" min="1" value=1>
