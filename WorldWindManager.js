@@ -3691,7 +3691,7 @@ async function SearchByKeywords(){
                         //console.log(radius);
                         //console.log(latitudeOnSight+","+longitudeOnSight);
                        // var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(allThingsDB[i]);
                        // placemarkLayerDevByRadius.addRenderable(placemark);
                     }
         
@@ -3701,7 +3701,7 @@ async function SearchByKeywords(){
                     if(dist<=radius){
         
                       //  var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(allThingsDB[i]);
                       //  placemarkLayerDevByRadius.addRenderable(placemark);
                     }
         
