@@ -1090,8 +1090,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.content = ThingsLocationArr[i].content;
 
@@ -1121,8 +1121,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.thingTag = ThingsLocationArr[i].thingTag;
 
@@ -1156,8 +1156,8 @@ async function CreateClusteredThings(ThingsLocationArr){
 
             params.info.thingTag = ThingsLocationArr[i].thingTag;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.measurements = ThingsLocationArr[i].measurements;
 
@@ -1186,8 +1186,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.thingTag = ThingsLocationArr[i].thingTag;
 
@@ -1221,8 +1221,8 @@ async function CreateClusteredThings(ThingsLocationArr){
 
             params.info.thingTag = ThingsLocationArr[i].thingTag;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.channelID = ThingsLocationArr[i].id;
             params.info.description = ThingsLocationArr[i].description;
@@ -1251,8 +1251,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.channelID = ThingsLocationArr[i].deviceID;
             params.info.lastSeen = ThingsLocationArr[i].lastSeen;
@@ -1284,8 +1284,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
 
             params.info.lastSeen = ThingsLocationArr[i].lastSeen;
 
@@ -1317,8 +1317,8 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info.displayName = ThingsLocationArr[i].name;
             params.info.providerID = ThingsLocationArr[i].providerID;
 
-            params.info.latitude = allThingsDB[i].latitude;
-            params.info.longitude = allThingsDB[i].longitude;
+            params.info.latitude = ThingsLocationArr[i].latitude;
+            params.info.longitude = ThingsLocationArr[i].longitude;
             
             params.info.placemarkType = "iothings";
 
@@ -3604,8 +3604,8 @@ async function SearchByRadius(){
                     //console.log(dist);
                     //console.log(radius);
                     //console.log(latitudeOnSight+","+longitudeOnSight);
-                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+                    ThingsListSearchByRadius.push(allThingsDB[i]);
                     placemarkLayerDevByRadius.addRenderable(placemark);
                 }
     
@@ -3614,8 +3614,8 @@ async function SearchByRadius(){
     
                 if(dist<=radius){
     
-                    var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                    ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                    var placemark = CreatePlacemarkSearchByOthersLayer(allThingsDB[i]);
+                    ThingsListSearchByRadius.push(allThingsDB[i]);
                     placemarkLayerDevByRadius.addRenderable(placemark);
                 }
     
@@ -3691,7 +3691,7 @@ async function SearchByKeywords(){
                         //console.log(radius);
                         //console.log(latitudeOnSight+","+longitudeOnSight);
                        // var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(allThingsDB[i]);
                        // placemarkLayerDevByRadius.addRenderable(placemark);
                     }
         
@@ -3701,7 +3701,7 @@ async function SearchByKeywords(){
                     if(dist<=radius){
         
                       //  var placemark = CreatePlacemarkSearchByOthersLayer(ThingsListSearchByKeywords[i]);
-                        ThingsListSearchByRadius.push(ThingsListSearchByKeywords[i]);
+                        ThingsListSearchByRadius.push(allThingsDB[i]);
                       //  placemarkLayerDevByRadius.addRenderable(placemark);
                     }
         
