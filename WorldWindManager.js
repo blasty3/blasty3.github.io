@@ -2442,8 +2442,8 @@ async function SearchByCityAndDraw(){
             if(allThingsDB[i].city){
 
                 //this requires IE 12.0 and above
-                //if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase() || allThingsDB[i].city.toLowerCase().includes(queryString.trim().toLowerCase())){
-                if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase()){    
+                if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase() || queryString.trim().toLowerCase().indexOf(allThingsDB[i].city.toLowerCase()) !== -1){
+                //if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase()){    
                     var lat = parseFloat(allThingsDB[i].latitude);
                     var lon = parseFloat(allThingsDB[i].longitude);
             
