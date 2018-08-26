@@ -261,6 +261,10 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 						values[0][i].city = "Kuopio";
 					}
 
+					if(values[0][i].city.trim() == "Vaasan verkko"){
+						values[0][i].city = "Vaasa";
+					}
+
 					if(values[0][i].city.trim() == "Etelä-Karjalan verkko"){
 						values[0][i].city = "South Karelia";
 					}
