@@ -60,63 +60,7 @@
      </ul>
    </nav>
  </header>
- <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <h4>Historical Data Readings</h4>
-    <div class=" input-group" id="hist-parent">
-      <form class="" action="index.html" method="post">
-        <div class="form-group">
-          <label for="StationaryOrMobile">Choose Stationary IoT or Mobile IoT: </label>
-          <select class="form-control" name="StationaryOrMobile" id="StationaryOrMobile" onchange="OnChangeStationaryMobile()" disabled="disabled">
-                <option value="S" selected="selected">Stationary IoT</option>
-                <option value="M">Mobile IoT</option>
-           </select>
-
-           <!-- <button class="btn btn-default" type="button" id="SearchMobileThings" onclick="TrigMobileThingsSearch()">Search Mobile IoT</button> -->
-           <br>
-          <!-- The following is at least available for smart citizen -->
-           <label for="startTime">Start: </label>
-           <input class="form-control" name="startTime" type="datetime" id="startTime" disabled="disabled"/>
-           <br>
-           <label for="endTime">End: </label>
-           <input class="form-control" name="endTime" type="datetime" id="endTime"  disabled="disabled"/>
-
-           <br>
-           <label for="spanTimeNum">Span Between Readings: </label>
-           <input class="form-control" type="number" name="spanTimeNum" id="spanTimeNum" disabled="disabled" min="1" value=1>
-           <select class="form-control" name="spanTimeUnit" id="spanTimeUnit" disabled="disabled">
-                  <option value="y">years</option>
-                  <option value="M">months</option>
-                  <option value="w">weeks</option>
-                  <option value="d">days</option>
-                  <option value="h" selected="selected">hours</option>
-                  <option value="m">minutes</option>
-                  <option value="s">seconds</option>
-                  <option value="ms">milliseconds</option>
-           </select>
-           <br>
-           <label for="selectSensor" id="selectToSee">Sensor to see: </label>
-           <select class="form-control" name="selectSensor" id="selectSensor" disabled="disabled"> </select>
-           <button class="btn btn-default" type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart</button>
-           <br>
-           <label for="AnimTimeStep">Time Step (ms): </label>
-           <input class="form-control" type="number" name="AnimTimeStep" id="AnimTimeStep" min="1000" step="100" value="1000">
-           <br>
-           <button class="btn btn-default" type="button" id="submitStartEndDateTimeTimeSeries" onclick="TrigHistoricalTimeSeries()">Observe Time Series</button>
-           <br>
-           <button class="btn btn-default" type="button" id="stopTimeSeries" onclick="stopTimeSeriesAnimation()">Stop Time Series</button>
-           <br>
-           <br>
-           <button class="btn btn-default" type="button" id="mobileThingsDraw" onclick="TrigMobileThingsVis()" style="color: gray" disabled="disabled">Search Mobile Things</button>
-          </form>
-        </div>
-      </form>
-
-      </div>
-    </div>
-    <span onclick="openNav()">open </span>
-</div>
-
+ 
 <!-- Use any element to open the sidenav -->
 
 <br>
