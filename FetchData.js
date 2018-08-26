@@ -1266,6 +1266,8 @@ async function ExtractAllThingsLocation(){
 				"Sensor" : tempOSM[i].sensors[j].sensorType,
 			}
 			thingTag.push(tempOSM[i].sensors[j].title);
+			var dupl = (tempOSM[i].sensors[j].title).replace(".","");
+			thingTag.push(dupl);
 			if((tempOSM[i].sensors[j].lastMeasurement)){
 				sensorListDet["Last Value"] =  tempOSM[i].sensors[j].lastMeasurement.value;
 				sensorListDet["Last Seen"] = tempOSM[i].sensors[j].lastMeasurement.createdAt;

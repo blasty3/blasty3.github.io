@@ -2323,7 +2323,7 @@ async function SearchByCountryAndDraw(){
                         placemark.latitude = allThingsDB[i].latitude;
                         placemark.longitude = allThingsDB[i].longitude;
 
-                        placemark.thingTag = ThingsLocationArr[i].thingTag;
+                        placemark.thingTag = allThingsDB[i].thingTag;
                         
                 
                         if(allThingsDB[i].providerID === "smartsantander"){
@@ -2457,7 +2457,7 @@ async function SearchByCityAndDraw(){
                     placemark.latitude = allThingsDB[i].latitude;
                     placemark.longitude = allThingsDB[i].longitude;
 
-                    placemark.thingTag = ThingsLocationArr[i].thingTag;
+                    placemark.thingTag = allThingsDB[i].thingTag;
                     
             
                     if(allThingsDB[i].providerID === "smartsantander"){
