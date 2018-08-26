@@ -224,13 +224,17 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 					//  latlonJSPromArr.push(SearchLocationWithArrEl(values[0][i].city,values[0][i]));
 		  
 					//} else 
-					{
+					
+					if(values[0][i].city.trim() == "Helsingin seudun verkko (HSY)"){
+						values[0][i].city = "Helsinki";
+					}
+
 					  values[0][i].latitude = values[0][i].coordinates.latitude;
 					  values[0][i].longitude = values[0][i].coordinates.longitude;
 					  values[0][i].thingTag = thingTag;
 					  delete values[0][i].coordinates;
 					  tempOAQ.push(values[0][i]);
-					}
+					
 				}
 
 				delete values;
