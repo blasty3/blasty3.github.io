@@ -3388,6 +3388,7 @@ async function VisualizeMobileThings(){
         //console.log(geoJSONArr),
 
         markerClusterMobTh.generateClusterCustomImg(geoJSONArr);
+        delete geoJSONArr;
         wwd = markerClusterMobTh.getGlobe();
 
         document.getElementById('selectSensor').addEventListener("change", MobThOnSelectedGlobeLookAtLoc); 
