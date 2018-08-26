@@ -3385,7 +3385,7 @@ async function VisualizeMobileThings(){
             geoJSONArr = geoJSONArr.concat(mobGeoJSON.features);
         }
 
-        console.log(geoJSONArr),
+        //console.log(geoJSONArr),
 
         markerClusterMobTh.generateClusterCustomImg(geoJSONArr);
         wwd = markerClusterMobTh.getGlobe();
