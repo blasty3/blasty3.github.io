@@ -224,6 +224,8 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 					//  latlonJSPromArr.push(SearchLocationWithArrEl(values[0][i].city,values[0][i]));
 		  
 					//} else 
+
+					//changes for Finland only
 					
 					if(values[0][i].city.trim() == "Helsingin seudun verkko (HSY)"){
 						values[0][i].city = "Helsinki";
