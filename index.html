@@ -67,13 +67,11 @@
     <a class="drawer-menu-item" href="#" data-toggle="dropdown" role="button" aria-expanded="false">
       Navbar <span class="drawer-caret"></span>
     </a>
-    <ul class="drawer-dropdown-menu">
-      <li><a class="drawer-dropdown-menu-item" href="#">Dropdown nav1</a></li>
-      <li><a class="drawer-dropdown-menu-item" href="#">Dropdown nav2</a></li>
-      <li><a class="drawer-dropdown-menu-item" href="#">Dropdown nav3</a></li>
-    </ul>
-  </li>
-</ul>
+    <div class="form-group drawer-dropdown-menu">
+      <label for="searchByCity">Search by city: </label>
+      <input class="form-control drawer-dropdown-menu-item" type="text" id="searchByCity" name="searchByCity">
+      <button class="btn btn-primary" type="button" id="SearchByCityButton" onclick="TrigSearchByCityAndDraw()" disabled="disabled">Search By City</button>
+    </div>
 
 
 
