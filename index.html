@@ -49,6 +49,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
   <div class="Buttons">
     <br>
     <div id="" class="button"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</div>
@@ -317,6 +318,78 @@
               <label for="searchByCity">Search by city: </label>
               <input class="form-control" type="text" id="searchByCity" name="searchByCity">
               <button class="btn btn-primary" type="button" id="SearchByCityButton" onclick="TrigSearchByCityAndDraw()" disabled="disabled">Search By City</button>
+=======
+  <div class="row">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Branding and 'hamburger' menu -->
+            <div id="header" class="navbar-header">
+                <!-- Branding icon and text on left-->
+                <a href="http://www.gaiota.com" target="_blank">
+                    <!--<img class="navbar-brand" id="nasa-logo" src="css/images/nasa-logo_32.png" alt="NASA"> -->
+                    <img class="navbar-brand" id="nasa-logo" src="https://gaiota.github.io/img/logo/blue/android-icon-72x72.png" alt="gaIoTa">
+                  </a>
+                <!--<a class="navbar-brand" href="http://worldwind.earth" target="_blank">
+                    Explorer
+                </a> -->
+                <!--Hamburger menu on right (displayed on small layout)-->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Navigation links, Projections and Search Box -->
+            <div id="main-navbar" class="collapse navbar-collapse" aria-expanded="false">
+                <ul id="main-navbar-tabs" class="nav navbar-nav" role="tablist">
+                    <!-- Layers button (the default active tab)-->
+                    <li class="left-sidebar-btn">
+                        <a href="#layers" role="tab" data-toggle="tab" aria-expanded="false">
+                            <span class="glyphicon glyphicon-list" aria-hidden="true" style="padding-top:4px; padding-bottom:4px"></span>
+                            <span class="hidden-sm" aria-hidden="true">Search Fields</span>
+                        </a>
+                    </li>
+                    <!-- Markers button -->
+                    <li class="left-sidebar-btn active">
+                        <a href="#markers" role="tab" data-toggle="tab" aria-expanded="true">
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true" style="padding-top:4px; padding-bottom:4px"></span>
+                            <span class="hidden-sm" aria-hidden="true">Historical Data</span>
+                        </a>
+                    </li>
+                    <!-- Settings button -->
+                    <li class="left-sidebar-btn">
+                        <a href="#settings" role="tab" data-toggle="tab">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true" style="padding-top:4px; padding-bottom:4px"></span>
+                            <span class="hidden-sm" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul id="main-navbar-tabs-aux" class="nav navbar-nav" role="tablist">
+                    <!-- Info button -->
+                    <li class="info-panel-btn">
+                        <a href="#infoBtn" role="tab" data-toggle="tab">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="padding-top:4px; padding-bottom:4px"></span>
+                            <span class="hidden-sm" aria-hidden="true">Info</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Search box and button (bound to SearchViewModel)-->
+                <div id="main-navbar-search">
+                    <form id="search" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Destination" id="searchText" data-bind="value: searchText, valueUpdate: 'keyup', event: {keypress: onEnter}">
+                        </div>
+                        <button id="searchButton" class="btn btn-primary" type="submit" data-bind="click: $root.performSearch">
+                            <span class="glyphicon glyphicon-search visible-sm-block" aria-hidden="true" style="padding-top:4px; padding-bottom:4px"></span>
+                            <span class="hidden-sm" aria-hidden="true">Go To</span>
+                        </button>
+                    </form>
+                </div>
+                <ul id="right-navbar" class="nav navbar-nav navbar-right">
+                    <!--Contents set by view/view-model bindings in main.js-->
+                </ul>
+>>>>>>> a7f647b735bc4d7ce5eb5c5054624ece49574bc7
             </div>
             <!-- <button type="button" id="SearchButton" onclick="StartSearch()" >Search!</button> -->
             <button class="btn btn-primary" type="button" id="ReturnAllDevices" disabled="disabled" onclick="TrigReturnAllDevices()" >Return All Devices!</button>
@@ -372,10 +445,6 @@
             </canvas>
 
       </div>
-
-
-
-
 
 
   </main>
