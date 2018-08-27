@@ -11,7 +11,7 @@ function close() {
 
 $("#search").click(function () {
            var open = $("#sideSearch").data("open");
-           closeAllPanels();
+           close();
            if (!open) {
                $("#sideSearch").show();
                $("#sideSearch").data("open", 1);
