@@ -117,7 +117,9 @@ section{
     font-size: 14px;
     margin-top: 10px;
     font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color:  #2054AA;
+    color: white;
+    font-family: 'Raleway', sans-serif;
     padding: 9px;
     border-radius: 5px;
     /* margin: 0 auto; */

@@ -1,6 +1,41 @@
 
 
 
+$("menu").draggable();
+
+function close() {
+  $("#search").hide();
+  $("#search").data("open",0);
+
+}
+
+$("#search").click(function () {
+           var open = $("#sideSearch").data("open");
+           closeAllPanels();
+           if (!open) {
+               $("#sideSearch").show();
+               $("#sideSearch").data("open", 1);
+
+           } else {
+               $("#sideSearch").hide();
+               $("#sideSearch").data("open", 0);
+           }
+       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready(function() {
   $('.drawer').drawer({
   class: {
@@ -29,15 +64,7 @@ function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
 
-function openNavHistorical() {
-  document.getElementById("mySidenavHistorical").style.width = "250px";
-}
-
 /* Set the width of the side navigation to 0 */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
-}
-
-function closeNavHistorical() {
-  document.getElementById("mySidenavHistorical").style.width = "0";
 }

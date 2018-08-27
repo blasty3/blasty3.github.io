@@ -52,12 +52,12 @@
 
   <div class="Buttons">
     <br>
-    <div id="" class="button"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</div>
-      <div id="" class="button"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Historical Readings</div>
-        <div id="" class="button"><i class="fa fa-inbox" aria-hidden="true"></i>&nbsp;Device Summary</div>
+    <div id="search" class="button"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</div>
+      <div id="hist" class="button"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Historical Readings</div>
+        <div id="summ" class="button"><i class="fa fa-inbox" aria-hidden="true"></i>&nbsp;Device Summary</div>
     </div>
     <div class="menus">
-      <div class="menu">
+        <div id="sideSearch" class="menu">
             <div class="form-group">
               <label for="selectByCountry">Search by Country: </label>
               <select class="form-control" name="selectByCountry" id="selectByCountry">
@@ -320,7 +320,7 @@
               <button class="btn btn-primary" type="button" id="SearchByCityButton" onclick="TrigSearchByCityAndDraw()" disabled="disabled">Search By City</button>
               <button class="btn btn-primary" type="button" id="ReturnAllDevices" disabled="disabled" onclick="TrigReturnAllDevices()" >Return All Devices!</button>
                <button  class="btn btn-primary" type="button" id="SearchButton" onclick="StartSearch()">Refresh All Devices!</button>
-                
+
               </div>
               <br>
 
@@ -352,7 +352,7 @@
             </div>
 
                 </div>
-                  </div>
+        </div>
   <main role="main">
     <div class="row">
       <div class="col-md-12" id="globe">
