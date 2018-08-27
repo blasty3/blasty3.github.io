@@ -1,26 +1,33 @@
 
 
 
-$(".menu").draggable();
+$(function() {
 
-function close() {
-  $("#sideSearch").hide();
-  $("#sideSearch").data("open", 0);
+  $(".menu").draggable();
 
-}
+  function close() {
+    $("#sideSearch").hide();
+    $("#sideSearch").data("open", 0);
 
-$("#search").click(function () {
-           var open = $("#sideSearch").data("open");
-           close();
-           if (!open) {
-               $("#sideSearch").show();
-               $("#sideSearch").data("open", 1);
+  }
 
-           } else {
-               $("#sideSearch").hide();
-               $("#sideSearch").data("open", 0);
-           }
-       });
+  $("#search").click(function () {
+             var open = $("#sideSearch").data("open");
+             close();
+             if (!open) {
+                 $("#sideSearch").show();
+                 $("#sideSearch").data("open", 1);
+
+             } else {
+                 $("#sideSearch").hide();
+                 $("#sideSearch").data("open", 0);
+             }
+         });
+
+
+
+});
+
 
 
 
