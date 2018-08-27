@@ -4,8 +4,8 @@
 $(".menu").draggable();
 
 function close() {
-  $("#search").hide();
-  $("#search").data("open",0);
+  $("#sideSearch").hide();
+  $("#sideSearch").data("open", 0);
 
 }
 
