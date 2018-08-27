@@ -2,6 +2,7 @@
 
 
 $(function() {
+  window.alret("script is working");
 
   $(".menu").draggable();
 
