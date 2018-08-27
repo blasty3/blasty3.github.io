@@ -529,7 +529,67 @@ async function StartWorldWind() {
                 
 
                 
-            }  else {
+            } else if (topPickedObject.userObject.providerID === "engfloodenv"){
+
+
+                if(!!(document.getElementById("existingThingsSummary"))){
+                    var existingEl = document.getElementById("existingThingsSummary");
+                    existingEl.parentNode.removeChild(existingEl);
+                }
+
+                if(!!(topPickedObject.userObject.measures)){
+
+                    var measurementArr = topPickedObject.userObject.measures;
+
+                    var measurementPromArr = [];
+
+                    var str_to_form = "Name: " +topPickedObject.userObject.displayName+ "<br> Provider: UK Environment Agency <br><br>";
+
+                    for(j=0;j<measurementArr.length;j++){
+                        var measurementUrl = measurementArr[j]["@id"];
+
+                        var prom = QueryEngFloodEnv(measurementUrl);
+
+                        measurementPromArr.push(prom);
+
+                    }
+
+                   
+
+                    Promise.all(measurementPromArr).then(function(values){
+
+
+                        for(i=0;i<values.length;i++){
+
+                           
+                            str_to_form = clone(str_to_form+"Sensor: " +values[i].parameterName+"<br> Description: "+values[i].qualifier+
+                            "<br> Last Value: "+values[i].items.latestReading.value+" "+values[i].unitName+
+                            "<br> Last Seen: "+new Date(values[i].items.latestReading.dateTime).toISOString()+"<br><br>");
+                            
+                            //document.getElementById('selectSensor').options[i] = document.createElement('option').option.values[0].data.sensors[i];
+                            //document.getElementById('selectSensor').options[i].text = values[0].data.sensors[i].id;
+                           
+                        }
+
+
+                        var newContent = document.createElement("div");
+                        newContent.id = "existingThingsSummary";
+                        newContent.className ="thingsSummary";
+                        newContent.innerHTML = str_to_form;
+                        
+                        document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                        
+                        
+                    
+                    });
+
+
+                }
+
+                
+
+            } else {
 
                 
 
@@ -1332,6 +1392,35 @@ async function CreateClusteredThings(ThingsLocationArr){
 
             markerCluster.addToPlacemarkArray(placemark);
            
+        } else if(ThingsLocationArr[i].providerID === "engfloodenv"){
+
+            var params = {};
+
+            params.placemarkAttributes = placemarkAttributes;
+            params.highlightAttributes = highlightAttributes;
+
+            params.info = ThingsLocationArr[i];
+
+            params.info.displayName = ThingsLocationArr[i].name;
+            params.info.providerID = ThingsLocationArr[i].providerID;
+
+            //params.info.latitude = ThingsLocationArr[i].latitude;
+            //params.info.longitude = ThingsLocationArr[i].longitude;
+
+            params.info.thingTag = ThingsLocationArr[i].thingTag;
+
+            params.info.placemarkType = "iothings";
+
+            var lat = parseFloat(ThingsLocationArr[i].latitude);
+            var lon = parseFloat(ThingsLocationArr[i].longitude);
+
+            var placemark = markerCluster.newInitPlacemark([lat, lon], placemarkAttributes,{
+                imageSource: "images/thing_node.png", 
+                label: ""
+            }, params);
+
+            markerCluster.addToPlacemarkArray(placemark);
+            
         }
         /*} 
         else {

@@ -32,6 +32,7 @@ var all_Query_Proms = [];
 
 var tempBCN=[];
 
+var tempEnglFlood=[];
 
 var cors_purl = "https://cors.io/?";
 
@@ -736,9 +737,23 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 			 })
 			 */
 
-			 
+			 // England Environment Agency Flood Information
 
-			 
+			 //var engFlUrl = "https://flood-warning-information.service.gov.uk/flood/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=flood:stations&maxFeatures=10000&outputFormat=application/json&srsName=EPSG:4326;"
+			 var engFlUrl = "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=1000";
+			 var engFlprom = $.ajax(cors_purl+engFlUrl
+				
+			  ).then(function(data){
+				
+
+				 tempEnglFlood = JSON.parse(data).items;
+				 console.log(data);
+				 console.log(tempEnglFlood);
+				 delete data;
+				
+				 
+			})
+			all_Query_Proms.push(engFlprom);
 
 			 /*
 			 var urlSCRadLog = "https://api.safecast.org/en-US/bgeigie_imports.json?by_status=done";
@@ -1203,6 +1218,8 @@ tempDweet=[];
 
 	 tempBCN=[];
 
+	 tempEnglFlood=[];
+
 	
  }
 
@@ -1447,6 +1464,26 @@ async function ExtractAllThingsLocation(){
 
 	  delete tempBCN;
 
+	  //England Environment Agency Flood Monitoring
+
+	  for(i=0;i<tempEnglFlood.length;i++){
+
+		var EnglFloodArrEl = tempEnglFlood[i];
+		EnglFloodArrEl.name = tempEnglFlood[i].catchmentName+" Flood Monitoring Station";
+		EnglFloodArrEl.latitude = tempEnglFlood[i].lat;
+		EnglFloodArrEl.longitude = tempEnglFlood[i].lon;
+		EnglFloodArrEl.country = "GB";
+		
+		delete tempEnglFlood[i].lat;
+		delete tempEnglFlood[i].lon;
+
+		EnglFloodArrEl.thingTag = ["river","water","flood","monitoring","disaster","flood monitoring","river flood","river flood monitoring"];
+		EnglFloodArrEl.providerID = "engfloodenv"
+		allThingsPreviewDB.push(EnglFloodArrEl);
+	  }
+
+	  delete tempEnglFlood;
+
 	  // from SafeCast
 
 	  for(i=0;i<tempSafecast.length;i++){
@@ -1524,6 +1561,23 @@ async function QuerySCFeed(channel_id){
 	var url = "https://api.smartcitizen.me/v0/devices/"+channel_id;
 
 	var prom = fetch(url).then(function(response) {
+		if (!response.ok) {
+			EnableSearchButton();
+			throw Error(response.statusText);
+		}
+		return response.json()});
+
+	var prom2 =	Promise.all([prom]).then(function(values){
+			return values[0];
+		});
+
+		return prom2;
+}
+
+async function QueryEngFloodEnv(measureUrl){
+
+
+	var prom = fetch(cors_purl+measureUrl).then(function(response) {
 		if (!response.ok) {
 			EnableSearchButton();
 			throw Error(response.statusText);
