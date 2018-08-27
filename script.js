@@ -1,9 +1,9 @@
 
-  alret("script is working");
-  console.log("working");
+  alret('script is working')
+  console.log("working")
 
 $(function() {
-  alret("fn in script is working");
+  alret("fn in script is working")
 
   $(".menu").draggable();
 
