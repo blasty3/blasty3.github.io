@@ -1,7 +1,7 @@
 
 
 
-$("menu").draggable();
+$(".menu").draggable();
 
 function close() {
   $("#search").hide();
