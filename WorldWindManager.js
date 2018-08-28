@@ -1790,9 +1790,9 @@ function getPosition(el) {
     wwd.navigator.lookAtLocation = chosenLoc;
     var range = wwd.navigator.range;
 
-    markerClusterMobTh.updateGlobe(wwd);
-    markerClusterMobTh.handleClusterZoom(range,true);
-    wwd = markerClusterMobTh.getGlobe();
+    markerCluster.updateGlobe(wwd);
+    markerCluster.handleClusterZoom(range,true);
+    wwd = markerCluster.getGlobe();
 
     wwd.redraw();
  }
