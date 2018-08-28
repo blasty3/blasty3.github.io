@@ -389,9 +389,10 @@
                     <option value="ms">milliseconds</option>
              </select>
              <br>
+             <button class="btn btn-default" type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart</button>
+             <br>
              <label for="selectSensor" id="selectToSee">Sensor to see: </label>
              <select class="form-control" name="selectSensor" id="selectSensor" disabled="disabled"> </select>
-             <button class="btn btn-default" type="button" id="submitStartEndDateTime" onclick="TrigHistorical()">Generate Chart</button>
              <br>
              <label for="AnimTimeStep">Time Step (ms): </label>
              <input class="form-control" type="number" name="AnimTimeStep" id="AnimTimeStep" min="1000" step="100" value="1000">
