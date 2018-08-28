@@ -813,7 +813,7 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 									Promise.all(all_Query_Proms).then(function(values){
 
-										window.alert("Search is complete!");
+										
 										
 										var extraction_prom = ExtractAllThingsLocation();
 
@@ -833,6 +833,8 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 
 											Promise.all([prom]).then(function(values){
 												delete allThingsPreviewDB;
+												document.getElementById("searchInProgress").innerHTML="";
+												window.alert("Search is complete!");
 											});
 
 										});
