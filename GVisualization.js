@@ -442,7 +442,7 @@ function drawCrosshairs(revArr,yAxisLabel,htmlTag,needReverse) {
       
         //var url = "https://api.openaq.org/v1/measurements"+toHtmlQuery_NoURI(params);
         
-        var url = "http://api.thingspeak.com/channels/"+channelID+"/field/"+fieldID+".json"+toHtmlQuery_NoURI(params);
+        var url = "https://api.thingspeak.com/channels/"+channelID+"/field/"+fieldID+".json"+toHtmlQuery_NoURI(params);
 
         var prom = fetch(url).then(function(response) {
             if (!response.ok) {
