@@ -1266,12 +1266,13 @@ tempDweet=[];
 
 function StartApp() {
 	var prom_worldwindstart = StartWorldWind();
+	fetchData();
 
-	Promise.all([prom_worldwindstart]).then(function(values){
+	//Promise.all([prom_worldwindstart]).then(function(values){
 
-		fetchData();
+		//fetchData();
 		//var prom_fetch_data = fetchData();
-	});
+	//});
 	//console.log("Triggering search....");
 	
 }
