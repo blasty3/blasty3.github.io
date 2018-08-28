@@ -456,7 +456,7 @@ async function StartWorldWind() {
                         }
                     }
 
-                    str_to_form = clone(str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"])).toUTCString();
+                    str_to_form = str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"]).toUTCString();
 
                     var newContent = document.createElement("div");
                     newContent.id = "existingThingsSummary";
