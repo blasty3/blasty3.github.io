@@ -41,12 +41,12 @@
 .menu {
     float: left;
     position: relative;
-    width: auto;
+    width: 300px;
     z-index: 10;
     clear: left;
     margin: auto;
     transition: all 1s;
-    max-width: 30%;
+    /**max-width: 30%;**/
     left: 5px;
     top: 5px;
     padding: 10px;
@@ -72,8 +72,10 @@
   height: 100%;
   float: left;
   background-color: #202E75;
+}
 
-
+.Buttons{
+  background-color: #942253;
 }
 
 
