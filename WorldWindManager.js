@@ -2932,7 +2932,7 @@ async function DrawPolygonTimeSeries(Th_Lat,Th_Lon, data_val_arr,needReverse,par
 
         // Run the animation at the desired frequency.
 
-       
+       closeAll();
 
        ts_var = window.setInterval(animateTimeSeries, animationStep);
 
