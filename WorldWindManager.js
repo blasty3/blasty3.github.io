@@ -439,12 +439,14 @@ async function StartWorldWind() {
 
                     var filt_res={};
                     var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: ThingSpeak <br><br>";
+
+                    str_to_form = str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"]).toUTCString();
                     i=1;
                     for(var keys in values[0].channel){
                         
                         if(keys.toLowerCase().indexOf("field")>=0){
                             //console.log(values[0].channel);
-                            str_to_form = clone(str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+new Date(values[0].feeds[values[0].feeds.length-1][keys]).toUTCString()+"<br><br>");
+                            str_to_form = str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+values[0].feeds[values[0].feeds.length-1][keys]+"<br><br>";
 
                             
                             var newContent=document.createElement('option');
@@ -456,7 +458,7 @@ async function StartWorldWind() {
                         }
                     }
 
-                    str_to_form = str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["created_at"]).toUTCString();
+                    
 
                     var newContent = document.createElement("div");
                     newContent.id = "existingThingsSummary";
