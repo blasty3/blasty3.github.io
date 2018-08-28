@@ -1724,6 +1724,34 @@ function getPosition(el) {
      }
   }
 
+  function GlobeMoveToLocation(query) {
+    var self = this;
+    self.geocoder = new WorldWind.NominatimGeocoder();
+    self.goToAnimator = new WorldWind.GoToAnimator(wwd);
+
+      var queryString = query;
+      if (queryString) {
+        var latitude, longitude;
+        if (queryString.match(WorldWind.WWUtil.latLonRegex)) {
+          var tokens = queryString.split(",");
+          latitude = parseFloat(tokens[0]);
+          longitude = parseFloat(tokens[1]);
+          self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+          
+        } else {
+          self.geocoder.lookup(queryString, function(geocoder, result) {
+            if (result.length > 0) {
+              latitude = parseFloat(result[0].lat);
+              longitude = parseFloat(result[0].lon);
+              self.goToAnimator.goTo(new WorldWind.Location(latitude, longitude));
+             
+            }
+          });
+        }
+       
+     }
+  }
+
  
 
   function IncrementalGlobeSetViewRange(range_arr){
@@ -2448,6 +2476,7 @@ async function SearchByCountryAndDraw(){
     
     
     var queryLocBy = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].value;
+    var LocInString = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].innerHTML;
     
             for(i=0;i<allThingsDB.length;i++){
 
@@ -2667,6 +2696,8 @@ async function SearchByCountryAndDraw(){
         wwd.addLayer(placemarkLayerDevByLoc);
 
         wwd.redraw();
+
+        GlobeMoveToLocation(LocInString);
         var highlightController = new WorldWind.HighlightController(wwd);
        
 }
@@ -3002,6 +3033,8 @@ async function SearchByCityAndDraw(){
         wwd.addLayer(placemarkLayerDevByLoc);
 
         wwd.redraw();
+
+        GlobeMoveToLocation(queryString);
         var highlightController = new WorldWind.HighlightController(wwd);
     
 }
