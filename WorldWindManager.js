@@ -440,10 +440,10 @@ async function StartWorldWind() {
                     var filt_res={};
                     var str_to_form = "Device Name: " +topPickedObject.userObject.displayName+ "<br> Provider: ThingSpeak <br><br>";
 
-                    if(!!(values[0].feeds[values[0].feeds.length-1]["updated_at"])){
-                        str_to_form = str_to_form+"Last Seen: "+new Date (values[0].feeds[values[0].feeds.length-1]["updated_at"]).toUTCString();
+                    if(!!(values[0].channel["updated_at"])){
+                        str_to_form = str_to_form+"Last Seen: "+new Date (values[0].channel["updated_at"]).toUTCString()+"<br><br>";
                     } else {
-                        str_to_form = str_to_form+"Last Seen: Information not Available";
+                        str_to_form = str_to_form+"Last Seen: Information not Available <br><br>";
                     }
                     
                     i=1;
