@@ -2450,6 +2450,7 @@ async function SearchByCountryAndDraw(){
     var queryLocBy = document.getElementById("selectByCountry").options[document.getElementById("selectByCountry").selectedIndex].value;
     
             for(i=0;i<allThingsDB.length;i++){
+
                 if(!!(allThingsDB[i].country)){
                    // console.log(countrycodeJS);
                     //console.log(allThingsDB[i].country);
@@ -2459,7 +2460,7 @@ async function SearchByCountryAndDraw(){
                     if(allThingsDB[i].country.toLowerCase() == queryLocBy.toLowerCase()){
                         
                         //console.log("matching name:" +allThingsDB[i].name);
-
+                        
                         var lat = parseFloat(allThingsDB[i].latitude);
                         var lon = parseFloat(allThingsDB[i].longitude);
                 
@@ -2471,13 +2472,14 @@ async function SearchByCountryAndDraw(){
                         // Assign highlight attributes for the placemark.
                         placemark.highlightAttributes = highlightAttributes;
                         placemark.displayName = allThingsDB[i].name;
-                        placemark.providerID = allThingsDB[i].providerID;
-                        placemark.latitude = allThingsDB[i].latitude;
-                        placemark.longitude = allThingsDB[i].longitude;
-
-                        placemark.thingTag = allThingsDB[i].thingTag;
+                        placemark.highlightAttributes = highlightAttributes;
                         
-                
+                        
+                        for(var keys in allThingsDB[i]){
+                            placemark[keys] = allThingsDB[i][keys];
+                        }
+
+                        /*
                         if(allThingsDB[i].providerID === "smartsantander"){
                             placemark.content = allThingsDB[i].content;
                         } else if(allThingsDB[i].providerID === "opensensemap"){
@@ -2510,7 +2512,148 @@ async function SearchByCountryAndDraw(){
                         } else {
                             placemark.lastSeen = allThingsDB[i].lastSeen;
                         }
-                        placemark.placemarkType = "iothings";
+                        */
+
+
+                        if(allThingsDB[i].providerID === "smartsantander"){
+
+                            
+                            //params.placemarkAttributes = placemarkAttributes;
+                            
+                
+                            
+                
+                          
+                
+                            placemark.content = allThingsDB[i].content;
+                
+                           
+                
+                            placemark.placemarkType = "iothings";
+                
+                           
+                
+                
+                        } else if(allThingsDB[i].providerID === "opensensemap"){
+                
+                           
+                
+                           
+                         
+                
+                           
+                          
+                
+                            placemark.sensorList = allThingsDB[i].sensorList;
+                            placemark.channelID = allThingsDB[i].channelID;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                          
+                            
+                        } else if(allThingsDB[i].providerID === "openaq"){
+                
+                           
+                
+                            
+                       
+                
+                           
+                
+                
+                            placemark.measurements = allThingsDB[i].measurements;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                
+                           
+                            
+                        } else if(allThingsDB[i].providerID === "netherlandssmartemission"){
+                
+                           
+                     
+                
+                          
+                
+                           
+                
+                   
+                
+                            placemark.stationID = allThingsDB[i].stationID;
+                            placemark.lastSeen = allThingsDB[i].lastSeen;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                           
+                            
+                        } else if(allThingsDB[i].providerID === "thingspeak"){
+                
+                            
+                
+                         
+                       
+                
+                            placemark.channelID = allThingsDB[i].id;
+                            placemark.description = allThingsDB[i].description;
+                
+                            placemark.placemarkType = "iothings";
+                
+                         
+                            
+                        } else if(allThingsDB[i].providerID === "smartcitizen"){
+                
+                           
+                           
+                    
+                
+                
+                            placemark.channelID = allThingsDB[i].deviceID;
+                            placemark.lastSeen = allThingsDB[i].lastSeen;
+                
+                       
+                
+                            placemark.placemarkType = "iothings";
+                
+                           
+                            
+                        }  else if(allThingsDB[i].providerID === "safecast"){
+                
+                
+                         
+                
+                            placemark.sensorList = allThingsDB[i].sensorList;
+                           
+                            placemark.placemarkType = "iothings";
+                
+                
+                        }   else if(allThingsDB[i].providerID === "bcncat"){
+                            
+                         
+                
+                           
+                        
+                
+                            
+                            placemark.placemarkType = "iothings";
+                
+                
+                         
+                           
+                        } else if(allThingsDB[i].providerID === "engfloodenv"){
+                
+                          
+                 
+                
+                       
+                            placemark.placemarkType = "iothings";
+                
+                            
+                        }
+
+
                         placemarkLayerDevByLoc.addRenderable(placemark);
                     }
                     
@@ -2596,6 +2739,10 @@ async function SearchByCityAndDraw(){
                 //this requires IE 12.0 and above
                 if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase() || queryString.trim().toLowerCase().indexOf(allThingsDB[i].city.toLowerCase()) !== -1){
                 //if(allThingsDB[i].city.toLowerCase() == queryString.trim().toLowerCase()){    
+                    
+
+                
+                    /*
                     var lat = parseFloat(allThingsDB[i].latitude);
                     var lon = parseFloat(allThingsDB[i].longitude);
             
@@ -2648,6 +2795,203 @@ async function SearchByCityAndDraw(){
                     }
                     placemark.placemarkType = "iothings";
                     placemarkLayerDevByLoc.addRenderable(placemark);
+                    */
+
+                   var lat = parseFloat(allThingsDB[i].latitude);
+                   var lon = parseFloat(allThingsDB[i].longitude);
+           
+                   // Create the placemark with the attributes defined above.
+                   var placemarkPosition = new WorldWind.Position(lat, lon, 0);
+                   var placemark = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
+                   // Draw placemark at altitude defined above.
+                   placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+                   // Assign highlight attributes for the placemark.
+                   placemark.highlightAttributes = highlightAttributes;
+                   placemark.displayName = allThingsDB[i].name;
+                   placemark.highlightAttributes = highlightAttributes;
+                   
+                   
+                   for(var keys in allThingsDB[i]){
+                       placemark[keys] = allThingsDB[i][keys];
+                   }
+
+                   /*
+                   if(allThingsDB[i].providerID === "smartsantander"){
+                       placemark.content = allThingsDB[i].content;
+                   } else if(allThingsDB[i].providerID === "opensensemap"){
+                       placemark.sensorList = allThingsDB[i].sensorList;
+                       placemark.channelID = allThingsDB[i].channelID;
+                       
+                   } else if(allThingsDB[i].providerID === "openaq"){
+                       placemark.measurements = allThingsDB[i].measurements;
+                       
+                   } else if(allThingsDB[i].providerID === "netherlandssmartemission"){
+                       placemark.stationID = allThingsDB[i].stationID;
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+                   } else if(allThingsDB[i].providerID === "thingspeak"){
+                       placemark.channelID = allThingsDB[i].id;
+                       placemark.description = allThingsDB[i].description;
+                       
+                   } else if(allThingsDB[i].providerID === "smartcitizen"){
+                       placemark.channelID = allThingsDB[i].deviceID;
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+                       
+                   } else if(allThingsDB[i].providerID === "safecast"){
+                      
+                       placemark.sensorList = allThingsDB[i].sensorList;
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+                       
+                   } else if(allThingsDB[i].providerID === "safecastlog"){
+                      
+                       
+                       
+                   } else {
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+                   }
+                   */
+
+
+                   if(allThingsDB[i].providerID === "smartsantander"){
+
+                       
+                       //params.placemarkAttributes = placemarkAttributes;
+                       
+           
+                       
+           
+                     
+           
+                       placemark.content = allThingsDB[i].content;
+           
+                      
+           
+                       placemark.placemarkType = "iothings";
+           
+                      
+           
+           
+                   } else if(allThingsDB[i].providerID === "opensensemap"){
+           
+                      
+           
+                      
+                    
+           
+                      
+                     
+           
+                       placemark.sensorList = allThingsDB[i].sensorList;
+                       placemark.channelID = allThingsDB[i].channelID;
+           
+                       placemark.placemarkType = "iothings";
+           
+           
+                     
+                       
+                   } else if(allThingsDB[i].providerID === "openaq"){
+           
+                      
+           
+                       
+                  
+           
+                      
+           
+           
+                       placemark.measurements = allThingsDB[i].measurements;
+           
+                       placemark.placemarkType = "iothings";
+           
+           
+           
+                      
+                       
+                   } else if(allThingsDB[i].providerID === "netherlandssmartemission"){
+           
+                      
+                
+           
+                     
+           
+                      
+           
+              
+           
+                       placemark.stationID = allThingsDB[i].stationID;
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+           
+                       placemark.placemarkType = "iothings";
+           
+           
+                      
+                       
+                   } else if(allThingsDB[i].providerID === "thingspeak"){
+           
+                       
+           
+                    
+                  
+           
+                       placemark.channelID = allThingsDB[i].id;
+                       placemark.description = allThingsDB[i].description;
+           
+                       placemark.placemarkType = "iothings";
+           
+                    
+                       
+                   } else if(allThingsDB[i].providerID === "smartcitizen"){
+           
+                      
+                      
+               
+           
+           
+                       placemark.channelID = allThingsDB[i].deviceID;
+                       placemark.lastSeen = allThingsDB[i].lastSeen;
+           
+                  
+           
+                       placemark.placemarkType = "iothings";
+           
+                      
+                       
+                   }  else if(allThingsDB[i].providerID === "safecast"){
+           
+           
+                    
+           
+                       placemark.sensorList = allThingsDB[i].sensorList;
+                      
+                       placemark.placemarkType = "iothings";
+           
+           
+                   }   else if(allThingsDB[i].providerID === "bcncat"){
+                       
+                    
+           
+                      
+                   
+           
+                       
+                       placemark.placemarkType = "iothings";
+           
+           
+                    
+                      
+                   } else if(allThingsDB[i].providerID === "engfloodenv"){
+           
+                     
+            
+           
+                  
+                       placemark.placemarkType = "iothings";
+           
+                       
+                   }
+
+
+                   placemarkLayerDevByLoc.addRenderable(placemark);
+
                 }
                 
             } else {
@@ -4000,6 +4344,135 @@ function CreatePlacemarkSearchByOthersLayer(ThingsListEl){
             placemark.highlightAttributes = highlightAttributes;
 
             placemark.displayName = ThingsListEl.name;
+
+
+                        
+                        for(var keys in ThingsListEl){
+                            placemark[keys] = ThingsListEl[keys];
+                        }
+
+
+
+                        if(ThingsListEl.providerID === "smartsantander"){
+
+                            
+                            //params.placemarkAttributes = placemarkAttributes;
+                            
+                
+                            
+                
+                          
+                
+                            placemark.content = ThingsListEl.content;
+                
+                           
+                
+                            placemark.placemarkType = "iothings";
+                
+                           
+                
+                
+                        } else if(ThingsListEl.providerID === "opensensemap"){
+                
+                           
+                
+                            placemark.sensorList = ThingsListEl.sensorList;
+                            placemark.channelID = ThingsListEl.channelID;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                          
+                            
+                        } else if(ThingsListEl.providerID === "openaq"){
+                
+                           
+                
+                
+                            placemark.measurements = ThingsListEl.measurements;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                
+                           
+                            
+                        } else if(ThingsListEl.providerID === "netherlandssmartemission"){
+                
+                           
+                
+                            placemark.stationID = ThingsListEl.stationID;
+                            placemark.lastSeen = ThingsListEl.lastSeen;
+                
+                            placemark.placemarkType = "iothings";
+                
+                
+                           
+                            
+                        } else if(ThingsListEl.providerID === "thingspeak"){
+                
+                            
+                
+                         
+                       
+                
+                            placemark.channelID =ThingsListEl.id;
+                            placemark.description = ThingsListEl.description;
+                
+                            placemark.placemarkType = "iothings";
+                
+                         
+                            
+                        } else if(ThingsListEl.providerID === "smartcitizen"){
+                
+                           
+                           
+                    
+                
+                
+                            placemark.channelID = ThingsListEl.deviceID;
+                            placemark.lastSeen = ThingsListEl.lastSeen;
+                
+                       
+                
+                            placemark.placemarkType = "iothings";
+                
+                           
+                            
+                        }  else if(ThingsListEl.providerID === "safecast"){
+                
+                
+                         
+                
+                            placemark.sensorList = ThingsListEl.sensorList;
+                           
+                            placemark.placemarkType = "iothings";
+                
+                
+                        }   else if(ThingsListEl.providerID === "bcncat"){
+                            
+                         
+                            
+                            placemark.placemarkType = "iothings";
+                
+                
+                         
+                           
+                        } else if(ThingsListEl.providerID === "engfloodenv"){
+                
+                          
+                 
+                
+                       
+                            placemark.placemarkType = "iothings";
+                
+                            
+                        }
+
+
+                        
+
+            /*
             placemark.providerID = ThingsListEl.providerID;
 
             placemark.latitude = ThingsListEl.latitude;
@@ -4109,6 +4582,7 @@ function CreatePlacemarkSearchByOthersLayer(ThingsListEl){
             
 
         }
+        */
 
     return placemark;
 }

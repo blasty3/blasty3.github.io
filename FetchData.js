@@ -1476,7 +1476,6 @@ async function ExtractAllThingsLocation(){
 
 	  for(i=0;i<tempEnglFlood.length;i++){
 
-		
 
 		var EnglFloodArrEl = tempEnglFlood[i];
 		EnglFloodArrEl.name = tempEnglFlood[i].catchmentName+" Flood Monitoring Station";
