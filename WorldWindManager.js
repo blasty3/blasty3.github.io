@@ -145,6 +145,8 @@ async function StartWorldWind() {
            document.getElementById('spanTimeUnit').disabled = true;
        }
 
+       CloseDevSumm();
+
     } else if (topPickedObject) {
         //console.log("element obj id: " +document.getElementById(topPickedObject.userObject.displayName));
         
@@ -697,27 +699,8 @@ async function StartWorldWind() {
             
         } else {
 
-            /*
-            if(!typeof previousUserObj == 'undefined'){
-                var placemarkToRemove = markerCluster.getPlacemarkOfIndex(previousUserObj);
-    
-                var placemarkToAdd = $.extend(true,{},placemarkToRemove);
+            CloseDevSumm();
 
-                placemarkToAdd.placemarkAttributes.imageSource = "images/thing_node.png";
-                placemarkToAdd.placemarkAttributes.imageScale = 0.22;
-        
-                markerCluster.modifyPlacemarkInIndex(placemarkToAdd,placemarkToRemove,previousUserObj);
-        
-                wwd.redraw();
-        
-                delete previousUserObj;
-           }
-           */
-
-          
-
-            
-            
 
             if(!!(document.getElementById("existingThingsSummary"))){
                 var existingEl = document.getElementById("existingThingsSummary");

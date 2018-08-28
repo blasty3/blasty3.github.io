@@ -15,3 +15,12 @@ function OpenDevSumm() {
     $("#side3").hide();
     $("#side3").data("open", 0);
   }
+
+  function CloseDevSumm() { 
+    
+    var open = $("#side3").data("open");
+    if (open) {
+      $("#side3").hide();
+      $("#side3").data("open", 0);
+    }
+  };
