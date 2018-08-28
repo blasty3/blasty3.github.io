@@ -2808,7 +2808,7 @@ async function SearchByCityAndDraw(){
                    // Assign highlight attributes for the placemark.
                    placemark.highlightAttributes = highlightAttributes;
                    placemark.displayName = allThingsDB[i].name;
-                   placemark.highlightAttributes = highlightAttributes;
+                  
                    
                    
                    for(var keys in allThingsDB[i]){
