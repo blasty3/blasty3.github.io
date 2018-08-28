@@ -231,12 +231,15 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
+                    /*
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('spanTimeNum').disabled = true;
                     document.getElementById('spanTimeUnit').disabled = true;
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+                    */
                 
                 });
 
@@ -277,11 +280,15 @@ async function StartWorldWind() {
                     newContent.innerHTML = StrToForm;
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-
+                    /*
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
+                    document.getElementById('spanTimeNum').disabled = false;
+                    document.getElementById('spanTimeUnit').disabled = false;
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+                    */
 
             }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
 
@@ -323,13 +330,15 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
+                    /*
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
-                    document.getElementById('spanTimeNum').disabled = false;
-                    document.getElementById('spanTimeUnit').disabled = false;
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
-                    
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+                    */
                 
                 });
 
@@ -359,6 +368,16 @@ async function StartWorldWind() {
                     newContent.innerHTML = str_to_form;
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                    /*
+                    document.getElementById('startTime').disabled = true;
+                    document.getElementById('endTime').disabled = true;
+                    document.getElementById('selectSensor').disabled = true;
+                    document.getElementById('submitStartEndDateTime').disabled = true;
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
+                    */
                 
                 });
 
@@ -395,12 +414,15 @@ async function StartWorldWind() {
                 document.getElementById('thingsSummaryID').appendChild(newContent);
 
             
-
+                /*
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
-            
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+                */
             
             } else if (topPickedObject.userObject.providerID === "thingspeak"){
 
@@ -441,10 +463,18 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
+                    /*
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
+                    document.getElementById('spanTimeNum').disabled = true;
+                    document.getElementById('spanTimeUnit').disabled = true;
+                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+                    */
+                    
+                        
+                        
                 
                 });
 
@@ -504,11 +534,14 @@ async function StartWorldWind() {
                         newContent.innerHTML = StrToForm;
                         document.getElementById('thingsSummaryID').appendChild(newContent);
 
-
+                        /*
+                        document.getElementById('spanTimeNum').disabled = true;
+                        document.getElementById('spanTimeUnit').disabled = true;
                         document.getElementById('startTime').disabled = false;
                         document.getElementById('endTime').disabled = false;
                         document.getElementById('selectSensor').disabled = false;
                         document.getElementById('submitStartEndDateTime').disabled = false;
+                        */
 
                 } else if (topPickedObject.userObject.placemarkType == "mobiothings"){
 
@@ -554,17 +587,20 @@ async function StartWorldWind() {
 
                     }
 
-                   
-
                     Promise.all(measurementPromArr).then(function(values){
 
 
                         for(i=0;i<values.length;i++){
 
                            
-                            str_to_form = clone(str_to_form+"Sensor: " +values[i].parameterName+"<br> Description: "+values[i].qualifier+
-                            "<br> Last Value: "+values[i].items.latestReading.value+" "+values[i].unitName+
-                            "<br> Last Seen: "+new Date(values[i].items.latestReading.dateTime).toISOString()+"<br><br>");
+                            str_to_form = str_to_form+"Sensor: " +values[i].items.parameterName+"<br> Description: "+values[i].items.qualifier;
+                            
+                            if((!!(values[i].items.latestReading.value)) || (!!(values[i].items.latestReading.dateTime))){
+                                str_to_form = str_to_form+"<br> Last Value: "+values[i].items.latestReading.value+" "+values[i].items.unitName+
+                                "<br> Last Seen: "+new Date(values[i].items.latestReading.dateTime).toUTCString()+"<br><br>";
+                            } else {
+                                str_to_form = str_to_form+"<br> Sensor status: OFFLINE <br><br>";
+                            }
                             
                             //document.getElementById('selectSensor').options[i] = document.createElement('option').option.values[0].data.sensors[i];
                             //document.getElementById('selectSensor').options[i].text = values[0].data.sensors[i].id;
@@ -579,8 +615,15 @@ async function StartWorldWind() {
                         
                         document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                        
-                        
+                        /*
+                        document.getElementById('startTime').disabled = true;
+                        document.getElementById('endTime').disabled = true;
+                        document.getElementById('selectSensor').disabled = true;
+                        document.getElementById('submitStartEndDateTime').disabled = true;
+                        document.getElementById('spanTimeNum').disabled = true;
+                        document.getElementById('spanTimeUnit').disabled = true;
+                        document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
+                        */
                     
                     });
 
@@ -1402,12 +1445,14 @@ async function CreateClusteredThings(ThingsLocationArr){
             params.info = ThingsLocationArr[i];
 
             params.info.displayName = ThingsLocationArr[i].name;
-            params.info.providerID = ThingsLocationArr[i].providerID;
+
+            delete params.info.name;
+            //params.info.providerID = ThingsLocationArr[i].providerID;
 
             //params.info.latitude = ThingsLocationArr[i].latitude;
             //params.info.longitude = ThingsLocationArr[i].longitude;
 
-            params.info.thingTag = ThingsLocationArr[i].thingTag;
+            //params.info.thingTag = ThingsLocationArr[i].thingTag;
 
             params.info.placemarkType = "iothings";
 

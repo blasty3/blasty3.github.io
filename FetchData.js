@@ -1468,17 +1468,21 @@ async function ExtractAllThingsLocation(){
 
 	  for(i=0;i<tempEnglFlood.length;i++){
 
+		
+
 		var EnglFloodArrEl = tempEnglFlood[i];
 		EnglFloodArrEl.name = tempEnglFlood[i].catchmentName+" Flood Monitoring Station";
 		EnglFloodArrEl.latitude = tempEnglFlood[i].lat;
-		EnglFloodArrEl.longitude = tempEnglFlood[i].lon;
+		EnglFloodArrEl.longitude = tempEnglFlood[i].long;
 		EnglFloodArrEl.country = "GB";
 		
-		delete tempEnglFlood[i].lat;
-		delete tempEnglFlood[i].lon;
+
+		delete EnglFloodArrEl.label;
+		//delete tempEnglFlood[i].lat;
+		//delete tempEnglFlood[i].lon;
 
 		EnglFloodArrEl.thingTag = ["river","water","flood","monitoring","disaster","flood monitoring","river flood","river flood monitoring"];
-		EnglFloodArrEl.providerID = "engfloodenv"
+		EnglFloodArrEl.providerID = "engfloodenv";
 		allThingsPreviewDB.push(EnglFloodArrEl);
 	  }
 
