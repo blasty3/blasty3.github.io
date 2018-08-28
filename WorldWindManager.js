@@ -664,6 +664,8 @@ async function StartWorldWind() {
                     
             }
 
+            OpenDevSumm();
+
        }
 
       
