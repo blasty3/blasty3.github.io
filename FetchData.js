@@ -1464,6 +1464,8 @@ async function ExtractAllThingsLocation(){
 		BCNArrEl.latitude = tempBCN[i].centroid.latitude;
 		BCNArrEl.longitude = tempBCN[i].centroid.longitude;
 		BCNArrEl.thingTag = [(tempBCN[i].type).replace("_"," ")];
+		var addThTag = ["smart city", "city", "smart"];
+		BCNArrEl.thingTag = (BCNArrEl.thingTag).concat(addThTag);
 		BCNArrEl.providerID = "bcncat"
 		allThingsPreviewDB.push(BCNArrEl);
 	  }

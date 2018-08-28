@@ -475,8 +475,7 @@ async function StartWorldWind() {
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
                     
                     
-                        
-                        
+                
                 
                 });
 
