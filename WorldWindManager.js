@@ -453,7 +453,6 @@ async function StartWorldWind() {
                             //console.log(values[0].channel);
                             str_to_form = str_to_form+"Sensor: "+values[0].channel[keys]+"<br> Last Value: "+values[0].feeds[values[0].feeds.length-1][keys]+"<br><br>";
 
-                            
                             var newContent=document.createElement('option');
                             newContent.id = "sensorOption"+i;
                             newContent.value = i;
