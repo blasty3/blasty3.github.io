@@ -64,7 +64,7 @@
     position: relative;
     width: 300px;
     z-index: 10;
-    clear: left;
+    clear: none;
     margin: auto;
     transition: all 1s;
     /**max-width: 30%;**/
