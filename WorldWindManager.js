@@ -675,6 +675,8 @@ async function StartWorldWind() {
 
             OpenDevSumm();
 
+            SelectedStatThGlobeLookAtLoc(topPickedObject.userObject.latitude,topPickedObject.userObject.longitude);
+
        }
 
       
@@ -1789,6 +1791,24 @@ function getPosition(el) {
 
     markerClusterMobTh.updateGlobe(wwd);
     markerClusterMobTh.handleClusterZoom(2e5,true);
+    wwd = markerClusterMobTh.getGlobe();
+
+    wwd.redraw();
+ }
+
+ function SelectedStatThGlobeLookAtLoc(lat, lon){
+
+    var chosenLoc = {
+        "latitude": lat,
+        "longitude" : lon           
+    };
+
+
+    wwd.navigator.lookAtLocation = chosenLoc;
+    var range = wwd.navigator.range;
+
+    markerClusterMobTh.updateGlobe(wwd);
+    markerClusterMobTh.handleClusterZoom(range,true);
     wwd = markerClusterMobTh.getGlobe();
 
     wwd.redraw();

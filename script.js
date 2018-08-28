@@ -7,6 +7,11 @@ function close() {
   $("#side3").data("open", 0);
 }
 
+function closeMenu(htmlID) {
+  $(htmlID).hide();
+  $(htmlID).data("open", 0);
+}
+
 $("#search").click(function() {
   var open = $("#side").data("open");
   close();
@@ -22,7 +27,8 @@ $("#search").click(function() {
 
 $("#hist").click(function() {
   var open = $("#side2").data("open");
-  close();
+  closeMenu("#side");
+  closeMenu("#side2");
   if (!open) {
     $("#side2").show();
     $("#side2").data("open", 1);
@@ -35,7 +41,7 @@ $("#hist").click(function() {
 
 $("#summ").click(function() {
   var open = $("#side3").data("open");
-  close();
+  //close();
   if (!open) {
     $("#side3").show();
     $("#side3").data("open", 1);
