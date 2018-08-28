@@ -231,7 +231,7 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                    /*
+                    
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('spanTimeNum').disabled = true;
@@ -239,7 +239,7 @@ async function StartWorldWind() {
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-                    */
+                    
                 
                 });
 
@@ -280,7 +280,7 @@ async function StartWorldWind() {
                     newContent.innerHTML = StrToForm;
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                    /*
+                    
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
@@ -288,7 +288,7 @@ async function StartWorldWind() {
                     document.getElementById('spanTimeNum').disabled = false;
                     document.getElementById('spanTimeUnit').disabled = false;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-                    */
+                    
 
             }  else if (topPickedObject.userObject.providerID === "smartcitizen"){
 
@@ -330,7 +330,7 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                    /*
+                    
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('spanTimeNum').disabled = true;
@@ -338,7 +338,7 @@ async function StartWorldWind() {
                     document.getElementById('selectSensor').disabled = false;
                     document.getElementById('submitStartEndDateTime').disabled = false;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-                    */
+                    
                 
                 });
 
@@ -369,7 +369,7 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                    /*
+                    
                     document.getElementById('startTime').disabled = true;
                     document.getElementById('endTime').disabled = true;
                     document.getElementById('selectSensor').disabled = true;
@@ -377,7 +377,7 @@ async function StartWorldWind() {
                     document.getElementById('spanTimeNum').disabled = true;
                     document.getElementById('spanTimeUnit').disabled = true;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
-                    */
+                    
                 
                 });
 
@@ -414,7 +414,7 @@ async function StartWorldWind() {
                 document.getElementById('thingsSummaryID').appendChild(newContent);
 
             
-                /*
+                
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
@@ -422,7 +422,7 @@ async function StartWorldWind() {
                     document.getElementById('spanTimeNum').disabled = true;
                     document.getElementById('spanTimeUnit').disabled = true;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-                */
+                
             
             } else if (topPickedObject.userObject.providerID === "thingspeak"){
 
@@ -463,7 +463,7 @@ async function StartWorldWind() {
                     
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                    /*
+                    
                     document.getElementById('startTime').disabled = false;
                     document.getElementById('endTime').disabled = false;
                     document.getElementById('selectSensor').disabled = false;
@@ -471,7 +471,7 @@ async function StartWorldWind() {
                     document.getElementById('spanTimeNum').disabled = true;
                     document.getElementById('spanTimeUnit').disabled = true;
                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
-                    */
+                    
                     
                         
                         
@@ -534,14 +534,15 @@ async function StartWorldWind() {
                         newContent.innerHTML = StrToForm;
                         document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                        /*
+                        
                         document.getElementById('spanTimeNum').disabled = true;
                         document.getElementById('spanTimeUnit').disabled = true;
-                        document.getElementById('startTime').disabled = false;
-                        document.getElementById('endTime').disabled = false;
-                        document.getElementById('selectSensor').disabled = false;
-                        document.getElementById('submitStartEndDateTime').disabled = false;
-                        */
+                        document.getElementById('startTime').disabled = true;
+                        document.getElementById('endTime').disabled = true;
+                        document.getElementById('selectSensor').disabled = true;
+                        document.getElementById('submitStartEndDateTime').disabled = true;
+                        document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
+                        
 
                 } else if (topPickedObject.userObject.placemarkType == "mobiothings"){
 
@@ -555,6 +556,14 @@ async function StartWorldWind() {
                                     newContent.id = "existingThingsSummary";
                                     newContent.innerHTML = StrToForm;
                                     document.getElementById('thingsSummaryID').appendChild(newContent);
+
+                                    document.getElementById('spanTimeNum').disabled = true;
+                                    document.getElementById('spanTimeUnit').disabled = true;
+                                    document.getElementById('startTime').disabled = true;
+                                    document.getElementById('endTime').disabled = true;
+                                    document.getElementById('selectSensor').disabled = true;
+                                    document.getElementById('submitStartEndDateTime').disabled = true;
+                                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
                     
 
                 }
@@ -615,7 +624,7 @@ async function StartWorldWind() {
                         
                         document.getElementById('thingsSummaryID').appendChild(newContent);
 
-                        /*
+                        
                         document.getElementById('startTime').disabled = true;
                         document.getElementById('endTime').disabled = true;
                         document.getElementById('selectSensor').disabled = true;
@@ -623,7 +632,7 @@ async function StartWorldWind() {
                         document.getElementById('spanTimeNum').disabled = true;
                         document.getElementById('spanTimeUnit').disabled = true;
                         document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
-                        */
+                        
                     
                     });
 
@@ -725,11 +734,16 @@ async function StartWorldWind() {
                 document.getElementById('spanTimeNum').disabled = true;
                 document.getElementById('spanTimeUnit').disabled = true;
                 document.getElementById('submitStartEndDateTime').disabled = true;
+                document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
             } 
             else if(document.getElementById("StationaryOrMobile").options[(document.getElementById("StationaryOrMobile")).selectedIndex].value == "M")
             {
+                document.getElementById('startTime').disabled = false;
+                document.getElementById('endTime').disabled = false;
                 document.getElementById('spanTimeNum').disabled = true;
                 document.getElementById('spanTimeUnit').disabled = true;
+                document.getElementById('submitStartEndDateTime').disabled = true;
+                document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
             }
 
             
