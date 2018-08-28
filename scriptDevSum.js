@@ -1,5 +1,4 @@
 function OpenDevSumm() { 
-    closeAll();
     var open = $("#side3").data("open");
     if (!open) {
       $("#side3").show();
