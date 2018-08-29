@@ -566,8 +566,7 @@ async function StartWorldWind() {
 
                                     document.getElementById('spanTimeNum').disabled = true;
                                     document.getElementById('spanTimeUnit').disabled = true;
-                                    document.getElementById('startTime').disabled = true;
-                                    document.getElementById('endTime').disabled = true;
+                                   
                                     document.getElementById('selectSensor').disabled = true;
                                     document.getElementById('submitStartEndDateTime').disabled = true;
                                     document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
@@ -650,7 +649,6 @@ async function StartWorldWind() {
 
             } else {
 
-                
 
                 if(!!(document.getElementById("existingThingsSummary"))){
                     var existingEl = document.getElementById("existingThingsSummary");
@@ -672,8 +670,6 @@ async function StartWorldWind() {
                     document.getElementById('thingsSummaryID').appendChild(newContent);
 
                 }
-
-               
 
                     //document.getElementById('startTime').disabled = true;
                     //document.getElementById('endTime').disabled = true;
