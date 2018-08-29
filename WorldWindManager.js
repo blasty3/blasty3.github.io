@@ -682,9 +682,14 @@ async function StartWorldWind() {
 
             OpenDevSumm();
 
-            if(topPickedObject.userObject.placemarkType == "iothings"){
-                SelectedStatThGlobeLookAtLoc(topPickedObject.userObject.latitude,topPickedObject.userObject.longitude);
+            if(!!(topPickedObject.userObject.placemarkType)){
+
+                if(topPickedObject.userObject.placemarkType == "iothings"){
+                    SelectedStatThGlobeLookAtLoc(topPickedObject.userObject.latitude,topPickedObject.userObject.longitude);
+                }
+
             }
+
            
        }
 
