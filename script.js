@@ -12,6 +12,11 @@ function closeMenu(htmlID) {
   $(htmlID).data("open", 0);
 }
 
+function openMenu(htmlID) {
+  $(htmlID).show();
+  $(htmlID).data("open", 1);
+}
+
 $("#search").click(function() {
   var open = $("#side").data("open");
   close();
