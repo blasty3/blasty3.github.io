@@ -682,8 +682,10 @@ async function StartWorldWind() {
 
             OpenDevSumm();
 
-            SelectedStatThGlobeLookAtLoc(topPickedObject.userObject.latitude,topPickedObject.userObject.longitude);
-
+            if(topPickedObject.userObject.placemarkType == "iothings"){
+                SelectedStatThGlobeLookAtLoc(topPickedObject.userObject.latitude,topPickedObject.userObject.longitude);
+            }
+           
        }
 
       
@@ -3765,6 +3767,8 @@ function OnChangeStationaryMobile(){
 }
 
 function TrigMobileThingsVis(){
+    var existingEl = document.getElementById("searchInProgress");
+	existingEl.style.visibility = "visible"; 
     VisualizeMobileThings();
 }
 
@@ -3804,7 +3808,7 @@ async function VisualizeMobileThings(){
         delete markerClusterMobTh;
     }
 
-   if (typeof markerClusterMobTh == 'undefined') {
+   //if (typeof markerClusterMobTh == 'undefined') {
            markerClusterMobTh = new MarkerCluster(wwd, {
                 maxLevel: 7,
                 smooth: false,
@@ -3814,11 +3818,11 @@ async function VisualizeMobileThings(){
                 //attributeColor: null,
                 radius: 45
         });
-    }
+    //}
 
     wwd = markerClusterMobTh.getGlobe();
 
-    console.log(mobileThingsDB);
+    //console.log(mobileThingsDB);
 
     var mobThPromArrList = [];
     var mobThUserIDArrList = [];
@@ -3937,6 +3941,9 @@ async function VisualizeMobileThings(){
         document.getElementById('selectSensor').addEventListener("change", MobThOnSelectedGlobeLookAtLoc); 
         document.getElementById('selectSensor').disabled = false;
         document.getElementById('submitStartEndDateTimeTimeSeries').disabled = false;
+
+        var existingEl = document.getElementById("searchInProgress");
+	    existingEl.style.visibility = "hidden"; 
 
     });
     

@@ -47,6 +47,9 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 		
 			DisableSearchButton();
 			DisableReturnAllDevices();
+
+			var existingEl = document.getElementById("searchInProgress");
+	        existingEl.style.visibility = "visible";
 			
 			console.log("start searching....");
 		    
@@ -834,7 +837,8 @@ var cndCityParamsActual = ['Calgary','Edmonton','Kamloops','Kluane Lake','Montre
 											Promise.all([prom]).then(function(values){
 												delete allThingsPreviewDB;
 												var existingEl = document.getElementById("searchInProgress");
-            									existingEl.parentNode.removeChild(existingEl);
+												existingEl.style.visibility = "hidden"; 
+            									//existingEl.parentNode.removeChild(existingEl);
 												window.alert("Search is complete!");
 											});
 
