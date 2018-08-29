@@ -567,9 +567,8 @@ async function StartWorldWind() {
                                     document.getElementById('spanTimeNum').disabled = true;
                                     document.getElementById('spanTimeUnit').disabled = true;
                                    
-                                    document.getElementById('selectSensor').disabled = true;
-                                    document.getElementById('submitStartEndDateTime').disabled = true;
-                                    document.getElementById('submitStartEndDateTimeTimeSeries').disabled = true;
+                                    
+                                    
                     
 
                 }
