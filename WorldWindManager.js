@@ -2217,7 +2217,13 @@ async function GenerateHistoricalTimeSeries(){
 
             var lat = topPickedObject.userObject.latitude;
             var lon = topPickedObject.userObject.longitude;
-            DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{"unit":values[0].results[0].unit});
+
+            if((values[0].results.length>1)){
+                DrawPolygonTimeSeries(parseFloat(lat),parseFloat(lon),valArr,true,{"unit":values[0].results[0].unit});
+            } else {
+                window.alert("No historical data are available within the selected time frame");
+            }
+            
           
 
         });
