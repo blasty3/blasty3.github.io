@@ -1273,7 +1273,8 @@ tempDweet=[];
 
 function StartApp() {
 	var prom_worldwindstart = StartWorldWind();
-	fetchData();
+	
+	//fetchData();
 
 	//Promise.all([prom_worldwindstart]).then(function(values){
 
