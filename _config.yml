@@ -19,8 +19,8 @@ locale                   : "en-US"
 title                    : "Site Title"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Your Name"
-description              : "An amazing website."
+name                     : "Udayanto Dwi Atmojo's Personal Website"
+description              : "Udayanto Dwi Atmojo's Personal Website"
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -93,11 +93,11 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "Udayanto Dwi Atmojo"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
-  email            :
+  bio              : "Problem Solver-minded : Software developer, researcher, data scientist, and project coordinator"
+  location         : "Helsinki, Finland"
+  email            : udayanto.atmojo (at) gmail (dot) com
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
