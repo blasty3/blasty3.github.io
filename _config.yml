@@ -1,7 +1,7 @@
 # Site wide configuration
 
-title: "Udayanto Dwi Atmojo's Personal Website"
-description: "Udayanto's Personal Website"
+title: "Udayanto Dwi Atmojo"
+description: "Udayanto Dwi Atmojo's Website"
 logo: # 120x120 px default image used for Twitter summary card
 teaser: # 400x250 px default teaser image used in image archive grid
 locale: en
@@ -26,13 +26,13 @@ plugins:
 
 # Site owner
 owner:
-  name: Udayanto Dwi Atmojo's Personal Website
-  email:
+  name: "Udayanto Dwi Atmojo"
+  email: "udayanto.atmojo@gmail.com"
   twitter:
   google:
     ad-client:
     ad-slot:
-  bio:
+  bio: "Software, Data, Research, Project, I'm a problem solver!"
   avatar: bio-photo.jpg # 160x160 px image for author byline
   disqus-shortname:
 

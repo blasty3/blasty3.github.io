@@ -1,6 +1,10 @@
 # Site navigation links
 
-- title: "Portofolio"
+- title: "Project Portofolio"
+  url: "/portofolio/"
+  excerpt:
+  image:
+- title: "Academic Experience"
   url: "/portofolio/"
   excerpt:
   image:
