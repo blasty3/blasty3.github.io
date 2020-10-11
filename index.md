@@ -19,5 +19,4 @@ You can contact me at udayanto.atmojo (at) gmail (dot) com.
 <!-- <div class="tiles">
 {% for post in site.posts %}
 	{% include post-grid.html %}
-{% endfor %}
-</div><!-- /.tiles -->
+{% endfor %} </div> /.tiles -->
