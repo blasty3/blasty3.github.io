@@ -10,7 +10,7 @@ categories: portofolio
 
 
 
-<!-- Demo: [nikah.ibmon.com](http://nikah.ibmon.com) |
+<!-- Demo: yy |
  [Github](https://github.com/nmonarizqa/wdg)
 
 <img src="{{ site.url }}/images/NNWedding.png"> -->
